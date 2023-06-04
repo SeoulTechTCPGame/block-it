@@ -58,3 +58,7 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# 추가 제외 파일 리스트
+*.vsconfig
+/[Uu]serSettings/
+/Test/
