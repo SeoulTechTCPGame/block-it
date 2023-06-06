@@ -35,11 +35,6 @@ public class SoundManager : MonoBehaviour
         // 마스터 볼륨과 사운드 이펙트 볼륨 곱 연산 적용
         float volume = soundEffectVolume;
     }
-    // 진동 활성화 여부 반환
-    public bool IsVibrationEnabled()
-    {
-        return isVibrationEnabled;
-    }
     // 진동 실행
     public void Vibrate()
     {
