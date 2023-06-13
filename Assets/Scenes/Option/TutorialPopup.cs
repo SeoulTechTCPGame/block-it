@@ -5,8 +5,8 @@ using TMPro;
 [System.Serializable]
 public class Step
 {
-    public Sprite image;
-    public string explanation;
+    public Sprite Image;
+    public string Explanation;
 }
 
 public class TutorialPopup : MonoBehaviour
@@ -56,8 +56,8 @@ public class TutorialPopup : MonoBehaviour
     {
         _currentStep = Mathf.Clamp(stepIndex, 0, _steps.Length - 1);
 
-        _image.sprite = _steps[_currentStep].image;
-        _explain.text = _steps[_currentStep].explanation;
+        _image.sprite = _steps[_currentStep].Image;
+        _explain.text = _steps[_currentStep].Explanation;
 
         _backBtn.interactable = _currentStep > 0;
         _nextBtn.interactable = _currentStep < _steps.Length - 1;

@@ -5,9 +5,9 @@ public class SoundManager : MonoBehaviour
     public static SoundManager instance;
     public static SoundManager Instance { get { return instance; } }
     // 볼륨 값 변수들
-    public float bgmVolume = 1.0f; // BGM 볼륨
-    public float soundEffectVolume = 1.0f; // 사운드 이펙트 볼륨
-    public bool isVibrationEnabled = true;
+    public float BgmVolume = 1.0f; // BGM 볼륨
+    public float SoundEffectVolume = 1.0f; // 사운드 이펙트 볼륨
+    public bool IsVibrationEnabled = true;
 
     private void Awake()
     {
@@ -26,17 +26,17 @@ public class SoundManager : MonoBehaviour
     // BGM 재생
     public void PlayBGM(AudioClip bgmClip)
     {
-        float volume = bgmVolume;
+        float volume = BgmVolume;
     }
     // 사운드 이펙트 재생
     public void PlaySoundEffect(AudioClip soundEffectClip)
     {
-        float volume = soundEffectVolume;
+        float volume = SoundEffectVolume;
     }
     // 진동 실행
     public void Vibrate()
     {
-        if (isVibrationEnabled)
+        if (IsVibrationEnabled)
         {
             Handheld.Vibrate();
         }
