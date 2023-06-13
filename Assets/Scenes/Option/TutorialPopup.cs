@@ -20,6 +20,7 @@ public class TutorialPopup : MonoBehaviour
     [SerializeField] Step[] _steps;
     [SerializeField] Button _backBtn;
     [SerializeField] Button _nextBtn;
+    [SerializeField] TMP_Text _pageText;
 
     private int _currentStep = 0;
 
@@ -60,5 +61,13 @@ public class TutorialPopup : MonoBehaviour
 
         _backBtn.interactable = _currentStep > 0;
         _nextBtn.interactable = _currentStep < _steps.Length - 1;
+        UpdatePageText();
+    }
+    private void UpdatePageText()
+    {
+        int currentPage = _currentStep + 1;
+        int totalPages = _steps.Length;
+
+        _pageText.text = string.Format("({0}/{1})", currentPage, totalPages);
     }
 }
