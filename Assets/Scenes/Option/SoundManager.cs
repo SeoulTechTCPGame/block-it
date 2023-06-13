@@ -26,13 +26,11 @@ public class SoundManager : MonoBehaviour
     // BGM 재생
     public void PlayBGM(AudioClip bgmClip)
     {
-        // 마스터 볼륨과 BGM 볼륨 곱 연산 적용
         float volume = bgmVolume;
     }
     // 사운드 이펙트 재생
     public void PlaySoundEffect(AudioClip soundEffectClip)
     {
-        // 마스터 볼륨과 사운드 이펙트 볼륨 곱 연산 적용
         float volume = soundEffectVolume;
     }
     // 진동 실행
@@ -40,7 +38,6 @@ public class SoundManager : MonoBehaviour
     {
         if (isVibrationEnabled)
         {
-            // 진동 실행
             Handheld.Vibrate();
         }
     }

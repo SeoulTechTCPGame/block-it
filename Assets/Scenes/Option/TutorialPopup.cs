@@ -43,7 +43,7 @@ public class TutorialPopup : MonoBehaviour
         _tutorialPopup.SetActive(false);
         _scene.SetActive(true);
     }
-    public void ShowPreviousStep()
+    private void ShowPreviousStep()
     {
         ShowStep(_currentStep - 1);
     }
