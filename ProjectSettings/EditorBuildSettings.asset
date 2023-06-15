@@ -6,6 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+<<<<<<< HEAD
     path: Assets/Scenes/Home.unity
+=======
+    path: Assets/Scenes/SampleScene.unity
+>>>>>>> f0f749a (add: Unity project's initial files)
     guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects: {}
