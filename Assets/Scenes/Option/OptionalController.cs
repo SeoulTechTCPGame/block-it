@@ -7,8 +7,12 @@ public class OptionalController : MonoBehaviour
     [SerializeField] Slider _soundEffectSlider;
     [SerializeField] Toggle _vibrationToggle;
     [SerializeField] GameObject _languageButtons;
+    [SerializeField] Image _background;
+    [SerializeField] RectTransform _checkmark;
 
     private SoundManager _soundManager;
+    private float _toggleMinX = -8.5f;
+    private float _toggleMaxX = 8.5f;
 
     private void Start()
     {
@@ -16,6 +20,10 @@ public class OptionalController : MonoBehaviour
 
         // 저장된 설정 값을 슬라이더에 반영
         LoadSettings();
+
+        _bGMSlider.onValueChanged.AddListener(OnBgmVolumeChanged);
+        _soundEffectSlider.onValueChanged.AddListener(OnSoundEffectVolumeChanged);
+        _vibrationToggle.onValueChanged.AddListener(OnVibrationToggleChanged);
     }
     private void LoadSettings()
     {
@@ -48,5 +56,13 @@ public class OptionalController : MonoBehaviour
         // 진동 설정 변경
         _soundManager.IsVibrationEnabled = value;
         Debug.Log("Vibration Enabled: " + value);
+
+        // 위치에 따라 배경 색상 변경
+        Color backgroundColor = value ? Color.white : Color.gray;
+        _background.color = backgroundColor;
+
+        // 위치에 따라 checkmark 좌우로 움직임
+        float targetX = value ? _toggleMinX : _toggleMaxX;
+        _checkmark.anchoredPosition = new Vector2(targetX, 0f);
     }
 }
