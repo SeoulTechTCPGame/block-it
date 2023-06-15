@@ -62,3 +62,4 @@ crashlytics-build.properties
 *.vsconfig
 /[Uu]serSettings/
 /Test/
+/ProjectSettings/ProjectSettings.asset
