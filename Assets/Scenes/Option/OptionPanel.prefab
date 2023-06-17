@@ -467,7 +467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 142b1f3421bef574e93692d08adbfbca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bGMSlider: {fileID: 6641900408330509814}
+  _bgmSlider: {fileID: 6641900408330509814}
   _soundEffectSlider: {fileID: 5917858627556253947}
   _vibrationToggle: {fileID: 2629921598790769895}
   _languageButtons: {fileID: 1780172821190687073}

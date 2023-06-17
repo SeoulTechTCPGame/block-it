@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class OptionalController : MonoBehaviour
 {
-    [SerializeField] Slider _bGMSlider;
+    [SerializeField] Slider _bgmSlider;
     [SerializeField] Slider _soundEffectSlider;
     [SerializeField] Toggle _vibrationToggle;
     [SerializeField] GameObject _languageButtons;
@@ -24,7 +24,7 @@ public class OptionalController : MonoBehaviour
         // 저장된 설정 값을 슬라이더에 반영
         LoadSettings();
 
-        _bGMSlider.onValueChanged.AddListener(OnBgmVolumeChanged);
+        _bgmSlider.onValueChanged.AddListener(OnBgmVolumeChanged);
         _soundEffectSlider.onValueChanged.AddListener(OnSoundEffectVolumeChanged);
         _vibrationToggle.onValueChanged.AddListener(OnVibrationToggleChanged);
     }
@@ -32,7 +32,7 @@ public class OptionalController : MonoBehaviour
     {
         // BGM 볼륨 로드
         float bgmVolume = _soundManager.BgmVolume;
-        _bGMSlider.value = bgmVolume;
+        _bgmSlider.value = bgmVolume;
         UpdateBgmImage(bgmVolume);
 
         // 사운드 이펙트 볼륨 로드
@@ -88,7 +88,6 @@ public class OptionalController : MonoBehaviour
             _bgmImage.sprite = sprites[1];
         }
     }
-
     private void UpdateSoundEffectImage(float volume)
     {
         if (volume <= 0.3f)

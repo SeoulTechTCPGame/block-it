@@ -1,0 +1,54 @@
+{
+    "Steps": [
+        {
+            "Image": "Image1", 
+            "UpperExplanation": "Upper Explanation 1",
+            "LowerExplanation": "Lower Explanation 1"
+        },
+        {
+            "Image": "Image2",
+            "UpperExplanation": "Upper Explanation 2",
+            "LowerExplanation": "Lower Explanation 2"
+        },
+        {
+            "Image": "Image3",
+            "UpperExplanation": "Upper Explanation 3",
+            "LowerExplanation": "Lower Explanation 3"
+        },
+        {
+            "Image": "Image4",
+            "UpperExplanation": "Upper Explanation 4",
+            "LowerExplanation": "Lower Explanation 4"
+        },
+        {
+            "Image": "Image5",
+            "UpperExplanation": "Upper Explanation 5",
+            "LowerExplanation": "Lower Explanation 5"
+        },
+        {
+            "Image": "Image6",
+            "UpperExplanation": "Upper Explanation 6",
+            "LowerExplanation": "Lower Explanation 6"
+        },
+        {
+            "Image": "Image7",
+            "UpperExplanation": "Upper Explanation 7",
+            "LowerExplanation": "Lower Explanation 7"
+        },
+        {
+            "Image": "Image8",
+            "UpperExplanation": "Upper Explanation 8",
+            "LowerExplanation": "Lower Explanation 8"
+        },
+        {
+            "Image": "Image9",
+            "UpperExplanation": "Upper Explanation 9",
+            "LowerExplanation": "Lower Explanation 9"
+        },
+        {
+            "Image": "Image10",
+            "UpperExplanation": "Upper Explanation 10",
+            "LowerExplanation": "Lower Explanation 10"
+        }
+    ]
+}

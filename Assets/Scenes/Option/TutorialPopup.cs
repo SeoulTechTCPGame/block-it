@@ -5,9 +5,15 @@ using TMPro;
 [System.Serializable]
 public class Step
 {
-    public Sprite Image;
+    public string ImagePath;
     public string UpperExplanation;
     public string LowerExplanation;
+    public Sprite Image;
+}
+[System.Serializable]
+public class TutorialData
+{
+    public Step[] Steps;
 }
 
 public class TutorialPopup : MonoBehaviour
@@ -25,6 +31,7 @@ public class TutorialPopup : MonoBehaviour
     [SerializeField] Button _nextBtn;
     [SerializeField] TMP_Text _pageText;
 
+    private TutorialData _tutorialData;
     private int _currentStep = 0;
 
     private void Start()
@@ -38,6 +45,7 @@ public class TutorialPopup : MonoBehaviour
     }
     private void OpenTutorialPopup()
     {
+        LoadTutorialData();
         _tutorialPopup.SetActive(true);
         _optionPanel.SetActive(false);
         ShowStep(_currentStep);
@@ -57,14 +65,14 @@ public class TutorialPopup : MonoBehaviour
     }
     private void ShowStep(int stepIndex)
     {
-        _currentStep = Mathf.Clamp(stepIndex, 0, _steps.Length - 1);
+        _currentStep = Mathf.Clamp(stepIndex, 0, _tutorialData.Steps.Length - 1);
 
-        _image.sprite = _steps[_currentStep].Image;
-        _upperExplain.text = _steps[_currentStep].UpperExplanation;
-        _lowerExplain.text = _steps[_currentStep].LowerExplanation;
+        _image.sprite = Resources.Load<Sprite>(_tutorialData.Steps[_currentStep].ImagePath);
+        _upperExplain.text = _tutorialData.Steps[_currentStep].UpperExplanation;
+        _lowerExplain.text = _tutorialData.Steps[_currentStep].LowerExplanation;
 
         _backBtn.interactable = _currentStep > 0;
-        _nextBtn.interactable = _currentStep < _steps.Length - 1;
+        _nextBtn.interactable = _currentStep < _tutorialData.Steps.Length - 1;
         UpdatePageText();
     }
     private void UpdatePageText()
@@ -73,5 +81,28 @@ public class TutorialPopup : MonoBehaviour
         int totalPages = _steps.Length;
 
         _pageText.text = string.Format("({0}/{1})", currentPage, totalPages);
+    }
+    private void LoadTutorialData()
+    {
+        string jsonPath = "Json/tutorial";
+
+        TextAsset jsonAsset = Resources.Load<TextAsset>(jsonPath);
+        if (jsonAsset != null)
+        {
+            string jsonData = jsonAsset.text;
+            _tutorialData = JsonUtility.FromJson<TutorialData>(jsonData);
+
+            // 이미지 로드
+            foreach (Step step in _tutorialData.Steps)
+            {
+                string imagePath = "Images/" + step.ImagePath;
+                Sprite sprite = Resources.Load<Sprite>(imagePath);
+                step.Image = sprite;
+            }
+        }
+        else
+        {
+            Debug.LogError("Tutorial JSON file not found!");
+        }
     }
 }
