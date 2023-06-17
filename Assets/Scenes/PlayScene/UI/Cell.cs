@@ -41,10 +41,10 @@ public class Cell : MonoBehaviour
         bRightEdge = rightEdge;
         bBottomEdge = bottomEdge;
     }
-    public void SetCoordinate(int row, int col)
+    public void SetCoordinate(int col, int row)
     {
-        Coordinate.x = row;
-        Coordinate.y = col;
+        Coordinate.x = col;
+        Coordinate.y = row;
     }
     public void SetRightPlank(bool visible, Color color)
     {
@@ -114,15 +114,6 @@ public class Cell : MonoBehaviour
         {
             _bottomRightDictionary[name].enabled = false;
         }
-        /*
-        foreach (string name in _bottomRightDictionary.Keys) 
-        {
-            if(name != key)
-            {
-                _bottomRightDictionary[name].enabled = false;
-            }
-        }
-         */
     }
     private void offEdge()
     {

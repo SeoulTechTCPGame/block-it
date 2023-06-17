@@ -7,7 +7,7 @@ public class BoardManager : MonoBehaviour
 
     const int ROW = 9;
     const int COL = 9;
-    private Cell[,] cells = new Cell[ROW, COL];
+    private Cell[,] cells = new Cell[COL, ROW];
 
     // Start is called before the first frame update
     void Start()
@@ -26,11 +26,11 @@ public class BoardManager : MonoBehaviour
         cell.SetPawn(true, Color.red);
     }
 
-    public Cell GetCell(int row, int col)
+    public Cell GetCell(int col, int row)
     {
         if (row >= 0 && row < ROW && col >= 0 && col < COL)
         {
-            return cells[row, col];
+            return cells[col, row];
         }
         else
         {
@@ -48,10 +48,10 @@ public class BoardManager : MonoBehaviour
                 GameObject cellGO = Instantiate(cellPrefab, transform);
                 Cell cell = cellGO.GetComponent<Cell>();
                 cell.SetEdge(col == COL - 1, row == ROW - 1);
-                cell.SetCoordinate(row, col);
-                cells[row, col] = cell;
+                cell.SetCoordinate(col, row);
+                cells[col, row] = cell;
 
-                cellGO.name = "Cell_( " + row + ", " + col +" )";
+                cellGO.name = "Cell_( " + col + ", " + row +" )";
             }
         }
     }
@@ -59,11 +59,11 @@ public class BoardManager : MonoBehaviour
     {
         for (int row = 0; row < ROW; row++)
         {
-            cells[row, COL-1].SetRightPlank(false, Color.red);
+            cells[COL - 1, row].SetRightPlank(false, Color.red);
         }
         for (int col = 0; col < COL; col++)
         {
-            cells[ROW-1, col].SetBottomPlank(false, Color.red);
+            cells[col, ROW-1].SetBottomPlank(false, Color.red);
         }
     }
 }
