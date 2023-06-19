@@ -91,10 +91,12 @@ public class Cell : MonoBehaviour
     }
     private void initBottomRightDictionary()
     {
+        /*
         _bottomRightDictionary.Add("Top", null);
         _bottomRightDictionary.Add("Left", null);
         _bottomRightDictionary.Add("Bottom", null);
         _bottomRightDictionary.Add("Right", null);
+         */
         _bottomRightDictionary.Add("Horizontal", null);
         _bottomRightDictionary.Add("Vertical", null);
     }
