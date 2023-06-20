@@ -21,4 +21,14 @@ public class MoveScene : MonoBehaviour
     {
         SceneManager.LoadScene("Option");
     }
+
+    public void OnProfileButtonClicked() 
+    {
+        SceneManager.LoadScene("Profile");
+    }
+
+    public void OnExitButtonClicked()
+    {
+        SceneManager.LoadScene("Home");
+    }
 }
