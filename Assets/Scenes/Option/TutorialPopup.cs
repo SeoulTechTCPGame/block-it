@@ -72,6 +72,7 @@ public class TutorialPopup : MonoBehaviour
         if (sprite != null)
         {
             _image.sprite = sprite;
+            _image.preserveAspect = true;
         }
         else
         {
