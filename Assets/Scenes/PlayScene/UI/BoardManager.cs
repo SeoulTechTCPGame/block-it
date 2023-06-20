@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BoardManager : MonoBehaviour
 {
-    [SerializeField] private GameObject cellPrefab;
+    [SerializeField] GameObject cellPrefab;
 
     const int ROW = 9;
     const int COL = 9;
