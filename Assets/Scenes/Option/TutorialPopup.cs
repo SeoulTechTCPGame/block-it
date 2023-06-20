@@ -8,8 +8,8 @@ public class Step
     public string ImagePath;
     public string UpperExplanation;
     public string LowerExplanation;
-    public Sprite Image;
 }
+
 [System.Serializable]
 public class TutorialData
 {
@@ -26,7 +26,6 @@ public class TutorialPopup : MonoBehaviour
     [SerializeField] TMP_Text _upperExplain;
     [SerializeField] TMP_Text _lowerExplain;
     [SerializeField] Image _image;
-    [SerializeField] Step[] _steps;
     [SerializeField] Button _backBtn;
     [SerializeField] Button _nextBtn;
     [SerializeField] TMP_Text _pageText;
@@ -67,7 +66,18 @@ public class TutorialPopup : MonoBehaviour
     {
         _currentStep = Mathf.Clamp(stepIndex, 0, _tutorialData.Steps.Length - 1);
 
-        _image.sprite = Resources.Load<Sprite>(_tutorialData.Steps[_currentStep].ImagePath);
+        string imagePath = "Images/" + _tutorialData.Steps[_currentStep].ImagePath;
+        Sprite sprite = Resources.Load<Sprite>(imagePath);
+        Debug.Log(sprite);
+        if (sprite != null)
+        {
+            _image.sprite = sprite;
+        }
+        else
+        {
+            Debug.LogError("Failed to load image: " + imagePath);
+        }
+
         _upperExplain.text = _tutorialData.Steps[_currentStep].UpperExplanation;
         _lowerExplain.text = _tutorialData.Steps[_currentStep].LowerExplanation;
 
@@ -78,7 +88,7 @@ public class TutorialPopup : MonoBehaviour
     private void UpdatePageText()
     {
         int currentPage = _currentStep + 1;
-        int totalPages = _steps.Length;
+        int totalPages = _tutorialData.Steps.Length;
 
         _pageText.text = string.Format("({0}/{1})", currentPage, totalPages);
     }
@@ -91,18 +101,11 @@ public class TutorialPopup : MonoBehaviour
         {
             string jsonData = jsonAsset.text;
             _tutorialData = JsonUtility.FromJson<TutorialData>(jsonData);
-
-            // 이미지 로드
-            foreach (Step step in _tutorialData.Steps)
-            {
-                string imagePath = "Images/" + step.ImagePath;
-                Sprite sprite = Resources.Load<Sprite>(imagePath);
-                step.Image = sprite;
-            }
         }
         else
         {
             Debug.LogError("Tutorial JSON file not found!");
+            return;
         }
     }
 }
