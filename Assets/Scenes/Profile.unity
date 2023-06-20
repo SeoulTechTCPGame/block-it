@@ -1108,7 +1108,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 460119601}
         m_TargetAssemblyTypeName: MoveScene, Assembly-CSharp
-        m_MethodName: OnExitButtonClicked
+        m_MethodName: ToHome
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
