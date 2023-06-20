@@ -2,68 +2,68 @@
     "Steps": [
         {
             "ImagePath": "Tutorial1", 
-            "UpperExplanation": " The one who reahces the \n opponent’s starting line \n wins the game.\n",
+            "UpperExplanation": "The one who reahces the opponent’s starting line wins the game.\n",
             "LowerExplanation": ""
         },
         {
             "ImagePath": "Tutorial2",
-            "UpperExplanation": "You have two choices: \n - move the horse \n - put one plank on the board \n",
-            "LowerExplanation": "This is the spot where you can go. Select one of these yellow circles."
+            "UpperExplanation": "You have two choices: \n - move the pawn \n - put one plank on the board \n",
+            "LowerExplanation": "Yellow circles are the spot where you can move the pawn. Select one of these yellow circles."
         },
         {
             "ImagePath": "Tutorial3",
-            "UpperExplanation": "You have two choices: \n - move the horse \n - put one plank on the board \n",
-            "LowerExplanation": " Select the position where you want to put the plank, and press the [put] button so that you can confirm."
+            "UpperExplanation": "You have two choices: \n - move the pawn \n - put one plank on the board \n",
+            "LowerExplanation": "Select the position where you want to put the plank, and press the [Put] button to decide position."
         },
         {
             "ImagePath": "Tutorial4",
-            "UpperExplanation": "Each plank takes two squares of the board. Not one, three, ... etc.",
+            "UpperExplanation": "Each plank occupies two squares of the board.",
             "LowerExplanation": ""
         },
         {
             "ImagePath": "Tutorial5",
-            "UpperExplanation": "If players encounter, each player can jump and get to the place beyond the opponent.",
+            "UpperExplanation": "If pawns encounter, pawn can leap over the opponent.",
             "LowerExplanation": ""
         },
         {
             "ImagePath": "Tutorial6",
-            "UpperExplanation": "Each plank shouldn’t invade the boundaries.",
+            "UpperExplanation": "Each plank can’t invade the boundaries.",
             "LowerExplanation": ""
         },
         {
             "ImagePath": "Tutorial7",
-            "UpperExplanation": "You can’t isolate players with planks. Each player needs at least one way to make the goal.",
+            "UpperExplanation": "You can’t surround opponent with planks. Each pawn needs at least one way to make the goal.",
             "LowerExplanation": ""
         },
         {
             "ImagePath": "Tutorial8",
-            "UpperExplanation": "The cases when you encounter the oponent. Case #1.",
-            "LowerExplanation": "player1 player2 places where player1 can go"
+            "UpperExplanation": "The cases when you encounter the opponent. Case #1.",
+            "LowerExplanation": "player1\nplayer2\nplaces where player1 can go"
         },
         {
             "ImagePath": "Tutorial9",
-            "UpperExplanation": "The cases when you encounter the oponent. Case #2.",
-            "LowerExplanation": "player1 player2 places where player1 can go"
+            "UpperExplanation": "The cases when you encounter the opponent. Case #2.",
+            "LowerExplanation": "player1\nplayer2\nplaces where player1 can go"
         },
         {
             "ImagePath": "Tutorial10",
-            "UpperExplanation": "The cases when you encounter the oponent. Case #3.",
-            "LowerExplanation": "player1 player2 places where player1 can go"
+            "UpperExplanation": "The cases when you encounter the opponent. Case #3.",
+            "LowerExplanation": "player1\nplayer2\nplaces where player1 can go"
         },
         {
             "ImagePath": "Tutorial11",
-            "UpperExplanation": "The cases when you encounter the oponent. Case #4.",
-            "LowerExplanation": "player1 player2 places where player1 can go"
+            "UpperExplanation": "The cases when you encounter the opponent. Case #4.",
+            "LowerExplanation": "player1\nplayer2\nplaces where player1 can go"
         },
         {
             "ImagePath": "Tutorial12",
-            "UpperExplanation": "The cases when you encounter the oponent. Case #5.",
-            "LowerExplanation": "player1 player2 places where player1 can go"
+            "UpperExplanation": "The cases when you encounter the opponent. Case #5.",
+            "LowerExplanation": "player1\nplayer2\nplaces where player1 can go"
         },
         {
             "ImagePath": "Tutorial13",
-            "UpperExplanation": "The cases when you encounter the oponent. Case #6.",
-            "LowerExplanation": "player1 player2 places where player1 can go"
+            "UpperExplanation": "The cases when you encounter the opponent. Case #6.",
+            "LowerExplanation": "player1\nplayer2\nplaces where player1 can go"
         }
     ]
 }
