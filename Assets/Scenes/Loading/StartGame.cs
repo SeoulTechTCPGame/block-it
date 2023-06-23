@@ -1,12 +1,21 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class StartGame : MonoBehaviour
 {
     [SerializeField] float _TouchTimeout = 1f;
+    [SerializeField] GameObject Canvas;
     private float _timer;
     private bool _loggedIn = false;
+    private GameObject _signUpButton;
+    private GameObject _guestButton;
 
+    private void Awake()
+    {
+        _signUpButton = Canvas.transform.Find("Sign Up").gameObject;
+        _guestButton = Canvas.transform.Find("Guest").gameObject;
+    }
     private void Start()
     {
         ButtonsVisibility();
@@ -14,23 +23,31 @@ public class StartGame : MonoBehaviour
     private void Update()
     {
         _timer += Time.deltaTime;
-        if (!_loggedIn && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) || _timer >= _TouchTimeout))
+        if (_loggedIn && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) || _timer >= _TouchTimeout))
         {
-            SceneManager.LoadScene("Home");
+            MoveHomeScene();
         }
     }
     private void ButtonsVisibility()
     {
         // TODO: 로그인 여부를 확인하는 코드를 추가
         // 이미 회원가입이 되어 있다면 _loggedIn 변수를 true로 설정
-
-        GameObject signUpButton = GameObject.Find("SignUp");
-        GameObject guestButton = GameObject.Find("Guest");
-
-        if (signUpButton != null && guestButton != null)
+        if (_signUpButton != null && _guestButton != null)
         {
-            signUpButton.SetActive(!_loggedIn);
-            guestButton.SetActive(!_loggedIn);
+            Debug.Log("check");
+            _signUpButton.SetActive(!_loggedIn);
+            _guestButton.SetActive(!_loggedIn);
+
+            _signUpButton.GetComponent<Button>().onClick.AddListener(MoveSignUpScene);
+            _guestButton.GetComponent<Button>().onClick.AddListener(MoveHomeScene);
         }
+    }
+    private void MoveSignUpScene()
+    {
+        SceneManager.LoadScene("SignUp");
+    }
+    private void MoveHomeScene()
+    {
+        SceneManager.LoadScene("Home");
     }
 }
