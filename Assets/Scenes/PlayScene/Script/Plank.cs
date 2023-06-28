@@ -12,12 +12,12 @@ public class Plank
     private Vector2Int mCoordinate;
     private EDirection direction;
 
-    public Vector2Int GetPlankCoord()
+    public Vector2Int GetCoordinate()
     {
         return mCoordinate;
     }
 
-    public EDirection GetPlankDirection()
+    public EDirection GetDirection()
     {
         return direction;
     }

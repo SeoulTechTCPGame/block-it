@@ -1,173 +1,173 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-
-enum EPawns { Pawn1, Pawn2 }
-
+using System.Linq;
 
 public class GameLogic
 {
     private Pawn P1;
     private Pawn P2;
 
-    Plank[] planks = new Plank[20];
+    public List<Plank> planks = new List<Plank>();
 
-    void SetGame() {
+    private void SetGame()
+    {
         P1.SetCoordinate(new Vector2Int(5, 1));
         P2.SetCoordinate(new Vector2Int(5, 9));
     }
 
-    Vector2Int GetPawnCoordinate(EPawns Pawn) {
-        if (Pawn == EPawns.Pawn1)
+    Vector2Int GetPawnCoordinate(Pawn pawn)
+    {  
+        return pawn.GetCoordinate();  
+    }
+
+    List<Vector2Int> GetMoveablePawnCoords(Pawn pawn)
+    {
+        List<Vector2Int> validCoords = new List<Vector2Int>();
+
+        int rowCoord = pawn.GetCoordinate().y;
+        int colCoord = pawn.GetCoordinate().x;
+
+        bool[] NSEW = WhichCoordsAreValid(rowCoord, colCoord);
+
+        // NORTH
+        if (NSEW[0])
         {
-            return P1.GetCoordinate();
+            validCoords.Add(new Vector2Int(colCoord, rowCoord - 1));
         }
-        else
+        // SOUTH
+        if (NSEW[1])
         {
-            return P2.GetCoordinate();
+            validCoords.Add(new Vector2Int(colCoord, rowCoord + 1));
+        }
+        // EAST
+        if (NSEW[2])
+        {
+            validCoords.Add(new Vector2Int(colCoord + 1, rowCoord));
+        }
+        // WEST
+        if (NSEW[3])
+        {
+            validCoords.Add(new Vector2Int(colCoord - 1, rowCoord));
+        }
+
+        return validCoords;
+    }
+
+    bool IsPlankPlaceable(Vector2Int coor)
+    {
+        foreach (Plank plank in planks)
+        {
+            if (plank.GetCoordinate() == coor)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    void SetPawnPlace(Pawn pawn, Vector2Int coordinate)
+    {
+        pawn.SetCoordinate(coordinate); 
+    }
+
+    void SetPlank(Plank plank)
+    {
+        BFS bfs = new BFS();
+        if (bfs.IsThereAtLeastOneWay(P1) && bfs.IsThereAtLeastOneWay(P2))
+        {
+            // TODO 좌표가 동일한 plank 는 추가해서는 안됨
+            planks.Add(plank);
         }
     }
 
-    int GetPawnPlankNum(EPawns Pawn) {
-        if (Pawn == EPawns.Pawn1)
-        {
-            return P1.GetPlankNum();
-        }
-        else
-        {
-            return P2.GetPlankNum();
-        }
-    }
-
-    /*
-     
-     
-    List<Vector2Int> GetMoveablePawnCoords(EPawns Pawn) {
-        //Encounter.NewEncounterPawn newEncounterPawn = new Encounter.NewEncounterPawn();
-        if (Pawn == EPawns.Pawn1)
-        {
-          //  return newEncounterPawn.ValidCoordinates(P1);
-        }
-        else
-        {
-          //  return newEncounterPawn.ValidCoordinates(P2);
-        }
-        
-    }
- */
-    //bool IsPlankPlaceable(int PawnNum, Vector2Int coordinate, EDirection direction) {
-    //    Encounter.NewEncounterPlank newEncounterPlank = new Encounter.NewEncounterPlank();
-    //    if (Pawn == EPawns.Pawn1)
-    //    {
-
-    //    } else
-    //    {
-
-    //    }
-    //}
-
-    void SetPawnPlace(int PawnNum, Vector2Int coordinate) {
-        if (PawnNum == 1)
-        {
-          //  Board.NewBoard.mainBoard[coordinate.y][coordinate.x] = '1';
-        } else
-        {
-            //Board.NewBoard.mainBoard[coordinate.y][coordinate.x] = '2';
-        }
-    }
-
-    void SetPlank(int PawnNum, Vector2Int coordinate, EDirection direction) {
-        
-    }
-
-    bool Wins(EPawns Pawn) {
-        if (Pawn == EPawns.Pawn1)
+    bool Wins(Pawn pawn)
+    {
+        if (pawn.GetPlankNum() == 1 && pawn.GetCoordinate().y == 9)
         {
             return true;
         }
-        else if (Pawn == EPawns.Pawn2)
+        else if (pawn.GetPlankNum() == 2 && pawn.GetCoordinate().y == 1)
         {
             return true;
         }
 
         return false;
     }
+
+    private bool IsOutOfBoundary(int row, int col)
+    {
+        if (row <= 0 || row > 9 || col <= 0 || col > 9)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+    private bool[] WhichCoordsAreValid(int row, int col)
+    {
+        bool[] NSEW = { true, true, true, true };
+
+        foreach (Plank plank in planks)
+        {
+            // NORTH 
+            if (IsNorthNotValid(plank, row, col))
+            {
+                NSEW[0] = false;
+            }
+
+            // EAST
+            if (IsEastNotValid(plank, row, col))
+            {
+                NSEW[2] = false;
+            }
+
+            // SOUTH
+            if (IsSouthNotValid(plank, row, col))
+            {
+                NSEW[1] = false;
+            }
+
+            // WEST
+            if (IsWestNotValid(plank, row, col))
+            {
+                NSEW[3] = false;
+            }
+        }
+
+        return NSEW;
+    }
+
+    public bool IsNorthNotValid(Plank plank, int row, int col)
+    {
+        Vector2Int plankCoord = plank.GetCoordinate();
+        EDirection plankDirection = plank.GetDirection();
+
+        return plankDirection == EDirection.Horizontal && plankCoord.y == row - 1 && plankCoord.x == col - 1 || plankCoord.y == row - 1 && plankCoord.x == col;
+    }
+
+    public bool IsEastNotValid(Plank plank, int row, int col)
+    {
+        Vector2Int plankCoord = plank.GetCoordinate();
+        EDirection plankDirection = plank.GetDirection();
+
+        return plankDirection == EDirection.Vertical && plankCoord.y == row - 1 && plankCoord.x == col || plankCoord.y == row && plankCoord.x == col;
+    }
+
+    public bool IsSouthNotValid(Plank plank, int row, int col)
+    {
+        Vector2Int plankCoord = plank.GetCoordinate();
+        EDirection plankDirection = plank.GetDirection();
+
+        return plankDirection == EDirection.Horizontal && plankCoord.y == row && plankCoord.x == col - 1 || plankCoord.y == row && plankCoord.x == col;
+    }
+
+    public bool IsWestNotValid(Plank plank, int row, int col)
+    {
+        Vector2Int plankCoord = plank.GetCoordinate();
+        EDirection plankDirection = plank.GetDirection();
+
+        return plankDirection == EDirection.Vertical && plankCoord.y == row - 1 && plankCoord.x == col - 1 || plankCoord.y == row && plankCoord.x == col - 1;
+    }
 }
-
-/*
- *         public List<Vector2Int> ValidCoordinates(Plank plank)
-        {
-            List<Vector2Int> validCoords = new List<Vector2Int>();
-
-            int rowCoord = plank.GetPlankCoord().y;
-            int colCoord = plank.GetPlankCoord().x;
-            // Up
-            if (IsUpCoordValid(rowCoord, colCoord))
-            {
-                validCoords.Add(new Vector2Int(rowCoord - 1, colCoord));
-            }
-            // Down
-            if (IsDownCoordValid(rowCoord, colCoord))
-            {
-                validCoords.Add(new Vector2Int(rowCoord + 1, colCoord));
-            }
-            // Left
-            if (IsLeftCoordValid(rowCoord, colCoord))
-            {
-                validCoords.Add(new Vector2Int(rowCoord, colCoord - 1));
-            }
-            // Right
-            if (IsRightCoordValid(rowCoord, colCoord))
-            {
-                validCoords.Add(new Vector2Int(rowCoord, colCoord + 1));
-            }
-
-            return validCoords;
-        }
-
-        private bool IsUpCoordValid(int rowCoord, int colCoord)
-        {
-            if (Board.NewBoard.mainBoard[rowCoord - 1][colCoord] == '0')
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private bool IsDownCoordValid(int rowCoord, int colCoord)
-        {
-            if (Board.NewBoard.mainBoard[rowCoord + 1][colCoord] == '0')
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private bool IsLeftCoordValid(int rowCoord, int colCoord)
-        {
-            if (Board.NewBoard.mainBoard[rowCoord][colCoord - 2] == '0')
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private bool IsRightCoordValid(int rowCoord, int colCoord)
-        {
-            if (Board.NewBoard.mainBoard[rowCoord][colCoord + 1] == '0')
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }*/
