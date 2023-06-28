@@ -4,27 +4,38 @@ using UnityEngine;
 
 class Pawn
 {
-        private Vector2Int mCoordinate;
-        private int mPlankNum = 10;
-        
+    private Vector2Int mCoordinate;
+    private int mPlankNum = 10;
+    private int mPawnNum;
 
-        public Vector2Int GetCoordinate()
-        {
-            return mCoordinate;
-        }
+    public int GetPawnNum()
+    {
+        return mPawnNum;
+    }
 
-        public int GetPlankNum()
-        {
-            return mPlankNum;
-        }
+    public Vector2Int GetCoordinate()
+    {
+        return mCoordinate;
+    }
 
-        public void SetCoordinate(Vector2Int coordinate)
-        {
-            mCoordinate = coordinate;
-        }
+    public int GetPlankNum()
+    {
+        return mPlankNum;
+    }
 
-        public void UsePlank()
-        {
-            mPlankNum--;
-        }
+    public void SetCoordinate(Vector2Int coordinate)
+    {
+        mCoordinate = coordinate;
+    }
+
+    public void UsePlank()
+    {
+        mPlankNum--;
+    }
+
+    public bool IsPlankValid()
+    {
+        if (mPlankNum <= 0) return false;
+        else return true;
+    }
     }
