@@ -9,6 +9,13 @@ public class BoardManager : MonoBehaviour
     const int COL = 9;
     private Cell[,] cells = new Cell[COL, ROW];
 
+    private Vector2Int P1Coordinate = new Vector2Int();
+    private Vector2Int P2Coordinate = new Vector2Int();
+
+    private void Awake()
+    {
+//        UIEvenetManager.AddListener("", );
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +33,9 @@ public class BoardManager : MonoBehaviour
         cell.SetPawn(true, Color.red);
     }
 
+    private void SetPawn(EPlayer ePlayer) {
+        return;
+    }
     public Cell GetCell(int col, int row)
     {
         if (row >= 0 && row < ROW && col >= 0 && col < COL)
@@ -66,4 +76,6 @@ public class BoardManager : MonoBehaviour
             cells[col, ROW-1].SetBottomPlank(false, Color.red);
         }
     }
+
+
 }
