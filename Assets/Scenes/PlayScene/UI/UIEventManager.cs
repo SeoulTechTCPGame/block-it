@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Collections.Generic;
 
+[System.Serializable]
+public class TypedEvent : UnityEvent<object> { }
 
 public class UIEventManager : MonoBehaviour
 {
