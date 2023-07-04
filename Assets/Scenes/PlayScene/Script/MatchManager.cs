@@ -48,6 +48,9 @@ public class MatchManager : MonoBehaviour
             P2Buttons.GetComponent<PlayerButtons>().SetButtons(false);
 
             turn = EPlayer.Player1;
+
+            List<Vector2Int> moveableCoord = gameLogic.GetMoveablePawnCoords(ePlayer);
+            BoardManager.updateMoveablePawns.Invoke(moveableCoord);
         }
         else
         {
@@ -55,6 +58,8 @@ public class MatchManager : MonoBehaviour
             P2Buttons.GetComponent<PlayerButtons>().SetButtons(true);
 
             turn = EPlayer.Player2;
+            List<Vector2Int> moveableCoord = gameLogic.GetMoveablePawnCoords(ePlayer);
+            BoardManager.updateMoveablePawns.Invoke(moveableCoord);
         }
     }
 

@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Events;
+using System.Collections.Generic;
 
 public class BoardManager : MonoBehaviour
 {
@@ -11,6 +13,7 @@ public class BoardManager : MonoBehaviour
 
     private Vector2Int P1Coordinate = new Vector2Int();
     private Vector2Int P2Coordinate = new Vector2Int();
+    private List<Vector2Int> possiblePawnList = new List<Vector2Int>();
 
     private void Awake()
     {
@@ -35,6 +38,25 @@ public class BoardManager : MonoBehaviour
 
     private void SetPawn(EPlayer ePlayer) {
         return;
+    //make only possible route pressable
+    private void makePossAble(List<Vector2Int> possibleList) 
+    {
+        //DeSelect clicked one
+        for(int i = 0; i < possiblePawnList.Count; i++)
+        {
+            Vector2Int coord = possiblePawnList[i];
+            Cell targetCell = GetCell(coord.x, coord.y);
+            targetCell.SetClickablePawn(false);
+        }
+        //Select ones
+        for(int i = 0; i < possibleList.Count; i++)
+        {
+            Vector2Int coord = possibleList[i];
+            Cell targetCell = GetCell(coord.x, coord.y);
+            targetCell.SetClickablePawn(true);
+        }
+        possiblePawnList = possibleList;
+    }
     }
     public Cell GetCell(int col, int row)
     {
