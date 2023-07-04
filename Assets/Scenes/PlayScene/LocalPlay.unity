@@ -401,6 +401,7 @@ GameObject:
   - component: {fileID: 1308903709}
   - component: {fileID: 1308903713}
   - component: {fileID: 1308903712}
+  - component: {fileID: 1308903714}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -482,6 +483,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59ed52dd68e530f48bc533a521eb7cbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1308903714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1308903708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ec56fa80ca464d4fa1c41bf59b34f5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turn: 0
 --- !u!224 &1485820465 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3372035649625880919, guid: aa067bf082350ce4c978fa6341a56569, type: 3}
@@ -718,6 +732,7 @@ MonoBehaviour:
   P2Buttons: {fileID: 64624389}
   P1Plank: {fileID: 1960941703}
   P2Plank: {fileID: 1790802060}
+  RequestedPawnCoord: {x: 0, y: 0}
 --- !u!1 &1960941703 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1097805059226780493, guid: bb8e521c1a4fcb442ba67feea63a099b, type: 3}

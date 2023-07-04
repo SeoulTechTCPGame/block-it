@@ -8,24 +8,25 @@ public enum EPlayer
     Player2
 }
 
-public class GameLogic
+public class GameLogic : MonoBehaviour
 {
-    private Pawn P1;
-    private Pawn P2;
+    private Pawn P1 = new Pawn();
+    private Pawn P2 = new Pawn();
 
     public EPlayer turn;
 
     public List<Plank> planks = new List<Plank>();
 
-    private void Awake()
+    private void Start()
     {
         SetGame();
     }
 
     private void SetGame()
     {
-        P1.SetCoordinate(new Vector2Int(5, 0));
-        P2.SetCoordinate(new Vector2Int(5, 8));
+        P1.SetCoordinate(new Vector2Int(4, 6));//8));
+
+        P2.SetCoordinate(new Vector2Int(4, 2));// 0));
 
         turn = EPlayer.Player1;
     }
