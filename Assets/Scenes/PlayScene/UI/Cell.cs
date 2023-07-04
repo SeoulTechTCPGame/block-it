@@ -34,6 +34,8 @@ public class Cell : MonoBehaviour
         _pawnImage = _pawn.GetComponentInChildren<Image>();
         _pawnButton = _pawn.GetComponent<Button>();
 
+        _pawnButton.onClick.AddListener(() => ButtonClicked());
+
         initBottomRightPlanks();
         offEdge();
     }
@@ -147,5 +149,10 @@ public class Cell : MonoBehaviour
             _bottomPlank.gameObject.SetActive(false);
             _bottomRightPlank.gameObject.SetActive(false);
         }
+    }
+
+    private void ButtonClicked()
+    {
+        MatchManager.setRequestedPawnCoord.Invoke(Coordinate);
     }
 }
