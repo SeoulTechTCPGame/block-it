@@ -2,30 +2,52 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class GameLogic
+public enum EPlayer
 {
-    private Pawn P1;
-    private Pawn P2;
+    Player1,
+    Player2
+}
+
+public class GameLogic : MonoBehaviour
+{
+    private Pawn P1 = new Pawn();
+    private Pawn P2 = new Pawn();
+
+    public EPlayer turn;
 
     public List<Plank> planks = new List<Plank>();
 
+    private void Start()
+    {
+        SetGame();
+    }
+
     private void SetGame()
     {
-        P1.SetCoordinate(new Vector2Int(5, 1));
-        P2.SetCoordinate(new Vector2Int(5, 9));
+        P1.SetCoordinate(new Vector2Int(4, 6));//8));
+
+        P2.SetCoordinate(new Vector2Int(4, 2));// 0));
+
+        turn = EPlayer.Player1;
     }
 
-    Vector2Int GetPawnCoordinate(Pawn pawn)
-    {  
-        return pawn.GetCoordinate();  
-    }
-
-    List<Vector2Int> GetMoveablePawnCoords(Pawn pawn)
+    public Vector2Int GetPawnCoordinate(EPlayer ePlayer)//Pawn pawn)
     {
+        Pawn targetPawn = getTargetPawn(ePlayer);        
+        Vector2Int targetCoord = targetPawn.GetCoordinate();
+
+        return targetCoord;
+    }
+
+    public List<Vector2Int> GetMoveablePawnCoords(EPlayer ePlayer)//(Pawn pawn)
+    {
+        Pawn targetPawn = getTargetPawn(ePlayer);
+
+
         List<Vector2Int> validCoords = new List<Vector2Int>();
 
-        int rowCoord = pawn.GetCoordinate().y;
-        int colCoord = pawn.GetCoordinate().x;
+        int rowCoord = targetPawn.GetCoordinate().y;
+        int colCoord = targetPawn.GetCoordinate().x;
 
         bool[] NSEW = WhichCoordsAreValid(rowCoord, colCoord);
 
@@ -53,7 +75,7 @@ public class GameLogic
         return validCoords;
     }
 
-    bool IsPlankPlaceable(Vector2Int coor)
+    public bool IsPlankPlaceable(Vector2Int coor)
     {
         foreach (Plank plank in planks)
         {
@@ -66,12 +88,13 @@ public class GameLogic
         return true;
     }
 
-    void SetPawnPlace(Pawn pawn, Vector2Int coordinate)
+    public void SetPawnPlace(EPlayer ePlayer, Vector2Int coordinate)
     {
-        pawn.SetCoordinate(coordinate); 
+        Pawn targetPawn = getTargetPawn(ePlayer);
+        targetPawn.SetCoordinate(coordinate); 
     }
 
-    void SetPlank(Plank plank)
+    public void SetPlank(Plank plank)
     {
         BFS bfs = new BFS();
         if (bfs.IsThereAtLeastOneWay(P1) && bfs.IsThereAtLeastOneWay(P2))
@@ -81,13 +104,15 @@ public class GameLogic
         }
     }
 
-    bool Wins(Pawn pawn)
+    public bool Wins(EPlayer ePlayer)//Pawn pawn)
     {
-        if (pawn.GetPlankNum() == 1 && pawn.GetCoordinate().y == 9)
+        Pawn targetPawn = getTargetPawn(ePlayer);
+
+        if (targetPawn.GetPlankNum() == 1 && targetPawn.GetCoordinate().y == 9)
         {
             return true;
         }
-        else if (pawn.GetPlankNum() == 2 && pawn.GetCoordinate().y == 1)
+        else if (targetPawn.GetPlankNum() == 2 && targetPawn.GetCoordinate().y == 1)
         {
             return true;
         }
@@ -95,7 +120,7 @@ public class GameLogic
         return false;
     }
 
-    private bool IsOutOfBoundary(int row, int col)
+    public bool IsOutOfBoundary(int row, int col)
     {
         if (row <= 0 || row > 9 || col <= 0 || col > 9)
         {
@@ -104,6 +129,32 @@ public class GameLogic
         return false;
     }
 
+    public void changeTurn()
+    {
+        if (turn == EPlayer.Player1)
+        {
+            turn = EPlayer.Player2;
+        }
+        else 
+        { 
+            turn = EPlayer.Player1;
+        }
+    }
+
+    private Pawn getTargetPawn(EPlayer ePlayer)
+    {
+        Pawn targetPawn;
+        if (ePlayer == EPlayer.Player1)
+        {
+            targetPawn = P1;
+        }
+        else
+        {
+            targetPawn = P2;
+        }
+
+        return targetPawn;
+    }
 
     private bool[] WhichCoordsAreValid(int row, int col)
     {

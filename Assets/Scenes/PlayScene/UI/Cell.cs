@@ -21,16 +21,20 @@ public class Cell : MonoBehaviour
     private Image _rightPlankImage;
     private Image _bottomPlankImage;
     private Image _pawnImage;
+    public Button _pawnButton;
     private Dictionary<string, Image> _bottomRightDictionary;
-    
+
     // Start is called before the first frame update
 
-    void Start()
+    private void Awake()
     {
         _bottomRightDictionary = new Dictionary<string, Image>();
         _rightPlankImage = _rightPlank.GetComponentInChildren<Image>();
         _bottomPlankImage = _bottomPlank.GetComponentInChildren<Image>();
         _pawnImage = _pawn.GetComponentInChildren<Image>();
+        _pawnButton = _pawn.GetComponent<Button>();
+
+        _pawnButton.onClick.AddListener(() => ButtonClicked());
 
         initBottomRightPlanks();
         offEdge();
@@ -66,10 +70,26 @@ public class Cell : MonoBehaviour
 
         offOtherImages(key);
     }
+
     public void SetPawn(bool visible, Color color)
     {
         _pawnImage.enabled = visible;
-        _pawnImage.color = color;     
+        _pawnImage.color = color;
+
+        _pawnButton.enabled = false;
+        _pawnButton.interactable = false;
+    }
+    public void RemovePawn()
+    {
+        _pawnImage.color = Color.white;
+        _pawnButton.enabled = true;
+        _pawnButton.interactable = false;
+
+    }
+    public void SetClickablePawn(bool bClickable)
+    {
+        _pawnButton.enabled = true;
+        _pawnButton.interactable = bClickable;
     }
 
     private void initBottomRightPlanks()
@@ -129,5 +149,10 @@ public class Cell : MonoBehaviour
             _bottomPlank.gameObject.SetActive(false);
             _bottomRightPlank.gameObject.SetActive(false);
         }
+    }
+
+    private void ButtonClicked()
+    {
+        MatchManager.setRequestedPawnCoord.Invoke(Coordinate);
     }
 }

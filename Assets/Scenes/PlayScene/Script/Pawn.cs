@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-class Pawn
+public class Pawn
 {
     private Vector2Int mCoordinate;
     private int mPlankNum = 10;
