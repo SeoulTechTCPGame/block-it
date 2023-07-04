@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
 
 public enum EPlayer
 {
@@ -24,7 +23,7 @@ public class GameLogic : MonoBehaviour
 
     private void SetGame()
     {
-        P1.SetCoordinate(new Vector2Int(4, 6));//8));
+        P1.SetCoordinate(new Vector2Int(4, 5));//8));
 
         P2.SetCoordinate(new Vector2Int(4, 2));// 0));
 
@@ -42,37 +41,138 @@ public class GameLogic : MonoBehaviour
     public List<Vector2Int> GetMoveablePawnCoords(EPlayer ePlayer)//(Pawn pawn)
     {
         Pawn targetPawn = getTargetPawn(ePlayer);
-
+        Pawn opponentPawn = GetOpponentPawn(targetPawn);
 
         List<Vector2Int> validCoords = new List<Vector2Int>();
 
-        int rowCoord = targetPawn.GetCoordinate().y;
-        int colCoord = targetPawn.GetCoordinate().x;
+        int targetRow = targetPawn.GetCoordinate().y;
+        int targetCol = targetPawn.GetCoordinate().x;
 
-        bool[] NSEW = WhichCoordsAreValid(rowCoord, colCoord);
+        int opponentRow = opponentPawn.GetCoordinate().y;
+        int opponentCol = opponentPawn.GetCoordinate().x;
+
+        Debug.Log("HEY");
+
+        // Plank, Pawn 둘 모두에 대한 검사를 하여야 함.
 
         // NORTH
-        if (NSEW[0])
+        if (targetRow - 1 >= 0 && opponentRow == targetRow - 1 && targetCol == opponentCol) // pawn 이 있는지 검사 
         {
-            validCoords.Add(new Vector2Int(colCoord, rowCoord - 1));
+            if (targetRow - 2 >= 0 && !IsPlankInTheNorth(targetCol, targetRow - 1))
+            {
+                Debug.Log("Pawn there!");
+                validCoords.Add(new Vector2Int(targetCol, targetRow - 2));
+            }
         }
+        else if (targetRow - 1 >= 0 && !IsPlankInTheNorth(targetCol, targetRow - 1)) // plank 가 있는지 검사
+        {
+            validCoords.Add(new Vector2Int(targetCol, targetRow - 1));
+        }
+
         // SOUTH
-        if (NSEW[1])
+        if (targetRow + 1 < 9 && opponentRow == targetRow + 1 && targetCol == opponentCol)
         {
-            validCoords.Add(new Vector2Int(colCoord, rowCoord + 1));
+            if (targetRow + 2 < 9 && !IsPlankInTheSouth(targetCol, targetRow + 1))
+            {
+                validCoords.Add(new Vector2Int(targetCol, targetRow + 2));
+            }
         }
+        else if (targetRow + 1 < 9 && !IsPlankInTheSouth(targetCol, targetRow + 1))
+        {
+            validCoords.Add(new Vector2Int(targetCol, targetRow + 1));
+        }
+
         // EAST
-        if (NSEW[2])
+        if (targetCol + 1 < 9 && opponentRow == targetRow && targetCol + 1 == opponentCol)
         {
-            validCoords.Add(new Vector2Int(colCoord + 1, rowCoord));
+            if (targetCol + 2 < 9 && !IsPlankInTheEast(targetCol + 1, targetRow))
+            {
+                validCoords.Add(new Vector2Int(targetCol + 2, targetRow));
+            }
         }
-        // WEST
-        if (NSEW[3])
+        else if (targetRow + 1 < 9 && !IsPlankInTheEast(targetCol + 1, targetRow))
         {
-            validCoords.Add(new Vector2Int(colCoord - 1, rowCoord));
+            validCoords.Add(new Vector2Int(targetCol + 1, targetRow));
+        }
+
+        // WEST
+        if (targetCol - 1 >= 0 && opponentRow == targetRow  && targetCol - 1 == opponentCol)
+        {
+            if (targetCol - 2 >= 0 && !IsPlankInTheWest(targetCol - 1, targetRow))
+            {
+                validCoords.Add(new Vector2Int(targetCol - 2, targetRow)); 
+            }
+        }
+        else if (targetRow + 1 < 9 && !IsPlankInTheSouth(targetCol - 1, targetRow))
+        {
+            validCoords.Add(new Vector2Int(targetCol - 1, targetRow));
         }
 
         return validCoords;
+    }
+
+    public bool IsPlankInTheNorth(int targetRow, int targetCol)
+    {
+        foreach (Plank plank in planks)
+        {
+            if (plank.GetDirection() == EDirection.Horizontal && (plank.GetCoordinate().y == targetRow - 1 && plank.GetCoordinate().x == targetCol - 1)
+                || (plank.GetCoordinate().y == targetRow - 1 && plank.GetCoordinate().x == targetCol))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool IsPlankInTheSouth(int targetRow, int targetCol)
+    {
+        foreach (Plank plank in planks)
+        {
+            if (plank.GetDirection() == EDirection.Horizontal && (plank.GetCoordinate().y == targetRow && plank.GetCoordinate().x == targetCol) ||
+                plank.GetCoordinate().y == targetRow && plank.GetCoordinate().x == targetCol - 1)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool IsPlankInTheEast(int targetRow, int targetCol)
+    {
+        foreach (Plank plank in planks)
+        {
+            if (plank.GetDirection() == EDirection.Vertical && (plank.GetCoordinate().y == targetRow - 1 && plank.GetCoordinate().x == targetCol) ||
+                plank.GetCoordinate().y == targetRow && plank.GetCoordinate().x == targetCol)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool IsPlankInTheWest(int targetRow, int targetCol)
+    {
+        foreach (Plank plank in planks)
+        {
+            if (plank.GetDirection() == EDirection.Vertical && (plank.GetCoordinate().y == targetRow - 1 && plank.GetCoordinate().x == targetCol - 1) ||
+                plank.GetCoordinate().y == targetRow && plank.GetCoordinate().x == targetCol - 1)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Pawn GetOpponentPawn(Pawn targetPawn)
+    {
+        if (targetPawn == P1)
+        {
+            return P2;
+        }
+        else
+        {
+            return P1;
+        }
     }
 
     public bool IsPlankPlaceable(Vector2Int coor)
@@ -84,7 +184,6 @@ public class GameLogic : MonoBehaviour
                 return false;
             }
         }
-
         return true;
     }
 
@@ -155,70 +254,5 @@ public class GameLogic : MonoBehaviour
 
         return targetPawn;
     }
-
-    private bool[] WhichCoordsAreValid(int row, int col)
-    {
-        bool[] NSEW = { true, true, true, true };
-
-        foreach (Plank plank in planks)
-        {
-            // NORTH 
-            if (IsNorthNotValid(plank, row, col))
-            {
-                NSEW[0] = false;
-            }
-
-            // EAST
-            if (IsEastNotValid(plank, row, col))
-            {
-                NSEW[2] = false;
-            }
-
-            // SOUTH
-            if (IsSouthNotValid(plank, row, col))
-            {
-                NSEW[1] = false;
-            }
-
-            // WEST
-            if (IsWestNotValid(plank, row, col))
-            {
-                NSEW[3] = false;
-            }
-        }
-
-        return NSEW;
-    }
-
-    public bool IsNorthNotValid(Plank plank, int row, int col)
-    {
-        Vector2Int plankCoord = plank.GetCoordinate();
-        EDirection plankDirection = plank.GetDirection();
-
-        return plankDirection == EDirection.Horizontal && plankCoord.y == row - 1 && plankCoord.x == col - 1 || plankCoord.y == row - 1 && plankCoord.x == col;
-    }
-
-    public bool IsEastNotValid(Plank plank, int row, int col)
-    {
-        Vector2Int plankCoord = plank.GetCoordinate();
-        EDirection plankDirection = plank.GetDirection();
-
-        return plankDirection == EDirection.Vertical && plankCoord.y == row - 1 && plankCoord.x == col || plankCoord.y == row && plankCoord.x == col;
-    }
-
-    public bool IsSouthNotValid(Plank plank, int row, int col)
-    {
-        Vector2Int plankCoord = plank.GetCoordinate();
-        EDirection plankDirection = plank.GetDirection();
-
-        return plankDirection == EDirection.Horizontal && plankCoord.y == row && plankCoord.x == col - 1 || plankCoord.y == row && plankCoord.x == col;
-    }
-
-    public bool IsWestNotValid(Plank plank, int row, int col)
-    {
-        Vector2Int plankCoord = plank.GetCoordinate();
-        EDirection plankDirection = plank.GetDirection();
-
-        return plankDirection == EDirection.Vertical && plankCoord.y == row - 1 && plankCoord.x == col - 1 || plankCoord.y == row && plankCoord.x == col - 1;
-    }
+ 
 }

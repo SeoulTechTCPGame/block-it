@@ -62,7 +62,6 @@ public class MatchManager : MonoBehaviour
                 gameLogic.SetPawnPlace(EPlayer.Player2, RequestedPawnCoord);
             }
 
-
             P1Buttons.GetComponent<PlayerButtons>().SetButtons(true);
             P2Buttons.GetComponent<PlayerButtons>().SetButtons(false);
 
@@ -93,7 +92,6 @@ public class MatchManager : MonoBehaviour
             
             BoardManager.setPawnCoord.Invoke(EPlayer.Player1, gameLogic.GetPawnCoordinate(EPlayer.Player1));
             BoardManager.setPawnCoord.Invoke(EPlayer.Player2, gameLogic.GetPawnCoordinate(EPlayer.Player2));
-
         }
     }
 
