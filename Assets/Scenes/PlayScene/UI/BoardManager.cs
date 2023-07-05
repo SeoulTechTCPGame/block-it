@@ -35,6 +35,19 @@ public class BoardManager : MonoBehaviour
         StartCoroutine(InitializeBoard());
     }
 
+    public Cell GetCell(int col, int row)
+    {
+        if (row >= 0 && row < ROW && col >= 0 && col < COL)
+        {
+            return cells[col, row];
+        }
+        else
+        {
+            Debug.LogError("Invalid cell coordinates!");
+            return null;
+        }
+    }
+
     IEnumerator InitializeBoard()
     {
         createBoard();
@@ -64,6 +77,7 @@ public class BoardManager : MonoBehaviour
         }
         possiblePawnList = possibleList;
     }
+
     private void setPawn(EPlayer ePlayer, Vector2Int coordinate) {
         
         if(ePlayer == EPlayer.Player1)
@@ -94,19 +108,6 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    public Cell GetCell(int col, int row)
-    {
-        if (row >= 0 && row < ROW && col >= 0 && col < COL)
-        {
-            return cells[col, row];
-        }
-        else
-        {
-            Debug.LogError("Invalid cell coordinates!");
-            return null;
-        }
-    }
-
     private void createBoard()
     {
         for (int row = 0; row < ROW; row++)
@@ -124,6 +125,7 @@ public class BoardManager : MonoBehaviour
             }
         }
     }
+
     private void setEdge()
     {
         for (int row = 0; row < ROW; row++)
@@ -135,5 +137,4 @@ public class BoardManager : MonoBehaviour
             cells[col, ROW-1].SetBottomPlank(false, Color.red);
         }
     }
-
 }
