@@ -63,6 +63,7 @@ public class PlayerButtons : MonoBehaviour
         {
             _plankImage.color = _normalColor;
         }
+        BoardManager.ShowMoveablePawns.Invoke();
 
         PawnButton.Select();
     }
@@ -76,7 +77,7 @@ public class PlayerButtons : MonoBehaviour
             _plankImage.color = _selectedColor;
             PlankButton.Select();
         }
-
+        BoardManager.RemoveMoveablePawns.Invoke();
     }
 
     private void setPlankButtonDisable()

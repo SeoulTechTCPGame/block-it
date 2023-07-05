@@ -50,24 +50,13 @@ public class MatchManager : MonoBehaviour
 
     private void setTurn(EPlayer ePlayer)
     {
+
         // set target and other player.
         EPlayer otherPlayer = EPlayer.Player1;
         if(ePlayer == EPlayer.Player1)
         {
             otherPlayer = EPlayer.Player2;
         }
-
-        // if the last turn has certain changes, apply on GameLogic & Board.
-        if (_bUpdatePawnCoord == true)
-        {
-            _gameLogic.SetPawnPlace(otherPlayer, RequestedPawnCoord);
-        }
-        BoardManager.SetPawnCoord.Invoke(ePlayer, _gameLogic.GetPawnCoordinate(ePlayer));
-        BoardManager.SetPawnCoord.Invoke(otherPlayer, _gameLogic.GetPawnCoordinate(otherPlayer));
-
-        // change turn and reset the value
-        _turn = ePlayer;
-        _bUpdatePawnCoord = false;
 
         // get Buttons and distinguish which one is ePlayer one and other player one.
         GameObject theButton = P1Buttons;
@@ -77,10 +66,26 @@ public class MatchManager : MonoBehaviour
             theButton = P2Buttons;
             otherButton = P1Buttons;
         }
-
         // set Put Button on the board - the target Player's put button will be activated while the other won't be.
         theButton.GetComponent<PlayerButtons>().SetButtons(true);
         otherButton.GetComponent<PlayerButtons>().SetButtons(false);
+
+
+        // if the last turn has certain changes, apply on GameLogic.
+        if (_bUpdatePawnCoord == true)
+        {
+            _gameLogic.SetPawnPlace(otherPlayer, RequestedPawnCoord);
+        }
+
+        // change turn and reset the value
+        _turn = ePlayer;
+        _bUpdatePawnCoord = false;
+
+        // Update one Board: MoveablePawn, Pawns' Coord, & MoveableCoord
+        BoardManager.RemoveMoveablePawns.Invoke();
+
+        BoardManager.SetPawnCoord.Invoke(ePlayer, _gameLogic.GetPawnCoordinate(ePlayer));
+        BoardManager.SetPawnCoord.Invoke(otherPlayer, _gameLogic.GetPawnCoordinate(otherPlayer));
 
         // Set Moveable Coord for pawn on the board.
         List<Vector2Int> moveableCoord = _gameLogic.GetMoveablePawnCoords(ePlayer);

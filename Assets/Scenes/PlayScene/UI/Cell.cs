@@ -71,8 +71,8 @@ public class Cell : MonoBehaviour
         _pawnImage.enabled = visible;
         _pawnImage.color = color;
 
-        _pawnButton.enabled = false;
         _pawnButton.interactable = false;
+        _pawnButton.enabled = false;
     }
     public void RemovePawn()
     {

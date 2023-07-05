@@ -19,6 +19,8 @@ public class BoardManager : MonoBehaviour
 
     public static UnityEvent<EPlayer, Vector2Int> SetPawnCoord = new UnityEvent<EPlayer, Vector2Int>();
     public static UnityEvent<List<Vector2Int>> UpdateMoveablePawns = new UnityEvent<List<Vector2Int>>();
+    public static UnityEvent RemoveMoveablePawns = new UnityEvent();
+    public static UnityEvent ShowMoveablePawns = new UnityEvent();
 
     private void Awake()
     {
@@ -26,7 +28,13 @@ public class BoardManager : MonoBehaviour
         SetPawnCoord.AddListener((player, coordinate) => setPawn(player, coordinate));
 
         UpdateMoveablePawns = new UnityEvent<List<Vector2Int>>();
-        UpdateMoveablePawns.AddListener((moveableCoords) => makePossAble(moveableCoords));
+        UpdateMoveablePawns.AddListener((moveableCoords) => updateMoveablePawns(moveableCoords));
+
+        RemoveMoveablePawns = new UnityEvent();
+        RemoveMoveablePawns.AddListener(removeMoveablePawn);
+
+        ShowMoveablePawns = new UnityEvent();
+        ShowMoveablePawns.AddListener(showMoveablePawns);
     }
 
     // Start is called before the first frame update
@@ -59,23 +67,27 @@ public class BoardManager : MonoBehaviour
     }
 
     //make only possible route pressable
-    private void makePossAble(List<Vector2Int> possibleList) 
+    private void updateMoveablePawns(List<Vector2Int> possibleList) 
     {
-        //DeSelect clicked one
-        for(int i = 0; i < possiblePawnList.Count; i++)
+        possiblePawnList = possibleList;
+    }
+    private void removeMoveablePawn()
+    {
+        for (int i = 0; i < possiblePawnList.Count; i++)
         {
             Vector2Int coord = possiblePawnList[i];
             Cell targetCell = GetCell(coord.x, coord.y);
             targetCell.SetClickablePawn(false);
         }
-        //Select ones
-        for(int i = 0; i < possibleList.Count; i++)
+    }
+    private void showMoveablePawns()
+    {
+        for (int i = 0; i < possiblePawnList.Count; i++)
         {
-            Vector2Int coord = possibleList[i];
+            Vector2Int coord = possiblePawnList[i];
             Cell targetCell = GetCell(coord.x, coord.y);
             targetCell.SetClickablePawn(true);
         }
-        possiblePawnList = possibleList;
     }
 
     private void setPawn(EPlayer ePlayer, Vector2Int coordinate) {
