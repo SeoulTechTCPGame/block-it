@@ -17,14 +17,11 @@ public class Cell : MonoBehaviour
 
     private bool bRightEdge;
     private bool bBottomEdge;
-
     private Image _rightPlankImage;
     private Image _bottomPlankImage;
     private Image _pawnImage;
-    public Button _pawnButton;
+    private Button _pawnButton;
     private Dictionary<string, Image> _bottomRightDictionary;
-
-    // Start is called before the first frame update
 
     private void Awake()
     {
@@ -34,7 +31,7 @@ public class Cell : MonoBehaviour
         _pawnImage = _pawn.GetComponentInChildren<Image>();
         _pawnButton = _pawn.GetComponent<Button>();
 
-        _pawnButton.onClick.AddListener(() => ButtonClicked());
+        _pawnButton.onClick.AddListener(() => buttonClicked());
 
         initBottomRightPlanks();
         offEdge();
@@ -52,13 +49,11 @@ public class Cell : MonoBehaviour
     }
     public void SetRightPlank(bool visible, Color color)
     {
-//        _rightPlank.gameObject.SetActive(visible);
         _rightPlankImage.enabled = visible;
         _rightPlankImage.color = color;
     }
     public void SetBottomPlank(bool visible, Color color)
     {
-//        _bottomPlank.gameObject.SetActive(visible);
         _bottomPlankImage.enabled = visible;
         _bottomPlankImage.color = color;
     }
@@ -111,12 +106,6 @@ public class Cell : MonoBehaviour
     }
     private void initBottomRightDictionary()
     {
-        /*
-        _bottomRightDictionary.Add("Top", null);
-        _bottomRightDictionary.Add("Left", null);
-        _bottomRightDictionary.Add("Bottom", null);
-        _bottomRightDictionary.Add("Right", null);
-         */
         _bottomRightDictionary.Add("Horizontal", null);
         _bottomRightDictionary.Add("Vertical", null);
     }
@@ -151,8 +140,8 @@ public class Cell : MonoBehaviour
         }
     }
 
-    private void ButtonClicked()
+    private void buttonClicked()
     {
-        MatchManager.setRequestedPawnCoord.Invoke(Coordinate);
+        MatchManager.SetRequestedPawnCoord.Invoke(Coordinate);
     }
 }

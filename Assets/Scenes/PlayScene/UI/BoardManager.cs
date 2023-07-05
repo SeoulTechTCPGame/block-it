@@ -5,30 +5,28 @@ using System.Collections.Generic;
 
 public class BoardManager : MonoBehaviour
 {
-    [SerializeField] GameObject cellPrefab;
-
     const int ROW = 9;
     const int COL = 9;
+
+    [SerializeField] GameObject cellPrefab;
+
     private Cell[,] cells = new Cell[COL, ROW];
-
-    private Vector2Int P1Coordinate = new Vector2Int();
-    private Vector2Int P2Coordinate = new Vector2Int();
+    private Vector2Int _p1Coordinate = new Vector2Int();
+    private Vector2Int _p2Coordinate = new Vector2Int();
     private List<Vector2Int> possiblePawnList = new List<Vector2Int>();
+    private Color _p1PawnColor = new Color(0.95f, 0.48f, 0.48f);
+    private Color _p2PawnColor = new Color(0.26f, 0.69f, 0.62f);
 
-    private Color P1PawnColor = new Color(0.95f, 0.48f, 0.48f);
-    private Color P2PawnColor = new Color(0.26f, 0.69f, 0.62f);
+    public static UnityEvent<EPlayer, Vector2Int> SetPawnCoord = new UnityEvent<EPlayer, Vector2Int>();
+    public static UnityEvent<List<Vector2Int>> UpdateMoveablePawns = new UnityEvent<List<Vector2Int>>();
 
-    public static UnityEvent<EPlayer, Vector2Int> setPawnCoord = new UnityEvent<EPlayer, Vector2Int>();
-    public static UnityEvent<List<Vector2Int>> updateMoveablePawns = new UnityEvent<List<Vector2Int>>();
-
-    //
     private void Awake()
     {
-        setPawnCoord = new UnityEvent<EPlayer, Vector2Int>();
-        setPawnCoord.AddListener((player, coordinate) => setPawn(player, coordinate));
+        SetPawnCoord = new UnityEvent<EPlayer, Vector2Int>();
+        SetPawnCoord.AddListener((player, coordinate) => setPawn(player, coordinate));
 
-        updateMoveablePawns = new UnityEvent<List<Vector2Int>>();
-        updateMoveablePawns.AddListener((moveableCoords) => makePossAble(moveableCoords));
+        UpdateMoveablePawns = new UnityEvent<List<Vector2Int>>();
+        UpdateMoveablePawns.AddListener((moveableCoords) => makePossAble(moveableCoords));
     }
 
     // Start is called before the first frame update
@@ -70,29 +68,29 @@ public class BoardManager : MonoBehaviour
         
         if(ePlayer == EPlayer.Player1)
         {
-            if(P1Coordinate != Vector2Int.zero)
+            if(_p1Coordinate != Vector2Int.zero)
             {
-                Cell cell = GetCell(P1Coordinate.x, P1Coordinate.y);
+                Cell cell = GetCell(_p1Coordinate.x, _p1Coordinate.y);
                 cell.RemovePawn();
             }
             
-            P1Coordinate = coordinate;
+            _p1Coordinate = coordinate;
 
-            Cell targetCell = GetCell(P1Coordinate.x, P1Coordinate.y);
-            targetCell.SetPawn(true, P1PawnColor);
+            Cell targetCell = GetCell(_p1Coordinate.x, _p1Coordinate.y);
+            targetCell.SetPawn(true, _p1PawnColor);
         }
         else
         {
-            if (P2Coordinate != Vector2Int.zero)
+            if (_p2Coordinate != Vector2Int.zero)
             {
-                Cell cell = GetCell(P2Coordinate.x, P2Coordinate.y);
+                Cell cell = GetCell(_p2Coordinate.x, _p2Coordinate.y);
                 cell.RemovePawn();
             }
 
-            P2Coordinate = coordinate;
+            _p2Coordinate = coordinate;
 
-            Cell targetCell = GetCell(P2Coordinate.x, P2Coordinate.y);
-            targetCell.SetPawn(true, P2PawnColor);
+            Cell targetCell = GetCell(_p2Coordinate.x, _p2Coordinate.y);
+            targetCell.SetPawn(true, _p2PawnColor);
         }
     }
 

@@ -11,32 +11,57 @@ public class PlayerButtons : MonoBehaviour
     private Image _pawnImage;
     private Image _plankImage;
 
-    private Color selectedColor = new Color(0.28f, 0.64f, 0.71f);
-    private Color disabledColor = new Color(0.44f, 0.44f, 0.44f);
-    private Color normalColor = new Color(0.78f, 0.91f, 0.91f);
+    private Color _selectedColor = new Color(0.28f, 0.64f, 0.71f);
+    private Color _disabledColor = new Color(0.44f, 0.44f, 0.44f);
+    private Color _normalColor = new Color(0.78f, 0.91f, 0.91f);
 
-    private bool bPlankValid = true;
+    public void SetButtons(bool bTurn)
+    {
+        if (bTurn == true)
+        {
+            PawnButton.interactable = true;
+            PlankButton.interactable = _bPlankValid;
+            onPawnButtonClicked();
+            setPutButton(true);
+        }
+        else
+        {
+            //set pawn
+            PawnButton.interactable = false;
+            _pawnImage.color = _disabledColor;
+            //set Plank
+            PlankButton.interactable = false;
+            _plankImage.color = _disabledColor;
+            //set Put
+            setPutButton(false);
+        }
+
+    }
+
+    public void OnPutButtonClicked()
+    {
+        MatchManager.ToNextTurn.Invoke();
+    }
+
+    private bool _bPlankValid = true;
 
     private void Awake()
     {
         _pawnImage = PawnButton.GetComponent<Image>();
         _plankImage = PlankButton.GetComponent<Image>();
 
-        //onPawnButtonClicked();
-        /*
-         */
         PawnButton.onClick.AddListener(onPawnButtonClicked);
         PlankButton.onClick.AddListener(onPlankButtonClicked);
-        PutButton.onClick.AddListener(onPutButtonClicked);
+        PutButton.onClick.AddListener(OnPutButtonClicked);
     }
 
     private void onPawnButtonClicked()
     {
         //set color of the buttons
-        _pawnImage.color = selectedColor;
-        if (bPlankValid == true)
+        _pawnImage.color = _selectedColor;
+        if (_bPlankValid == true)
         {
-            _plankImage.color = normalColor;
+            _plankImage.color = _normalColor;
         }
 
         PawnButton.Select();
@@ -45,43 +70,20 @@ public class PlayerButtons : MonoBehaviour
     private void onPlankButtonClicked()
     {
         //set color of the buttons
-        if(bPlankValid == true)
+        if(_bPlankValid == true)
         {
-            _pawnImage.color = normalColor;
-            _plankImage.color = selectedColor;
+            _pawnImage.color = _normalColor;
+            _plankImage.color = _selectedColor;
             PlankButton.Select();
-        }
-
-    }
-
-    public void SetButtons(bool bTurn)
-    {
-        if (bTurn == true)
-        {
-            PawnButton.interactable = true;
-            PlankButton.interactable = bPlankValid;
-            onPawnButtonClicked();
-            setPutButton(true);
-        }
-        else
-        {
-            //set pawn
-            PawnButton.interactable = false;
-            _pawnImage.color = disabledColor;
-            //set Plank
-            PlankButton.interactable = false;
-            _plankImage.color = disabledColor;
-            //set Put
-            setPutButton(false);
         }
 
     }
 
     private void setPlankButtonDisable()
     {
-        bPlankValid = false;
+        _bPlankValid = false;
         PlankButton.interactable = false;
-        _plankImage.color = disabledColor;
+        _plankImage.color = _disabledColor;
     }
 
     private void setPutButton(bool bOn)
@@ -89,8 +91,4 @@ public class PlayerButtons : MonoBehaviour
         PutButton.gameObject.SetActive(bOn);
     }
 
-    public void onPutButtonClicked()
-    {
-        MatchManager.toNextTurn.Invoke();
-    }
 }

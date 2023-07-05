@@ -7,42 +7,37 @@ public class MatchManager : MonoBehaviour
 {
     public GameObject P1Buttons;
     public GameObject P2Buttons;
-
     public GameObject P1Plank;
     public GameObject P2Plank;
-
-    private EPlayer turn;
-
-    public static UnityEvent toNextTurn;
-    public static UnityEvent<Vector2Int> setRequestedPawnCoord = new UnityEvent<Vector2Int>();
-
-
-    private GameLogic gameLogic;
-
     public Vector2Int RequestedPawnCoord;
-    private bool bUpdatePawnCoord = false;
+
+    private EPlayer _turn;
+    private GameLogic _gameLogic;
+    private bool _bUpdatePawnCoord = false;
+
+    public static UnityEvent ToNextTurn;
+    public static UnityEvent<Vector2Int> SetRequestedPawnCoord = new UnityEvent<Vector2Int>();
+
 
     void Awake()
     {
-        toNextTurn = new UnityEvent();
-        toNextTurn.AddListener(nextTurn);
+        ToNextTurn = new UnityEvent();
+        ToNextTurn.AddListener(nextTurn);
 
-        setRequestedPawnCoord = new UnityEvent<Vector2Int>();
-        setRequestedPawnCoord.AddListener(updateRequestedPawnCoord);
+        SetRequestedPawnCoord = new UnityEvent<Vector2Int>();
+        SetRequestedPawnCoord.AddListener(updateRequestedPawnCoord);
 
-        gameLogic = FindObjectOfType<GameLogic>();
+        _gameLogic = FindObjectOfType<GameLogic>();
     }
     // Start is called before the first frame update
     void Start()
     {
-        BoardManager.setPawnCoord.Invoke(EPlayer.Player1, gameLogic.GetPawnCoordinate(EPlayer.Player1));
-        BoardManager.setPawnCoord.Invoke(EPlayer.Player2, gameLogic.GetPawnCoordinate(EPlayer.Player2));
         setTurn(EPlayer.Player1);
     }
 
     private void nextTurn() 
     {
-        if (turn == EPlayer.Player1)
+        if (_turn == EPlayer.Player1)
         {
             setTurn(EPlayer.Player2);
         }
@@ -98,6 +93,6 @@ public class MatchManager : MonoBehaviour
     private void updateRequestedPawnCoord(Vector2Int coord)
     {
         RequestedPawnCoord = coord;
-        bUpdatePawnCoord = true;
+        _bUpdatePawnCoord = true;
     }
 }
