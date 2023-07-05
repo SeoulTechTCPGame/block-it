@@ -12,6 +12,7 @@ public class Cell : MonoBehaviour
     [SerializeField] GameObject _rightPlank;
     [SerializeField] GameObject _bottomPlank;
     [SerializeField] GameObject _bottomRightPlank;
+    [SerializeField] GameObject _plankDot;
     [SerializeField] GameObject _box;
     [SerializeField] GameObject _pawn;
 
@@ -56,6 +57,10 @@ public class Cell : MonoBehaviour
     {
         _bottomPlankImage.enabled = visible;
         _bottomPlankImage.color = color;
+    }
+    public void SetPlankDot(bool visible)
+    {
+        _plankDot.gameObject.SetActive(visible);
     }
     public void SetBottomRightPlank(string key, bool visible, Color color) 
     {

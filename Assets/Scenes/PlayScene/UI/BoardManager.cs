@@ -142,10 +142,12 @@ public class BoardManager : MonoBehaviour
         for (int row = 0; row < ROW; row++)
         {
             cells[COL - 1, row].SetRightPlank(false, Color.red);
+            cells[COL - 1, row].SetPlankDot(false);
         }
         for (int col = 0; col < COL; col++)
         {
             cells[col, ROW-1].SetBottomPlank(false, Color.red);
+            cells[col, ROW - 1].SetPlankDot(false);
         }
     }
 }
