@@ -82,8 +82,6 @@ public class MatchManager : MonoBehaviour
         _bUpdatePawnCoord = false;
 
         // Update one Board: MoveablePawn, Pawns' Coord, & MoveableCoord
-        BoardManager.RemoveMoveablePawns.Invoke();
-
         BoardManager.SetPawnCoord.Invoke(ePlayer, _gameLogic.GetPawnCoordinate(ePlayer));
         BoardManager.SetPawnCoord.Invoke(otherPlayer, _gameLogic.GetPawnCoordinate(otherPlayer));
 

@@ -21,7 +21,13 @@ public class PlayerButtons : MonoBehaviour
         {
             PawnButton.interactable = true;
             PlankButton.interactable = _bPlankValid;
-            onPawnButtonClicked();
+
+            _pawnImage.color = _normalColor;
+            if (_bPlankValid == true)
+            {
+                _plankImage.color = _normalColor;
+            }
+
             setPutButton(true);
         }
         else
@@ -40,7 +46,9 @@ public class PlayerButtons : MonoBehaviour
 
     public void OnPutButtonClicked()
     {
+        BoardManager.RemoveMoveablePawns.Invoke();
         MatchManager.ToNextTurn.Invoke();
+
     }
 
     private bool _bPlankValid = true;
