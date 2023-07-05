@@ -79,33 +79,32 @@ public class BoardManager : MonoBehaviour
     }
 
     private void setPawn(EPlayer ePlayer, Vector2Int coordinate) {
-        
-        if(ePlayer == EPlayer.Player1)
-        {
-            if(_p1Coordinate != Vector2Int.zero)
-            {
-                Cell cell = GetCell(_p1Coordinate.x, _p1Coordinate.y);
-                cell.RemovePawn();
-            }
-            
-            _p1Coordinate = coordinate;
 
-            Cell targetCell = GetCell(_p1Coordinate.x, _p1Coordinate.y);
-            targetCell.SetPawn(true, _p1PawnColor);
+        Vector2Int previousCoordinate = Vector2Int.zero;
+        Color pawnColor = Color.white;
+
+        if (ePlayer == EPlayer.Player1)
+        {
+            previousCoordinate = _p1Coordinate;
+            _p1Coordinate = coordinate;
+            pawnColor = _p1PawnColor;
         }
         else
         {
-            if (_p2Coordinate != Vector2Int.zero)
-            {
-                Cell cell = GetCell(_p2Coordinate.x, _p2Coordinate.y);
-                cell.RemovePawn();
-            }
-
+            previousCoordinate = _p2Coordinate;
             _p2Coordinate = coordinate;
-
-            Cell targetCell = GetCell(_p2Coordinate.x, _p2Coordinate.y);
-            targetCell.SetPawn(true, _p2PawnColor);
+            pawnColor = _p2PawnColor;
         }
+
+
+        if (previousCoordinate != Vector2Int.zero)
+        {
+            Cell previousCell = GetCell(previousCoordinate.x, previousCoordinate.y);
+            previousCell.RemovePawn();
+        }
+
+        Cell targetCell = GetCell(coordinate.x, coordinate.y);
+        targetCell.SetPawn(true, pawnColor);
     }
 
     private void createBoard()

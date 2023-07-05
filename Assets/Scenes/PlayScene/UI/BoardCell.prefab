@@ -242,7 +242,6 @@ MonoBehaviour:
   _bottomRightPlank: {fileID: 8683090931428676827}
   _box: {fileID: 6425628950071745047}
   _pawn: {fileID: 8086658350816718345}
-  _pawnButton: {fileID: 0}
 --- !u!1 &4393641069675903821
 GameObject:
   m_ObjectHideFlags: 0
@@ -873,19 +872,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3853202490289646025}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11500000, guid: 0ec56fa80ca464d4fa1c41bf59b34f5f, type: 3}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &8683090931428676827
 GameObject:
   m_ObjectHideFlags: 0
