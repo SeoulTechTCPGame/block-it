@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using static Singleton;
 
 public class LocalizeScript : MonoBehaviour
@@ -8,23 +9,23 @@ public class LocalizeScript : MonoBehaviour
 
     private void Start()
     {
-        LocalizeChanged();
+        LocalizeChanged(S.curLangIndex);
         S.LocalizeChanged += LocalizeChanged;
     }
     private void OnDestroy()
     {
         S.LocalizeChanged -= LocalizeChanged;
     }
-    private string Localize(string key)
+    private string Localize(string key, int langIndex)
     {
         int keyIndex = S.Langs[0].value.FindIndex(x => x.ToLower() == key.ToLower());
-        return S.Langs[S.curLangIndex].value[keyIndex];
+        return S.Langs[langIndex].value[keyIndex];
     }
-    private void LocalizeChanged()
+    public void LocalizeChanged(int langIndex)
     {
-        if (GetComponent<Text>() != null)
+        if (GetComponent<TMP_Text>() != null)
         {
-            GetComponent<Text>().text = Localize(textKey);
+            GetComponent<TMP_Text>().text = Localize(textKey, langIndex);
         }
     }
 }

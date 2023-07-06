@@ -739,6 +739,7 @@ GameObject:
   - component: {fileID: 799226800}
   - component: {fileID: 799226802}
   - component: {fileID: 799226801}
+  - component: {fileID: 799226803}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -863,6 +864,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 799226799}
   m_CullTransparentMesh: 1
+--- !u!114 &799226803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 799226799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textKey: Paly with Others
 --- !u!1 &1329400478
 GameObject:
   m_ObjectHideFlags: 0
@@ -1297,6 +1311,7 @@ GameObject:
   - component: {fileID: 1774263874}
   - component: {fileID: 1774263876}
   - component: {fileID: 1774263875}
+  - component: {fileID: 1774263877}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -1421,6 +1436,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1774263873}
   m_CullTransparentMesh: 1
+--- !u!114 &1774263877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1774263873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textKey: Play with Players
 --- !u!1 &1842585883
 GameObject:
   m_ObjectHideFlags: 0
@@ -1622,6 +1650,7 @@ GameObject:
   - component: {fileID: 2008945207}
   - component: {fileID: 2008945209}
   - component: {fileID: 2008945208}
+  - component: {fileID: 2008945210}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -1746,6 +1775,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2008945206}
   m_CullTransparentMesh: 1
+--- !u!114 &2008945210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2008945206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textKey: Paly with AI
 --- !u!1 &2071271799
 GameObject:
   m_ObjectHideFlags: 0

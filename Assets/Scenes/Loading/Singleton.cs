@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class Lang
@@ -14,7 +13,7 @@ public class Lang
 public class Singleton : MonoBehaviour
 {
     const string langURL = "https://docs.google.com/spreadsheets/d/1Dsj19n_rK5MEaxfu_4dn2NMJHAj3pcd4A-eY-7MjJ2M/export?format=tsv";
-    public event System.Action LocalizeChanged = () => { };
+    public event System.Action<int> LocalizeChanged = (index) => { };
     public event System.Action LocalizeSettingChanged = () => { };
     public int curLangIndex;
     public List<Lang> Langs;
@@ -37,7 +36,10 @@ public class Singleton : MonoBehaviour
     {
         int langIndex = PlayerPrefs.GetInt("LangIndex", -1);
         int systemIndex = Langs.FindIndex(x => x.lang.ToLower() == Application.systemLanguage.ToString().ToLower());
-        if (systemIndex == -1) systemIndex = 0;
+        if (systemIndex == -1) 
+        {
+            systemIndex = 0; 
+        }
         int index = langIndex == -1 ? systemIndex : langIndex;
 
         SetLangIndex(index);
@@ -46,7 +48,7 @@ public class Singleton : MonoBehaviour
     {
         curLangIndex = index;
         PlayerPrefs.SetInt("LangIndex", curLangIndex);
-        LocalizeChanged();
+        LocalizeChanged(curLangIndex);
         LocalizeSettingChanged();
     }
     [ContextMenu("언어 가져오기")]
@@ -62,7 +64,7 @@ public class Singleton : MonoBehaviour
     }
     private void SetLangList(string tsv)
     {
-        // 이차원 배열(가로, 세로)
+        // 이차원 배열(세로, 가로)
         string[] row = tsv.Split('\n');
         int rowSize = row.Length;
         int columnSize = row[0].Split('\t').Length;

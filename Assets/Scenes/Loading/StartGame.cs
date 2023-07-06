@@ -10,15 +10,18 @@ public class StartGame : MonoBehaviour
     private bool _loggedIn = false;
     private GameObject _signUpButton;
     private GameObject _guestButton;
+    private GameObject _developButton;
 
     private void Awake()
     {
-        _signUpButton = Canvas.transform.Find("Sign Up").gameObject;
+        _developButton = Canvas.transform.Find("Develop").gameObject;
+        //_signUpButton = Canvas.transform.Find("Sign Up").gameObject;
         _guestButton = Canvas.transform.Find("Guest").gameObject;
     }
     private void Start()
     {
         ButtonsVisibility();
+        _developButton.GetComponent<Button>().onClick.AddListener(MoveHomeScene);
     }
     private void Update()
     {

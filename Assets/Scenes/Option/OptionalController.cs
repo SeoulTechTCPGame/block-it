@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using static Singleton;
 
 public class OptionalController : MonoBehaviour
@@ -29,9 +30,11 @@ public class OptionalController : MonoBehaviour
         _bgmSlider.onValueChanged.AddListener(OnBgmVolumeChanged);
         _soundEffectSlider.onValueChanged.AddListener(OnSoundEffectVolumeChanged);
         _vibrationToggle.onValueChanged.AddListener(OnVibrationToggleChanged);
-        _englishBtn.onClick.AddListener(() => S.SetLangIndex(0));
-        _koreanBtn.onClick.AddListener(() => S.SetLangIndex(1));
+
+        _englishBtn.onClick.AddListener(() => S.SetLangIndex(0));   //ToDo: 0을 Enum의 English로, 1을 Korean으로 변경
+        _koreanBtn.onClick.AddListener(() =>S.SetLangIndex(1));
     }
+    #region Sound
     private void LoadSettings()
     {
         // BGM 볼륨 로드
@@ -107,4 +110,5 @@ public class OptionalController : MonoBehaviour
             _soundEffectImage.sprite = _soundSprites[1];
         }
     }
+    #endregion
 }

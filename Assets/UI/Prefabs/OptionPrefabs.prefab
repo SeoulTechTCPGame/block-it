@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 4159948091000811300}
   - component: {fileID: 6772726154426696071}
   - component: {fileID: 5809074147335442722}
+  - component: {fileID: 4678765847596362564}
   m_Layer: 0
   m_Name: LanguageText
   m_TagString: Untagged
@@ -211,6 +212,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &4678765847596362564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 565422327568166933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textKey: Language
 --- !u!1 &717638390025495014
 GameObject:
   m_ObjectHideFlags: 0
@@ -386,7 +400,7 @@ GameObject:
   - component: {fileID: 5109345545993336614}
   - component: {fileID: 4680006912970392454}
   m_Layer: 5
-  m_Name: OptionPanel
+  m_Name: OptionPrefabs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -437,17 +451,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bgmSlider: {fileID: 6641900408330509814}
-  _soundEffectSlider: {fileID: 5917858627556253947}
-  _vibrationToggle: {fileID: 2629921598790769895}
-  _languageButtons: {fileID: 1780172821190687073}
-  _background: {fileID: 1971817487875016793}
-  _checkmark: {fileID: 3944967711463778284}
   _bgmImage: {fileID: 5121073181595720163}
+  _soundEffectSlider: {fileID: 5917858627556253947}
   _soundEffectImage: {fileID: 4361176004131441259}
-  sprites:
+  _soundSprites:
   - {fileID: 21300000, guid: d97433312ff60304388ff8808ad8125e, type: 3}
   - {fileID: 21300000, guid: 95abd823fe13cbd4096c219dfaf85cf0, type: 3}
   - {fileID: 21300000, guid: 066b86a28de2b94459bda340367e96d2, type: 3}
+  _vibrationToggle: {fileID: 2629921598790769895}
+  _vibBackground: {fileID: 1971817487875016793}
+  _vibCheckmark: {fileID: 3944967711463778284}
+  _englishBtn: {fileID: 2676537628878617991}
+  _koreanBtn: {fileID: 3933502963357806542}
 --- !u!1 &1718790922161783629
 GameObject:
   m_ObjectHideFlags: 0
@@ -1070,6 +1085,7 @@ GameObject:
   - component: {fileID: 5720640724245114720}
   - component: {fileID: 5956050817958529385}
   - component: {fileID: 5954541318735507237}
+  - component: {fileID: 2534825669642009068}
   m_Layer: 5
   m_Name: VibrationText
   m_TagString: Untagged
@@ -1194,6 +1210,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2534825669642009068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4391350477017642547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textKey: Vibration
 --- !u!1 &4474852561618995353
 GameObject:
   m_ObjectHideFlags: 0
@@ -1394,6 +1423,7 @@ GameObject:
   - component: {fileID: 8552656402743206736}
   - component: {fileID: 6859372302824353654}
   - component: {fileID: 2912582051321304943}
+  - component: {fileID: 2250896402079134343}
   m_Layer: 5
   m_Name: BGMText
   m_TagString: Untagged
@@ -1518,6 +1548,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2250896402079134343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5628142740553000543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textKey: BGM
 --- !u!1 &6457300673565708467
 GameObject:
   m_ObjectHideFlags: 0
@@ -1529,6 +1572,7 @@ GameObject:
   - component: {fileID: 2398271899037783053}
   - component: {fileID: 3502767364984164541}
   - component: {fileID: 2352492576085884337}
+  - component: {fileID: 7152484736202108307}
   m_Layer: 5
   m_Name: SoundEffectText
   m_TagString: Untagged
@@ -1653,6 +1697,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7152484736202108307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6457300673565708467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textKey: Sound Effect
 --- !u!1 &6836008640855370325
 GameObject:
   m_ObjectHideFlags: 0
@@ -1756,7 +1813,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Koran
+  m_text: Korean
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fc049a6435b08084d9a30d9dbf940b8a, type: 2}
   m_sharedMaterial: {fileID: 4947952578984153410, guid: fc049a6435b08084d9a30d9dbf940b8a, type: 2}
