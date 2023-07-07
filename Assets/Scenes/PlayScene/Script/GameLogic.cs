@@ -110,6 +110,14 @@ public class GameLogic : MonoBehaviour
 
         return validCoords;
     }
+    
+    // !! FILL THIS METHOD !!
+    public List<Vector2Int> GetPlaceablePlankCoords(EDirection direction)
+    {
+        List<Vector2Int> target = new List<Vector2Int>();
+        return target;
+        //fill the code
+    }
 
     public bool IsPlankInTheNorth(int targetRow, int targetCol)
     {

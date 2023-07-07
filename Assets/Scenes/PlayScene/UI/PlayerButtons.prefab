@@ -539,6 +539,7 @@ MonoBehaviour:
   PawnButton: {fileID: 7653274623355134793}
   PlankButton: {fileID: 6183586701670424040}
   PutButton: {fileID: 7762327267523855190}
+  PlankImage: {fileID: 7761852165576493070}
 --- !u!1 &4470084202857352304
 GameObject:
   m_ObjectHideFlags: 0
