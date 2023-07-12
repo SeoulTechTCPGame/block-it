@@ -1,17 +1,20 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using static Singleton;
 
 public class OptionalController : MonoBehaviour
 {
     [SerializeField] Slider _bgmSlider;
-    [SerializeField] Slider _soundEffectSlider;
-    [SerializeField] Toggle _vibrationToggle;
-    [SerializeField] GameObject _languageButtons;
-    [SerializeField] Image _background;
-    [SerializeField] RectTransform _checkmark;
     [SerializeField] Image _bgmImage;
+    [SerializeField] Slider _soundEffectSlider;
     [SerializeField] Image _soundEffectImage;
-    [SerializeField] Sprite[] sprites;
+    [SerializeField] Sprite[] _soundSprites;
+    [SerializeField] Toggle _vibrationToggle;
+    [SerializeField] Image _vibBackground;
+    [SerializeField] RectTransform _vibCheckmark;
+    [SerializeField] Button _englishBtn;
+    [SerializeField] Button _koreanBtn;
 
     private SoundManager _soundManager;
     private float _toggleMinX = -8.5f;
@@ -27,7 +30,11 @@ public class OptionalController : MonoBehaviour
         _bgmSlider.onValueChanged.AddListener(OnBgmVolumeChanged);
         _soundEffectSlider.onValueChanged.AddListener(OnSoundEffectVolumeChanged);
         _vibrationToggle.onValueChanged.AddListener(OnVibrationToggleChanged);
+
+        _englishBtn.onClick.AddListener(() => S.SetLangIndex(0));   //ToDo: 0을 Enum의 English로, 1을 Korean으로 변경
+        _koreanBtn.onClick.AddListener(() =>S.SetLangIndex(1));
     }
+    #region Sound
     private void LoadSettings()
     {
         // BGM 볼륨 로드
@@ -67,40 +74,41 @@ public class OptionalController : MonoBehaviour
 
         // 위치에 따라 배경 색상 변경
         Color backgroundColor = value ? Color.white : Color.gray;
-        _background.color = backgroundColor;
+        _vibBackground.color = backgroundColor;
 
         // 위치에 따라 checkmark 좌우로 움직임
         float targetX = value ? _toggleMinX : _toggleMaxX;
-        _checkmark.anchoredPosition = new Vector2(targetX, 0f);
+        _vibCheckmark.anchoredPosition = new Vector2(targetX, 0f);
     }
     private void UpdateBgmImage(float volume)
     {
         if (volume <= 0.3f)
         {
-            _bgmImage.sprite = sprites[0];
+            _bgmImage.sprite = _soundSprites[0];
         }
         else if (volume >= 0.7f)
         {
-            _bgmImage.sprite = sprites[2];
+            _bgmImage.sprite = _soundSprites[2];
         }
         else
         {
-            _bgmImage.sprite = sprites[1];
+            _bgmImage.sprite = _soundSprites[1];
         }
     }
     private void UpdateSoundEffectImage(float volume)
     {
         if (volume <= 0.3f)
         {
-            _soundEffectImage.sprite = sprites[0];
+            _soundEffectImage.sprite = _soundSprites[0];
         }
         else if (volume >= 0.7f)
         {
-            _soundEffectImage.sprite = sprites[2];
+            _soundEffectImage.sprite = _soundSprites[2];
         }
         else
         {
-            _soundEffectImage.sprite = sprites[1];
+            _soundEffectImage.sprite = _soundSprites[1];
         }
     }
+    #endregion
 }
