@@ -1,11 +1,10 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using static Singleton;
 
 public class LocalizeScript : MonoBehaviour
 {
-    public string textKey;
+    public string TextKey;
 
     private void Start()
     {
@@ -25,7 +24,7 @@ public class LocalizeScript : MonoBehaviour
     {
         if (GetComponent<TMP_Text>() != null)
         {
-            GetComponent<TMP_Text>().text = Localize(textKey, langIndex);
+            GetComponent<TMP_Text>().text = Localize(TextKey, langIndex);
         }
     }
 }

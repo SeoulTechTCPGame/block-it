@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 using static Singleton;
 
 public class OptionalController : MonoBehaviour
@@ -55,22 +54,18 @@ public class OptionalController : MonoBehaviour
     {
         // BGM 볼륨 값을 변경
         _soundManager.BgmVolume = value;
-        Debug.Log("BGM Volume: " + value);
         UpdateBgmImage(value);
     }
     public void OnSoundEffectVolumeChanged(float value)
     {
         // 사운드 이펙트 볼륨 값을 변경
         _soundManager.SoundEffectVolume = value;
-        Debug.Log("Sound Effect Volume: " + value);
         UpdateSoundEffectImage(value);
-
     }
     public void OnVibrationToggleChanged(bool value)
     {
         // 진동 설정 변경
         _soundManager.IsVibrationEnabled = value;
-        Debug.Log("Vibration Enabled: " + value);
 
         // 위치에 따라 배경 색상 변경
         Color backgroundColor = value ? Color.white : Color.gray;

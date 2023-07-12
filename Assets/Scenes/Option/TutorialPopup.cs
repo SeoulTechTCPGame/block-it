@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using static Singleton;
 
 [System.Serializable]
 public class Step
@@ -68,7 +69,6 @@ public class TutorialPopup : MonoBehaviour
 
         string imagePath = "Images/" + _tutorialData.Steps[_currentStep].ImagePath;
         Sprite sprite = Resources.Load<Sprite>(imagePath);
-        Debug.Log(sprite);
         if (sprite != null)
         {
             _image.sprite = sprite;
@@ -95,18 +95,43 @@ public class TutorialPopup : MonoBehaviour
     }
     private void LoadTutorialData()
     {
-        string jsonPath = "Json/tutorial";
+        string jsonPath = "Json";
+        TextAsset jsonAsset = null;
+        switch (S.curLangIndex)
+        {
+            case 0:
+                jsonPath += "/TutorialEN";
 
-        TextAsset jsonAsset = Resources.Load<TextAsset>(jsonPath);
-        if (jsonAsset != null)
-        {
-            string jsonData = jsonAsset.text;
-            _tutorialData = JsonUtility.FromJson<TutorialData>(jsonData);
-        }
-        else
-        {
-            Debug.LogError("Tutorial JSON file not found!");
-            return;
+                jsonAsset = Resources.Load<TextAsset>(jsonPath);
+                if (jsonAsset != null)
+                {
+                    string jsonData = jsonAsset.text;
+                    _tutorialData = JsonUtility.FromJson<TutorialData>(jsonData);
+                }
+                else
+                {
+                    Debug.LogError("Tutorial EN JSON file not found!");
+                    return;
+                }
+                break;
+            case 1:
+                jsonPath += "/TutorialKR";
+
+                jsonAsset = Resources.Load<TextAsset>(jsonPath);
+                if (jsonAsset != null)
+                {
+                    string jsonData = jsonAsset.text;
+                    _tutorialData = JsonUtility.FromJson<TutorialData>(jsonData);
+                }
+                else
+                {
+                    Debug.LogError("Tutorial KR JSON file not found!");
+                    return;
+                }
+                break;
+            default:
+                Debug.LogError("Singleton dose not operate");
+                break;
         }
     }
 }
