@@ -115,8 +115,30 @@ public class GameLogic : MonoBehaviour
     public List<Vector2Int> GetPlaceablePlankCoords(EDirection direction)
     {
         List<Vector2Int> target = new List<Vector2Int>();
-        return target;
         //fill the code
+        bool flag;
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                flag = true;
+                foreach (Plank plank in planks)
+                {
+                    if (plank.GetCoordinate().x == i && plank.GetCoordinate().y == j)
+                    {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag)
+                {
+                    target.Add(new Vector2Int(i, j));
+                }
+            }   
+        }
+
+        return target;
+
     }
 
     public bool IsPlankInTheNorth(int targetRow, int targetCol)
