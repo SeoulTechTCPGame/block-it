@@ -224,7 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textKey: Language
+  TextKey: Language
 --- !u!1 &717638390025495014
 GameObject:
   m_ObjectHideFlags: 0
@@ -1222,7 +1222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textKey: Vibration
+  TextKey: Vibration
 --- !u!1 &4474852561618995353
 GameObject:
   m_ObjectHideFlags: 0
@@ -1560,7 +1560,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textKey: BGM
+  TextKey: BGM
 --- !u!1 &6457300673565708467
 GameObject:
   m_ObjectHideFlags: 0
@@ -1709,7 +1709,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textKey: Sound Effect
+  TextKey: Sound Effect
 --- !u!1 &6836008640855370325
 GameObject:
   m_ObjectHideFlags: 0
@@ -1813,7 +1813,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Korean
+  m_text: "\uD55C\uAD6D\uC5B4"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6ed4b053514b4b24c958e4485a502d4b, type: 2}
   m_sharedMaterial: {fileID: -3115726128095212524, guid: 6ed4b053514b4b24c958e4485a502d4b, type: 2}

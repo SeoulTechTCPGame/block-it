@@ -271,7 +271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textKey: Close
+  TextKey: Close
 --- !u!1 &179482591
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,7 +420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textKey: Back
+  TextKey: Back
 --- !u!1 &195941519
 GameObject:
   m_ObjectHideFlags: 0
@@ -1922,7 +1922,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textKey: Back
+  TextKey: Back
 --- !u!1 &1664303722
 GameObject:
   m_ObjectHideFlags: 0
@@ -2327,7 +2327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textKey: Next
+  TextKey: Next
 --- !u!1 &1877341006
 GameObject:
   m_ObjectHideFlags: 0
@@ -2476,7 +2476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textKey: Option
+  TextKey: Option
 --- !u!1 &2085142185
 GameObject:
   m_ObjectHideFlags: 0
@@ -2660,4 +2660,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textKey: Tutorial
+  TextKey: Tutorial

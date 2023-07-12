@@ -650,7 +650,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textKey: Sign in
+  TextKey: Sign In
 --- !u!1 &1060908544
 GameObject:
   m_ObjectHideFlags: 0
@@ -891,7 +891,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textKey: Guest
+  TextKey: Guest
 --- !u!1 &1412014310
 GameObject:
   m_ObjectHideFlags: 0

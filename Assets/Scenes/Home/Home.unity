@@ -876,7 +876,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textKey: Paly with Others
+  TextKey: Paly with Others
 --- !u!1 &1329400478
 GameObject:
   m_ObjectHideFlags: 0
@@ -1417,7 +1417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textKey: Play with Players
+  TextKey: Play with Players
 --- !u!1 &1842585883
 GameObject:
   m_ObjectHideFlags: 0
@@ -1756,7 +1756,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textKey: Paly with AI
+  TextKey: Paly with AI
 --- !u!1 &2071271799
 GameObject:
   m_ObjectHideFlags: 0
