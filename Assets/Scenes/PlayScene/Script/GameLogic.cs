@@ -90,7 +90,7 @@ public class GameLogic : MonoBehaviour
                 validCoords.Add(new Vector2Int(targetCol + 2, targetRow));
             }
         }
-        else if (targetRow + 1 < 9 && !IsPlankInTheEast(targetCol + 1, targetRow))
+        else if (targetCol + 1 < 9 && !IsPlankInTheEast(targetCol + 1, targetRow))
         {
             validCoords.Add(new Vector2Int(targetCol + 1, targetRow));
         }
@@ -103,7 +103,7 @@ public class GameLogic : MonoBehaviour
                 validCoords.Add(new Vector2Int(targetCol - 2, targetRow)); 
             }
         }
-        else if (targetRow + 1 < 9 && !IsPlankInTheSouth(targetCol - 1, targetRow))
+        else if (targetCol + 1 < 9 && !IsPlankInTheSouth(targetCol - 1, targetRow))
         {
             validCoords.Add(new Vector2Int(targetCol - 1, targetRow));
         }
