@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-enum EPlankImgState
+public enum EPlankImgState
 {
     Normal,
     Horizontal,
@@ -42,7 +42,10 @@ public class PlayerButtons : MonoBehaviour
         PlankButton.onClick.AddListener(onPlankButtonClicked);
         PutButton.onClick.AddListener(OnPutButtonClicked);
     }
-
+    public EPlankImgState GetPlankState()
+    {
+        return _plankImgState;
+    }
     public void SetButtons(bool bTurn)
     {
         _plankImgState = EPlankImgState.Normal;
@@ -113,14 +116,18 @@ public class PlayerButtons : MonoBehaviour
             PlankButton.Select();
         }
 
+        BoardManager.RemovePlaceablePlanks.Invoke();
+
         //set Rotation
-        if(_plankImgState == EPlankImgState.Normal || _plankImgState == EPlankImgState.Vertical)
+        if (_plankImgState == EPlankImgState.Normal || _plankImgState == EPlankImgState.Vertical)
         {
             _plankImgState = EPlankImgState.Horizontal;
+            BoardManager.ShowPlaceablePlanks.Invoke(EDirection.Horizontal, owner);
         }
         else
         {
             _plankImgState = EPlankImgState.Vertical;
+            BoardManager.ShowPlaceablePlanks.Invoke(EDirection.Vertical, owner);
         }
         rotatePlank();
 

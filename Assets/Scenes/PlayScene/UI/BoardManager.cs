@@ -16,7 +16,8 @@ public class BoardManager : MonoBehaviour
     private List<Plank> Planks= new List<Plank>();
       
     private List<Vector2Int> possiblePawnList = new List<Vector2Int>();
-    
+    private List<Vector2Int> placeableVerticalPlanks = new List<Vector2Int>();
+    private List<Vector2Int> placeableHorizontalPlanks = new List<Vector2Int>();
     public Color _p1PawnColor = new Color(0.70f, 0.01f, 0.01f);
     public Color _p2PawnColor = new Color(0.11f, 0.36f, 0.60f);
 
@@ -33,6 +34,11 @@ public class BoardManager : MonoBehaviour
     public static UnityEvent RemoveMoveablePawns = new UnityEvent();
     public static UnityEvent<EPlayer> ShowMoveablePawns = new UnityEvent<EPlayer>();
     public static UnityEvent<EPlayer, Vector2Int> UpdateClickedPawn= new UnityEvent<EPlayer, Vector2Int>();
+
+    public static UnityEvent<List<Vector2Int>, List<Vector2Int>> UpdatePlaceablePlanks = new UnityEvent<List<Vector2Int>, List<Vector2Int>>();
+    public static UnityEvent<EDirection, EPlayer> ShowPlaceablePlanks= new UnityEvent<EDirection, EPlayer>();
+    public static UnityEvent RemovePlaceablePlanks = new UnityEvent();
+
 
     private void Awake()
     {
@@ -57,6 +63,15 @@ public class BoardManager : MonoBehaviour
     {
         StartCoroutine(InitializeBoard());
     }
+        //plank Dot
+        UpdatePlaceablePlanks= new UnityEvent<List<Vector2Int>, List<Vector2Int>>();
+        UpdatePlaceablePlanks.AddListener((horizontal, vertical) => updatePlaceablePlanks(horizontal, vertical));
+
+        ShowPlaceablePlanks = new UnityEvent<EDirection, EPlayer>();
+        ShowPlaceablePlanks.AddListener((eDirection, ePlayer) => showPlaceablePlankDot(eDirection, ePlayer));
+
+        RemovePlaceablePlanks = new UnityEvent();
+        RemovePlaceablePlanks.AddListener(removePlaceablePlankDot);
 
     public Cell GetCell(int col, int row)
     {
@@ -105,6 +120,55 @@ public class BoardManager : MonoBehaviour
             Cell targetCell = GetCell(coord.x, coord.y);
             targetCell.SetClickablePawn(true, previewColor);
         }
+    }
+
+    private void updatePlaceablePlanks(List<Vector2Int> horizontal, List<Vector2Int> vertical)
+    {
+        placeableHorizontalPlanks = horizontal;
+        placeableVerticalPlanks = vertical;
+    }
+    private void showPlaceablePlankDot(EDirection eDirection, EPlayer ePlayer)
+    {
+        removePlaceablePlankDot();
+        List<Vector2Int> targetCoords = getPlaceablePlankDots(eDirection);
+        Color color = getPreviewColor(ePlayer);
+
+        for(int i = 0; i < targetCoords.Count; i++)
+        {
+            Vector2Int coord = targetCoords[i];
+            Cell targetCell = GetCell(coord.x, coord.y);
+            targetCell.SetPlankDot(true, color);
+        }
+    }
+    private void removePlaceablePlankDot()
+    {
+        for (int i = 0; i < placeableVerticalPlanks.Count; i++)
+        {
+            Vector2Int coord = placeableVerticalPlanks[i];
+            Cell targetCell = GetCell(coord.x, coord.y);
+            targetCell.SetPlankDot(false, Color.white);
+        }
+
+        for (int i = 0; i < placeableHorizontalPlanks.Count; i++)
+        {
+            Vector2Int coord = placeableHorizontalPlanks[i];
+            Cell targetCell = GetCell(coord.x, coord.y);
+            targetCell.SetPlankDot(false, Color.white);
+        }
+    }
+    private List<Vector2Int> getPlaceablePlankDots(EDirection eDirection)
+    {
+        List<Vector2Int> targetCoords;
+        if(eDirection == EDirection.Horizontal)
+        {
+            targetCoords = placeableHorizontalPlanks;
+        }
+        else
+        {
+            targetCoords = placeableVerticalPlanks;
+        }
+
+        return targetCoords;
     }
 
     private Color getPreviewColor(EPlayer ePlayer)

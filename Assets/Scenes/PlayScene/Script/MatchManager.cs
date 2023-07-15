@@ -18,6 +18,8 @@ public class MatchManager : MonoBehaviour
     public static UnityEvent ToNextTurn;
     public static UnityEvent<Vector2Int> SetRequestedPawnCoord = new UnityEvent<Vector2Int>();
 
+    private List<Vector2Int> placeableVerticalPlanks = new List<Vector2Int>();
+    private List<Vector2Int> placeableHorizontalPlanks = new List<Vector2Int>();
 
     void Awake()
     {
@@ -95,6 +97,10 @@ public class MatchManager : MonoBehaviour
         // Set Moveable Coord for pawn on the board.
         List<Vector2Int> moveableCoord = _gameLogic.GetMoveablePawnCoords(ePlayer);
         BoardManager.UpdateMoveablePawns.Invoke(moveableCoord);
+
+        List<Vector2Int> horizontalPlankDots = _gameLogic.GetPlaceablePlankCoords(EDirection.Horizontal);
+        List<Vector2Int> verticalPlankDots = _gameLogic.GetPlaceablePlankCoords(EDirection.Vertical);
+        BoardManager.UpdatePlaceablePlanks.Invoke(horizontalPlankDots, verticalPlankDots);
     }
 
     private void updateRequestedPawnCoord(Vector2Int coord)
