@@ -82,14 +82,20 @@ public class Cell : MonoBehaviour
     public void RemovePawn()
     {
         _pawnImage.color = Color.white;
-        _pawnButton.enabled = true;
+        _pawnButton.enabled = false;
         _pawnButton.interactable = false;
+        _pawnImage.enabled = false;
 
     }
-    public void SetClickablePawn(bool bClickable)
+    public void SetClickablePawn(bool bClickable, Color color)
     {
-        _pawnButton.enabled = true;
+        _pawnImage.enabled = bClickable;
+        _pawnButton.enabled = bClickable;
         _pawnButton.interactable = bClickable;
+        if(bClickable== true)
+        {
+            _pawnImage.color = color;
+        }
     }
 
     private void initBottomRightPlanks()

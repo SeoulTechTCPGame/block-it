@@ -14,13 +14,22 @@ public class BoardManager : MonoBehaviour
     private Vector2Int _p1Coordinate = new Vector2Int();
     private Vector2Int _p2Coordinate = new Vector2Int();
     private List<Vector2Int> possiblePawnList = new List<Vector2Int>();
-    private Color _p1PawnColor = new Color(0.95f, 0.48f, 0.48f);
-    private Color _p2PawnColor = new Color(0.26f, 0.69f, 0.62f);
+    
+    public Color _p1PawnColor = new Color(0.95f, 0.48f, 0.48f);
+    public Color _p2PawnColor = new Color(0.26f, 0.69f, 0.62f);
+
+    public Color _p1SelectedPreviewColor = new Color(1.00f, 0.60f, 0.30f);
+    public Color _p2SelectedPreviewColor = new Color(0.40f, 0.80f, 0.30f);
+
+    public Color _previewColor = new Color(0.85f, 0.70f, 0.16f);
+    private Color _disabledColor= new Color(0.66f, 0.80f, 0.86f);
+
 
     public static UnityEvent<EPlayer, Vector2Int> SetPawnCoord = new UnityEvent<EPlayer, Vector2Int>();
     public static UnityEvent<List<Vector2Int>> UpdateMoveablePawns = new UnityEvent<List<Vector2Int>>();
     public static UnityEvent RemoveMoveablePawns = new UnityEvent();
     public static UnityEvent ShowMoveablePawns = new UnityEvent();
+    public static UnityEvent<EPlayer, Vector2Int> UpdateClickedPawn= new UnityEvent<EPlayer, Vector2Int>();
 
     private void Awake()
     {
@@ -35,6 +44,9 @@ public class BoardManager : MonoBehaviour
 
         ShowMoveablePawns = new UnityEvent();
         ShowMoveablePawns.AddListener(showMoveablePawns);
+
+        UpdateClickedPawn = new UnityEvent<EPlayer, Vector2Int>();
+        UpdateClickedPawn.AddListener( (turn, coordination) => updateClickedPawn(turn, coordination));
     }
 
     // Start is called before the first frame update
@@ -77,7 +89,7 @@ public class BoardManager : MonoBehaviour
         {
             Vector2Int coord = possiblePawnList[i];
             Cell targetCell = GetCell(coord.x, coord.y);
-            targetCell.SetClickablePawn(false);
+            targetCell.SetClickablePawn(false, _disabledColor);
         }
     }
     private void showMoveablePawns()
@@ -86,7 +98,7 @@ public class BoardManager : MonoBehaviour
         {
             Vector2Int coord = possiblePawnList[i];
             Cell targetCell = GetCell(coord.x, coord.y);
-            targetCell.SetClickablePawn(true);
+            targetCell.SetClickablePawn(true, _previewColor);
         }
     }
 
@@ -149,5 +161,29 @@ public class BoardManager : MonoBehaviour
             cells[col, ROW-1].SetBottomPlank(false, Color.red);
             cells[col, ROW - 1].SetPlankDot(false);
         }
+    }
+
+    private void updateClickedPawn(EPlayer ePlayer, Vector2Int clickedCellCoord) 
+    {
+        for (int i = 0; i < possiblePawnList.Count; i++)
+        {
+            Vector2Int coord = possiblePawnList[i];
+            Cell cell = GetCell(coord.x, coord.y);
+            cell.SetClickablePawn(true, _previewColor);
+        }
+
+        
+        Cell clickedCell = GetCell(clickedCellCoord.x, clickedCellCoord.y);
+        Color clickedColor;
+        if(ePlayer == EPlayer.Player1)
+        {
+            clickedColor = _p1SelectedPreviewColor;
+        }
+        else
+        {
+            clickedColor = _p2SelectedPreviewColor;
+        }
+        clickedCell.SetClickablePawn(true, clickedColor);
+
     }
 }

@@ -94,5 +94,9 @@ public class MatchManager : MonoBehaviour
     {
         RequestedPawnCoord = coord;
         _bUpdatePawnCoord = true;
+        _bUpdatePlank = false;
+
+        BoardManager.UpdateClickedPawn.Invoke(_turn, coord);
+    }
     }
 }
