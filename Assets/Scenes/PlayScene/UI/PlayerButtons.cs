@@ -81,6 +81,9 @@ public class PlayerButtons : MonoBehaviour
     public void OnPutButtonClicked()
     {
         BoardManager.RemoveMoveablePawns.Invoke();
+        BoardManager.RemovePlaceablePlanks.Invoke();
+        BoardManager.RemovePreviewPlank.Invoke();
+
         MatchManager.ToNextTurn.Invoke();
 
     }
@@ -101,6 +104,7 @@ public class PlayerButtons : MonoBehaviour
         {
             _plankPanelImage.color = _normalColor;
         }
+        BoardManager.RemovePlaceablePlanks.Invoke();
         BoardManager.ShowMoveablePawns.Invoke(owner);
 
         PawnButton.Select();

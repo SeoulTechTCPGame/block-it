@@ -18,6 +18,8 @@ public class BoardManager : MonoBehaviour
     private List<Vector2Int> possiblePawnList = new List<Vector2Int>();
     private List<Vector2Int> placeableVerticalPlanks = new List<Vector2Int>();
     private List<Vector2Int> placeableHorizontalPlanks = new List<Vector2Int>();
+    private Plank _previewPlank = new Plank();
+
     public Color _p1PawnColor = new Color(0.70f, 0.01f, 0.01f);
     public Color _p2PawnColor = new Color(0.11f, 0.36f, 0.60f);
 
@@ -40,8 +42,26 @@ public class BoardManager : MonoBehaviour
     public static UnityEvent RemovePlaceablePlanks = new UnityEvent();
 
 
+    public static UnityEvent<Vector2Int, EDirection, EPlayer> PlacePreviewPlank = new UnityEvent<Vector2Int, EDirection, EPlayer>();
+    public static UnityEvent RemovePreviewPlank = new UnityEvent();
+    public static UnityEvent<Vector2Int, EDirection> PlacePlank = new UnityEvent<Vector2Int, EDirection>();
+    
+
     private void Awake()
     {
+        setEvents();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        StartCoroutine(InitializeBoard());
+    }
+
+
+    private void setEvents()
+    {
+        //pawn
         SetPawnCoord = new UnityEvent<EPlayer, Vector2Int>();
         SetPawnCoord.AddListener((player, coordinate) => setPawn(player, coordinate));
 
@@ -52,17 +72,11 @@ public class BoardManager : MonoBehaviour
         RemoveMoveablePawns.AddListener(removeMoveablePawn);
 
         ShowMoveablePawns = new UnityEvent<EPlayer>();
-        ShowMoveablePawns.AddListener((ePlayer)=> showMoveablePawns(ePlayer));
+        ShowMoveablePawns.AddListener((ePlayer) => showMoveablePawns(ePlayer));
 
         UpdateClickedPawn = new UnityEvent<EPlayer, Vector2Int>();
-        UpdateClickedPawn.AddListener( (turn, coordination) => updateClickedPawn(turn, coordination));
-    }
+        UpdateClickedPawn.AddListener((turn, coordination) => updateClickedPawn(turn, coordination));
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        StartCoroutine(InitializeBoard());
-    }
         //plank Dot
         UpdatePlaceablePlanks= new UnityEvent<List<Vector2Int>, List<Vector2Int>>();
         UpdatePlaceablePlanks.AddListener((horizontal, vertical) => updatePlaceablePlanks(horizontal, vertical));
@@ -73,6 +87,16 @@ public class BoardManager : MonoBehaviour
         RemovePlaceablePlanks = new UnityEvent();
         RemovePlaceablePlanks.AddListener(removePlaceablePlankDot);
 
+        // Plank
+        PlacePreviewPlank = new UnityEvent<Vector2Int, EDirection, EPlayer>();
+        PlacePreviewPlank.AddListener((coord, direction, player) => placePreviewPlank(coord, direction, player));
+
+        RemovePreviewPlank = new UnityEvent();
+        RemovePreviewPlank.AddListener(removePreviewPlank);
+
+        PlacePlank = new UnityEvent<Vector2Int, EDirection>();
+        PlacePlank.AddListener((coordinate, edirection) => placePlank(coordinate, edirection));
+}
     public Cell GetCell(int col, int row)
     {
         if (row >= 0 && row < ROW && col >= 0 && col < COL)
@@ -95,6 +119,7 @@ public class BoardManager : MonoBehaviour
         setEdge();
 
     }
+
 
     //make only possible route pressable
     private void updateMoveablePawns(List<Vector2Int> possibleList) 
@@ -185,6 +210,20 @@ public class BoardManager : MonoBehaviour
 
         return previewColor;
     }
+    private Color getClickedColor(EPlayer ePlayer)
+    {
+        Color clickedColor;
+        if (ePlayer == EPlayer.Player1)
+        {
+            clickedColor = _p1SelectedPreviewColor;
+        }
+        else
+        {
+            clickedColor = _p2SelectedPreviewColor;
+        }
+
+        return clickedColor;
+    }
 
     private void setPawn(EPlayer ePlayer, Vector2Int coordinate) {
 
@@ -213,6 +252,52 @@ public class BoardManager : MonoBehaviour
 
         Cell targetCell = GetCell(coordinate.x, coordinate.y);
         targetCell.SetPawn(true, pawnColor);
+    }
+
+    private void setPlank(Vector2Int coordinate, EDirection eDirection, bool visible, Color color )
+    {
+        if(eDirection == EDirection.Vertical)
+        {
+            Cell cell1 = GetCell(coordinate.x, coordinate.y);
+            Cell cell2 = GetCell(coordinate.x, coordinate.y + 1);
+
+            cell1.SetRightPlank(visible, color);
+            cell2.SetRightPlank(visible, color);
+            cell1.SetBottomRightPlank("Vertical", visible, color);
+            cell2.SetBottomRightPlank("Vertical", visible, color);
+        }
+        if(eDirection == EDirection.Horizontal)
+        {
+            Cell cell1 = GetCell(coordinate.x, coordinate.y);
+            Cell cell2 = GetCell(coordinate.x + 1, coordinate.y);
+
+            cell1.SetBottomPlank(visible, color);
+            cell2.SetBottomPlank(visible, color);
+            cell1.SetBottomRightPlank("Horizontal", visible, color);
+            cell2.SetBottomRightPlank("Horizontal", visible, color);
+
+        }
+    }
+
+    private void placePreviewPlank(Vector2Int coordinate, EDirection eDirection, EPlayer ePlayer)
+    {
+        removePreviewPlank();
+        _previewPlank.SetPlank(coordinate, eDirection);
+
+        Color color= getClickedColor(ePlayer);
+
+        setPlank(coordinate, eDirection, true, color);
+    }
+    private void removePreviewPlank()
+    {
+        Vector2Int targetCoord = _previewPlank.GetCoordinate();
+        EDirection direction = _previewPlank.GetDirection();
+
+        setPlank(targetCoord, direction, false, Color.white);
+    }
+    private void placePlank(Vector2Int coord, EDirection eDirection)
+    {
+        setPlank(coord, eDirection, true, Color.black);
     }
 
     private void createBoard()
@@ -245,7 +330,7 @@ public class BoardManager : MonoBehaviour
             cells[col, ROW-1].SetBottomPlank(false, Color.red);
             cells[col, ROW - 1].SetPlankDot(false);
         }
-    }
+    } 
 
     private void updateClickedPawn(EPlayer ePlayer, Vector2Int clickedCellCoord) 
     {
@@ -259,15 +344,7 @@ public class BoardManager : MonoBehaviour
 
         
         Cell clickedCell = GetCell(clickedCellCoord.x, clickedCellCoord.y);
-        Color clickedColor;
-        if(ePlayer == EPlayer.Player1)
-        {
-            clickedColor = _p1SelectedPreviewColor;
-        }
-        else
-        {
-            clickedColor = _p2SelectedPreviewColor;
-        }
+        Color clickedColor = getClickedColor(ePlayer);
         clickedCell.SetClickablePawn(true, clickedColor);
 
     }

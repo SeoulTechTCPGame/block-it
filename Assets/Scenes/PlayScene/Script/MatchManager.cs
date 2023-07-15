@@ -10,13 +10,16 @@ public class MatchManager : MonoBehaviour
     public GameObject P1Plank;
     public GameObject P2Plank;
     public Vector2Int RequestedPawnCoord;
+    public Plank RequestedPlank = new Plank();
 
     private EPlayer _turn;
     private GameLogic _gameLogic;
     private bool _bUpdatePawnCoord = false;
+    private bool _bUpdatePlank = false;
 
     public static UnityEvent ToNextTurn;
     public static UnityEvent<Vector2Int> SetRequestedPawnCoord = new UnityEvent<Vector2Int>();
+    public static UnityEvent<Vector2Int> SetRequestedPlank= new UnityEvent<Vector2Int>();
 
     private List<Vector2Int> placeableVerticalPlanks = new List<Vector2Int>();
     private List<Vector2Int> placeableHorizontalPlanks = new List<Vector2Int>();
@@ -28,6 +31,9 @@ public class MatchManager : MonoBehaviour
 
         SetRequestedPawnCoord = new UnityEvent<Vector2Int>();
         SetRequestedPawnCoord.AddListener(updateRequestedPawnCoord);
+
+        SetRequestedPlank = new UnityEvent<Vector2Int>();
+        SetRequestedPlank.AddListener((coord)=>updateRequestedPlank(coord));
 
         _gameLogic = FindObjectOfType<GameLogic>();
 
@@ -85,10 +91,18 @@ public class MatchManager : MonoBehaviour
         {
             _gameLogic.SetPawnPlace(otherPlayer, RequestedPawnCoord);
         }
+        if(_bUpdatePlank == true)
+        {
+            _gameLogic.SetPlank(RequestedPlank);
+            Vector2Int targetCoord = RequestedPlank.GetCoordinate();
+            EDirection direction = RequestedPlank.GetDirection();
+            BoardManager.PlacePlank.Invoke(targetCoord, direction);
+        }
 
         // change turn and reset the value
         _turn = ePlayer;
         _bUpdatePawnCoord = false;
+        _bUpdatePlank = false;
 
         // Update one Board: MoveablePawn, Pawns' Coord, & MoveableCoord
         BoardManager.SetPawnCoord.Invoke(ePlayer, _gameLogic.GetPawnCoordinate(ePlayer));
@@ -111,5 +125,48 @@ public class MatchManager : MonoBehaviour
 
         BoardManager.UpdateClickedPawn.Invoke(_turn, coord);
     }
+    private void updateRequestedPlank(Vector2Int coord)
+    {
+        GameObject targetButton;
+        if(_turn == EPlayer.Player1)
+        {
+            targetButton = P1Buttons;
+        }
+        else
+        {
+            targetButton = P2Buttons;
+        }
+
+        EPlankImgState plankState = targetButton.GetComponent<PlayerButtons>().GetPlankState();
+
+        //Normal,
+        //Horizontal,
+        //Vertical
+        EDirection eDirection;
+        if(plankState == EPlankImgState.Normal)
+        {
+            Debug.LogError("Invalid Plank Direction.");
+            return;
+        }
+
+        if (plankState == EPlankImgState.Horizontal)
+        {
+            eDirection = EDirection.Horizontal;
+        }
+        else
+        {
+            eDirection = EDirection.Vertical;
+        }
+
+
+        RequestedPlank.SetPlank(coord, eDirection);
+        BoardManager.PlacePreviewPlank.Invoke(coord, eDirection, _turn);
+        _bUpdatePawnCoord = false;
+        _bUpdatePlank = true;
+    }
+
+    private void clearTmpView()
+    {
+
     }
 }
