@@ -16,6 +16,8 @@ public class PlayerButtons : MonoBehaviour
     public Button PutButton;
     public GameObject PlankImage;
 
+    private EPlayer owner;
+
     private Image _pawnPanelImage;
     private Image _plankPanelImage;
     private RectTransform _plankImgTransform;
@@ -80,6 +82,11 @@ public class PlayerButtons : MonoBehaviour
 
     }
 
+    public void SetOwner(EPlayer own)
+    {
+        owner = own;
+    }
+
     private bool _bPlankValid = true;
 
 
@@ -91,7 +98,7 @@ public class PlayerButtons : MonoBehaviour
         {
             _plankPanelImage.color = _normalColor;
         }
-        BoardManager.ShowMoveablePawns.Invoke();
+        BoardManager.ShowMoveablePawns.Invoke(owner);
 
         PawnButton.Select();
     }

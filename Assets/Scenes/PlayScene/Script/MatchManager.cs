@@ -28,6 +28,8 @@ public class MatchManager : MonoBehaviour
         SetRequestedPawnCoord.AddListener(updateRequestedPawnCoord);
 
         _gameLogic = FindObjectOfType<GameLogic>();
+
+        setButtonsOwner();
     }
     // Start is called before the first frame update
     void Start()
@@ -35,6 +37,11 @@ public class MatchManager : MonoBehaviour
         setTurn(EPlayer.Player1);
     }
 
+    private void setButtonsOwner()
+    {
+        P1Buttons.GetComponent<PlayerButtons>().SetOwner(EPlayer.Player1);
+        P2Buttons.GetComponent<PlayerButtons>().SetOwner(EPlayer.Player2);
+    }
     private void nextTurn() 
     {
         if (_turn == EPlayer.Player1)
