@@ -17,6 +17,7 @@ public class PlayerButtons : MonoBehaviour
     public GameObject PlankImage;
 
     private EPlayer owner;
+    private bool _bPlankValid = true;
 
     private Image _pawnPanelImage;
     private Image _plankPanelImage;
@@ -42,14 +43,15 @@ public class PlayerButtons : MonoBehaviour
         PlankButton.onClick.AddListener(onPlankButtonClicked);
         PutButton.onClick.AddListener(OnPutButtonClicked);
     }
+
     public EPlankImgState GetPlankState()
     {
         return _plankImgState;
     }
+
     public void SetButtons(bool bTurn)
     {
-        _plankImgState = EPlankImgState.Normal;
-        rotatePlank();
+        resetPlankState();
 
         if (bTurn == true)
         {
@@ -80,12 +82,7 @@ public class PlayerButtons : MonoBehaviour
 
     public void OnPutButtonClicked()
     {
-        BoardManager.RemoveMoveablePawns.Invoke();
-        BoardManager.RemovePlaceablePlanks.Invoke();
-        BoardManager.RemovePreviewPlank.Invoke();
-
         MatchManager.ToNextTurn.Invoke();
-
     }
 
     public void SetOwner(EPlayer own)
@@ -93,14 +90,12 @@ public class PlayerButtons : MonoBehaviour
         owner = own;
     }
 
-    private bool _bPlankValid = true;
-
 
     private void onPawnButtonClicked()
     {
         //set color of the buttons
         _pawnPanelImage.color = _selectedColor;
-        if (_bPlankValid == true)
+        if (_bPlankValid)
         {
             _plankPanelImage.color = _normalColor;
         }
@@ -113,7 +108,7 @@ public class PlayerButtons : MonoBehaviour
     private void onPlankButtonClicked()
     {
         //set color of the buttons
-        if(_bPlankValid == true)
+        if(_bPlankValid)
         {
             _pawnPanelImage.color = _normalColor;
             _plankPanelImage.color = _selectedColor;
@@ -170,4 +165,11 @@ public class PlayerButtons : MonoBehaviour
 
         _plankImgTransform.rotation = Quaternion.Euler(targetRotation);
     }
+
+    private void resetPlankState()
+    {
+        _plankImgState = EPlankImgState.Normal;
+        rotatePlank();
+    }
+
 }

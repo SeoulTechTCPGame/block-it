@@ -52,6 +52,7 @@ public class MatchManager : MonoBehaviour
     }
     private void nextTurn() 
     {
+        clearTmpView();
         if (_turn == EPlayer.Player1)
         {
             setTurn(EPlayer.Player2);
@@ -65,26 +66,16 @@ public class MatchManager : MonoBehaviour
 
     private void setTurn(EPlayer ePlayer)
     {
-
         // set target and other player.
-        EPlayer otherPlayer = EPlayer.Player1;
-        if(ePlayer == EPlayer.Player1)
-        {
-            otherPlayer = EPlayer.Player2;
-        }
+        EPlayer otherPlayer = (ePlayer == EPlayer.Player1) ? EPlayer.Player2 : EPlayer.Player1;
 
         // get Buttons and distinguish which one is ePlayer one and other player one.
-        GameObject theButton = P1Buttons;
-        GameObject otherButton = P2Buttons;
-        if (ePlayer == EPlayer.Player2)
-        {
-            theButton = P2Buttons;
-            otherButton = P1Buttons;
-        }
+        GameObject theButton = (ePlayer == EPlayer.Player1) ? P1Buttons : P2Buttons;
+        GameObject otherButton = (ePlayer == EPlayer.Player1) ? P2Buttons : P1Buttons;
+
         // set Put Button on the board - the target Player's put button will be activated while the other won't be.
         theButton.GetComponent<PlayerButtons>().SetButtons(true);
         otherButton.GetComponent<PlayerButtons>().SetButtons(false);
-
 
         // if the last turn has certain changes, apply on GameLogic.
         if (_bUpdatePawnCoord == true)
@@ -127,46 +118,29 @@ public class MatchManager : MonoBehaviour
     }
     private void updateRequestedPlank(Vector2Int coord)
     {
-        GameObject targetButton;
-        if(_turn == EPlayer.Player1)
-        {
-            targetButton = P1Buttons;
-        }
-        else
-        {
-            targetButton = P2Buttons;
-        }
+        GameObject targetButton = (_turn == EPlayer.Player1) ? P1Buttons : P2Buttons;
 
         EPlankImgState plankState = targetButton.GetComponent<PlayerButtons>().GetPlankState();
 
-        //Normal,
-        //Horizontal,
-        //Vertical
-        EDirection eDirection;
         if(plankState == EPlankImgState.Normal)
         {
             Debug.LogError("Invalid Plank Direction.");
             return;
         }
 
-        if (plankState == EPlankImgState.Horizontal)
-        {
-            eDirection = EDirection.Horizontal;
-        }
-        else
-        {
-            eDirection = EDirection.Vertical;
-        }
-
+        EDirection eDirection = (plankState == EPlankImgState.Horizontal) ? EDirection.Horizontal : EDirection.Vertical;
 
         RequestedPlank.SetPlank(coord, eDirection);
         BoardManager.PlacePreviewPlank.Invoke(coord, eDirection, _turn);
+
         _bUpdatePawnCoord = false;
         _bUpdatePlank = true;
     }
 
     private void clearTmpView()
     {
-
+        BoardManager.RemoveMoveablePawns.Invoke();
+        BoardManager.RemovePlaceablePlanks.Invoke();
+        BoardManager.RemovePreviewPlank.Invoke();
     }
 }
