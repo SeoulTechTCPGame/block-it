@@ -121,7 +121,7 @@ public class GameLogic : MonoBehaviour
                 flag = true;
                 foreach (Plank plank in planks)
                 {
-                    if (plank.GetCoordinate().x == i && plank.GetCoordinate().y == j)
+                    if (plank.GetDirection() == direction && plank.GetCoordinate().x == i && plank.GetCoordinate().y == j)
                     {
                         flag = false;
                         break;

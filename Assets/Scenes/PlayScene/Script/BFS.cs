@@ -20,7 +20,7 @@ class BFS
             row = que.Peek().y;
             col = que.Peek().x;
             visited[row,col] = 1;
-            if (pawnNum == 1 && row == 9 || pawnNum == 2 && row == 1) return true;
+            if (pawnNum == 1 && row == 8 || pawnNum == 2 && row == 0) return true;
             // NORTH
             if (visited[row+1,col] != 1 && !gameLogic.IsPlankInTheNorth(row, col))
             { 

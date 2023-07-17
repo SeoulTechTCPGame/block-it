@@ -10,7 +10,7 @@ public enum EDirection
 public class Plank
 {
     private Vector2Int mCoordinate;
-    private EDirection direction;
+    private EDirection mDirection;
 
     public Vector2Int GetCoordinate()
     {
@@ -19,7 +19,23 @@ public class Plank
 
     public EDirection GetDirection()
     {
-        return direction;
+        return mDirection;
+    }
+
+    public void SetDirection(EDirection direction)
+    {
+        mDirection = direction;
+    }
+
+    public void SetCoordinate(Vector2Int vector2Int)
+    {
+        mCoordinate = vector2Int;
+    }
+
+    public void SetAll(EDirection direction, Vector2Int vector2Int)
+    {
+        mDirection = direction;
+        mCoordinate = vector2Int;
     }
 
 }
