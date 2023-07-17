@@ -85,9 +85,9 @@ public class MatchManager : MonoBehaviour
         if(_bUpdatePlank == true)
         {
             _gameLogic.SetPlank(RequestedPlank);
-            Vector2Int targetCoord = RequestedPlank.GetCoordinate();
-            EDirection direction = RequestedPlank.GetDirection();
-            BoardManager.PlacePlank.Invoke(targetCoord, direction);
+            _gameLogic.getTargetPawn(otherPlayer).UsePlank();
+            BoardManager.ReduceRemainPlank.Invoke(otherPlayer);
+            BoardManager.PlacePlank.Invoke(RequestedPlank);
         }
 
         // change turn and reset the value
@@ -114,6 +114,7 @@ public class MatchManager : MonoBehaviour
         _bUpdatePawnCoord = true;
         _bUpdatePlank = false;
 
+        BoardManager.RemovePreviewPlank.Invoke();
         BoardManager.UpdateClickedPawn.Invoke(_turn, coord);
     }
     private void updateRequestedPlank(Vector2Int coord)

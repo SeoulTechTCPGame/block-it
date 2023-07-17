@@ -9,6 +9,8 @@ public class BoardManager : MonoBehaviour
     const int COL = 9;
 
     [SerializeField] GameObject cellPrefab;
+    [SerializeField] GameObject p1RemainPlank;
+    [SerializeField] GameObject p2RemainPlank;
 
     private Cell[,] cells = new Cell[COL, ROW];
     private Vector2Int _p1Coordinate = new Vector2Int();
@@ -19,6 +21,8 @@ public class BoardManager : MonoBehaviour
     private List<Vector2Int> placeableVerticalPlanks = new List<Vector2Int>();
     private List<Vector2Int> placeableHorizontalPlanks = new List<Vector2Int>();
     private Plank _previewPlank = new Plank();
+
+    bool _bPreviewPlank = false;
 
     public Color _p1PawnColor = new Color(0.70f, 0.01f, 0.01f);
     public Color _p2PawnColor = new Color(0.11f, 0.36f, 0.60f);
@@ -35,18 +39,17 @@ public class BoardManager : MonoBehaviour
     public static UnityEvent<List<Vector2Int>> UpdateMoveablePawns = new UnityEvent<List<Vector2Int>>();
     public static UnityEvent RemoveMoveablePawns = new UnityEvent();
     public static UnityEvent<EPlayer> ShowMoveablePawns = new UnityEvent<EPlayer>();
+    public static UnityEvent<EPlayer> ReduceRemainPlank = new UnityEvent<EPlayer>();
     public static UnityEvent<EPlayer, Vector2Int> UpdateClickedPawn= new UnityEvent<EPlayer, Vector2Int>();
 
     public static UnityEvent<List<Vector2Int>, List<Vector2Int>> UpdatePlaceablePlanks = new UnityEvent<List<Vector2Int>, List<Vector2Int>>();
     public static UnityEvent<EDirection, EPlayer> ShowPlaceablePlanks= new UnityEvent<EDirection, EPlayer>();
     public static UnityEvent RemovePlaceablePlanks = new UnityEvent();
 
-
     public static UnityEvent<Vector2Int, EDirection, EPlayer> PlacePreviewPlank = new UnityEvent<Vector2Int, EDirection, EPlayer>();
     public static UnityEvent RemovePreviewPlank = new UnityEvent();
-    public static UnityEvent<Vector2Int, EDirection> PlacePlank = new UnityEvent<Vector2Int, EDirection>();
+    public static UnityEvent<Plank> PlacePlank = new UnityEvent<Plank>();
     
-
     private void Awake()
     {
         setEvents();
@@ -94,9 +97,15 @@ public class BoardManager : MonoBehaviour
         RemovePreviewPlank = new UnityEvent();
         RemovePreviewPlank.AddListener(removePreviewPlank);
 
-        PlacePlank = new UnityEvent<Vector2Int, EDirection>();
-        PlacePlank.AddListener((coordinate, edirection) => placePlank(coordinate, edirection));
-}
+        PlacePlank = new UnityEvent<Plank>();
+        PlacePlank.AddListener((plank) => placePlank(plank));
+
+        // remain plank
+        ReduceRemainPlank = new UnityEvent<EPlayer>();
+        ReduceRemainPlank.AddListener((ePlayer) => reduceRemainPlank(ePlayer));
+
+    }
+
     public Cell GetCell(int col, int row)
     {
         if (row >= 0 && row < ROW && col >= 0 && col < COL)
@@ -113,10 +122,34 @@ public class BoardManager : MonoBehaviour
     IEnumerator InitializeBoard()
     {
         createBoard();
-
+          
         yield return null;
 
         setEdge();
+
+        setRemainPlank(10);
+    }
+
+
+    private void setRemainPlank(int defaultPlankNum)
+    {
+        p1RemainPlank.GetComponent<RemainPlank>().CreatePlank(defaultPlankNum);
+        p2RemainPlank.GetComponent<RemainPlank>().CreatePlank(defaultPlankNum);
+    }
+
+    private void reduceRemainPlank(EPlayer ePlayer)
+    {
+        GameObject targetRemainPlank;
+        if(ePlayer == EPlayer.Player1) 
+        {
+            targetRemainPlank = p1RemainPlank;
+        }
+        else
+        {
+            targetRemainPlank = p2RemainPlank;
+        }
+
+        targetRemainPlank.GetComponent<RemainPlank>().ReduceRemainPlank();
     }
 
     //make only possible route pressable
@@ -262,19 +295,33 @@ public class BoardManager : MonoBehaviour
         Color color= getClickedColor(ePlayer);
 
         setPlank(coordinate, eDirection, true, color);
+        _bPreviewPlank = true;
     }
 
     private void removePreviewPlank()
     {
+        if(_bPreviewPlank == false)
+        {
+            return;
+        }
         Vector2Int targetCoord = _previewPlank.GetCoordinate();
         EDirection direction = _previewPlank.GetDirection();
 
         setPlank(targetCoord, direction, false, Color.white);
+
+        _bPreviewPlank = false;
     }
 
-    private void placePlank(Vector2Int coord, EDirection eDirection)
+    private void placePlank(Plank plank)
     {
-        setPlank(coord, eDirection, true, Color.black);
+        Planks.Add(plank);
+        foreach(Plank targetPlank in Planks)
+        {
+            Vector2Int coord = targetPlank.GetCoordinate();
+            EDirection eDirection = targetPlank.GetDirection();
+            setPlank(coord, eDirection, true, Color.black);
+        }
+        _bPreviewPlank = false;
     }
 
     private void createBoard()

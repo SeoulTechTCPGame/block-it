@@ -5,26 +5,40 @@ public class RemainPlank : MonoBehaviour
 {
     [SerializeField] Image PlankImage;
 
-    public int PlankNum;
+    private int plankNum;
+    private Image[] plankImages;
 
     void Start()
     {
-        setPlank();
+        
     }
 
-    private void setPlank()
+    public void CreatePlank(int defaultPlankNum)
     {
+        plankNum = defaultPlankNum;
+        plankImages = new Image[plankNum];
+
         // Clear existing plank images
         foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
         }
 
+
         // Instantiate and position plank images based on plankNum
-        for (int i = 0; i < PlankNum; i++)
+        for (int i = 0; i < plankNum; i++)
         {
-            Image plankImage = Instantiate(PlankImage, transform);// plankContainer);
-            // Set plank image properties if needed (e.g., sprite, color, etc.)
+            Image plankImage = Instantiate(PlankImage, transform);
+            plankImages[i] = plankImage;
         }
+    }
+    public void ReduceRemainPlank()
+    {
+        if(plankNum > 0)
+        {
+            plankNum--;
+            Destroy(plankImages[plankNum].gameObject);
+        }
+
     }
 }

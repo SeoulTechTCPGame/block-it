@@ -270,7 +270,7 @@ public class GameLogic : MonoBehaviour
         }
     }
 
-    private Pawn getTargetPawn(EPlayer ePlayer)
+    public Pawn getTargetPawn(EPlayer ePlayer)
     {
         Pawn targetPawn;
         if (ePlayer == EPlayer.Player1)
