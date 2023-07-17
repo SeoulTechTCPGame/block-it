@@ -51,8 +51,6 @@ public class GameLogic : MonoBehaviour
         int opponentRow = opponentPawn.GetCoordinate().y;
         int opponentCol = opponentPawn.GetCoordinate().x;
 
-        Debug.Log("HEY");
-
         // Plank, Pawn 둘 모두에 대한 검사를 하여야 함.
 
         // NORTH
@@ -60,7 +58,6 @@ public class GameLogic : MonoBehaviour
         {
             if (targetRow - 2 >= 0 && !IsPlankInTheNorth(targetCol, targetRow - 1))
             {
-                Debug.Log("Pawn there!");
                 validCoords.Add(new Vector2Int(targetCol, targetRow - 2));
             }
         }
@@ -90,7 +87,7 @@ public class GameLogic : MonoBehaviour
                 validCoords.Add(new Vector2Int(targetCol + 2, targetRow));
             }
         }
-        else if (targetRow + 1 < 9 && !IsPlankInTheEast(targetCol + 1, targetRow))
+        else if (targetCol + 1 < 9 && !IsPlankInTheEast(targetCol + 1, targetRow))
         {
             validCoords.Add(new Vector2Int(targetCol + 1, targetRow));
         }
@@ -103,7 +100,7 @@ public class GameLogic : MonoBehaviour
                 validCoords.Add(new Vector2Int(targetCol - 2, targetRow)); 
             }
         }
-        else if (targetRow + 1 < 9 && !IsPlankInTheSouth(targetCol - 1, targetRow))
+        else if (targetCol - 1 >= 0 && !IsPlankInTheWest(targetCol - 1, targetRow))
         {
             validCoords.Add(new Vector2Int(targetCol - 1, targetRow));
         }
@@ -124,7 +121,7 @@ public class GameLogic : MonoBehaviour
                 flag = true;
                 foreach (Plank plank in planks)
                 {
-                    if (plank.GetCoordinate().x == i && plank.GetCoordinate().y == j)
+                    if (plank.GetDirection() == direction && plank.GetCoordinate().x == i && plank.GetCoordinate().y == j)
                     {
                         flag = false;
                         break;

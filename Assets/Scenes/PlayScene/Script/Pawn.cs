@@ -23,10 +23,7 @@ public class Pawn
         return mPlankNum;
     }
 
-    public void SetCoordinate(Vector2Int coordinate)
-    {
-        mCoordinate = coordinate;
-    }
+
 
     public void UsePlank()
     {
