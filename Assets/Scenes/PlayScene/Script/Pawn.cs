@@ -35,4 +35,4 @@ public class Pawn
         if (mPlankNum <= 0) return false;
         else return true;
     }
-    }
+}

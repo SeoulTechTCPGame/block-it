@@ -23,9 +23,9 @@ public class GameLogic : MonoBehaviour
 
     private void SetGame()
     {
-        P1.SetCoordinate(new Vector2Int(4, 5));//8));
+        P1.SetCoordinate(new Vector2Int(4, 7));
 
-        P2.SetCoordinate(new Vector2Int(4, 2));// 0));
+        P2.SetCoordinate(new Vector2Int(4, 1));
 
         turn = EPlayer.Player1;
     }
@@ -267,7 +267,7 @@ public class GameLogic : MonoBehaviour
         }
     }
 
-    private Pawn getTargetPawn(EPlayer ePlayer)
+    public Pawn getTargetPawn(EPlayer ePlayer)
     {
         Pawn targetPawn;
         if (ePlayer == EPlayer.Player1)

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-enum EPlankImgState
+public enum EPlankImgState
 {
     Normal,
     Horizontal,
@@ -15,6 +15,9 @@ public class PlayerButtons : MonoBehaviour
     public Button PlankButton;
     public Button PutButton;
     public GameObject PlankImage;
+
+    private EPlayer owner;
+    private bool _bPlankValid = true;
 
     private Image _pawnPanelImage;
     private Image _plankPanelImage;
@@ -41,10 +44,14 @@ public class PlayerButtons : MonoBehaviour
         PutButton.onClick.AddListener(OnPutButtonClicked);
     }
 
+    public EPlankImgState GetPlankState()
+    {
+        return _plankImgState;
+    }
+
     public void SetButtons(bool bTurn)
     {
-        _plankImgState = EPlankImgState.Normal;
-        rotatePlank();
+        resetPlankState();
 
         if (bTurn == true)
         {
@@ -75,23 +82,26 @@ public class PlayerButtons : MonoBehaviour
 
     public void OnPutButtonClicked()
     {
-        BoardManager.RemoveMoveablePawns.Invoke();
         MatchManager.ToNextTurn.Invoke();
-
     }
 
-    private bool _bPlankValid = true;
+    public void SetOwner(EPlayer own)
+    {
+        owner = own;
+    }
 
 
     private void onPawnButtonClicked()
     {
         //set color of the buttons
         _pawnPanelImage.color = _selectedColor;
-        if (_bPlankValid == true)
+        if (_bPlankValid)
         {
             _plankPanelImage.color = _normalColor;
         }
-        BoardManager.ShowMoveablePawns.Invoke();
+        BoardManager.RemovePlaceablePlanks.Invoke();
+        BoardManager.RemovePreviewPlank.Invoke();
+        BoardManager.ShowMoveablePawns.Invoke(owner);
 
         PawnButton.Select();
     }
@@ -99,21 +109,25 @@ public class PlayerButtons : MonoBehaviour
     private void onPlankButtonClicked()
     {
         //set color of the buttons
-        if(_bPlankValid == true)
+        if(_bPlankValid)
         {
             _pawnPanelImage.color = _normalColor;
             _plankPanelImage.color = _selectedColor;
             PlankButton.Select();
         }
 
+        BoardManager.RemovePlaceablePlanks.Invoke();
+
         //set Rotation
-        if(_plankImgState == EPlankImgState.Normal || _plankImgState == EPlankImgState.Vertical)
+        if (_plankImgState == EPlankImgState.Normal || _plankImgState == EPlankImgState.Vertical)
         {
             _plankImgState = EPlankImgState.Horizontal;
+            BoardManager.ShowPlaceablePlanks.Invoke(EDirection.Horizontal, owner);
         }
         else
         {
             _plankImgState = EPlankImgState.Vertical;
+            BoardManager.ShowPlaceablePlanks.Invoke(EDirection.Vertical, owner);
         }
         rotatePlank();
 
@@ -152,4 +166,11 @@ public class PlayerButtons : MonoBehaviour
 
         _plankImgTransform.rotation = Quaternion.Euler(targetRotation);
     }
+
+    private void resetPlankState()
+    {
+        _plankImgState = EPlankImgState.Normal;
+        rotatePlank();
+    }
+
 }

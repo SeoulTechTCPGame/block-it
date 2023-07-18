@@ -21,7 +21,9 @@ public class Cell : MonoBehaviour
     private Image _rightPlankImage;
     private Image _bottomPlankImage;
     private Image _pawnImage;
+    private Image _plankDotImage;
     private Button _pawnButton;
+    private Button _plankDotButton;
     private Dictionary<string, Image> _bottomRightDictionary;
 
     private void Awake()
@@ -30,9 +32,13 @@ public class Cell : MonoBehaviour
         _rightPlankImage = _rightPlank.GetComponentInChildren<Image>();
         _bottomPlankImage = _bottomPlank.GetComponentInChildren<Image>();
         _pawnImage = _pawn.GetComponentInChildren<Image>();
+        _plankDotImage = _plankDot.GetComponent<Image>();
         _pawnButton = _pawn.GetComponent<Button>();
+        _plankDotButton = _plankDot.GetComponent<Button>();
+
 
         _pawnButton.onClick.AddListener(() => buttonClicked());
+        _plankDotButton.onClick.AddListener(() => plankDotClicked());
 
         initBottomRightPlanks();
         offEdge();
@@ -48,6 +54,7 @@ public class Cell : MonoBehaviour
         Coordinate.x = col;
         Coordinate.y = row;
     }
+
     public void SetRightPlank(bool visible, Color color)
     {
         _rightPlankImage.enabled = visible;
@@ -82,16 +89,30 @@ public class Cell : MonoBehaviour
     public void RemovePawn()
     {
         _pawnImage.color = Color.white;
-        _pawnButton.enabled = true;
+        _pawnButton.enabled = false;
         _pawnButton.interactable = false;
+        _pawnImage.enabled = false;
 
     }
-    public void SetClickablePawn(bool bClickable)
+    public void SetClickablePawn(bool bClickable, Color color)
     {
-        _pawnButton.enabled = true;
+        _pawnImage.enabled = bClickable;
+        _pawnButton.enabled = bClickable;
         _pawnButton.interactable = bClickable;
+        if(bClickable== true)
+        {
+            _pawnImage.color = color;
+        }
     }
-
+    public void SetPlankDot(bool visible, Color color)
+    {
+        _plankDotButton.enabled = visible;
+        _plankDotImage.enabled = visible;
+        if(visible == true)
+        {
+            _plankDotImage.color = color;
+        }
+    }
     private void initBottomRightPlanks()
     {
         initBottomRightDictionary();
@@ -148,5 +169,9 @@ public class Cell : MonoBehaviour
     private void buttonClicked()
     {
         MatchManager.SetRequestedPawnCoord.Invoke(Coordinate);
+    }
+    private void plankDotClicked()
+    {
+        MatchManager.SetRequestedPlank.Invoke(Coordinate);
     }
 }
