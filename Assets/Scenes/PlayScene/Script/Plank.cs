@@ -15,7 +15,7 @@ public class Plank
     public void SetPlank(Vector2Int coord, EDirection eDirection)
     {
         mCoordinate = coord;
-        direction = eDirection;
+        mDirection = eDirection;
     }
     public void SetPlank(Vector2Int coord)
     {
@@ -23,7 +23,7 @@ public class Plank
     }
     public void SetPlank(EDirection eDirection)
     {
-        direction = eDirection;
+        mDirection = eDirection;
     }
 
     public Vector2Int GetCoordinate()

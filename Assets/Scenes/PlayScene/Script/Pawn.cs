@@ -8,6 +8,11 @@ public class Pawn
     private int mPlankNum = 10;
     private int mPawnNum;
 
+    public void SetCoordinate(Vector2Int coordinate)
+    {
+        mCoordinate = coordinate;
+    }
+
     public int GetPawnNum()
     {
         return mPawnNum;
