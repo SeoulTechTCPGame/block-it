@@ -66,3 +66,7 @@ crashlytics-build.properties
 
 #Ds_store
 **/.Ds_store
+
+# Server Connection Config File
+ConnectionInfo.json
+ConnectionInfo.json.meta

@@ -1,0 +1,9 @@
+{
+    "DB": {
+        "Address": "서버 주소",
+        "Port": "서버 포트",
+        "DBName": "데이터베이스 이름",
+        "ID": "SQL Server ID",
+        "Password": "비밀번호"
+    }
+}
