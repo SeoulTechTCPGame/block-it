@@ -54,12 +54,18 @@ public class OptionalController : MonoBehaviour
     {
         // BGM 볼륨 값을 변경
         _soundManager.BgmVolume = value;
+        _soundManager.BgmAudioSource.volume = value;
+
+        _soundManager.SaveSettings();
         UpdateBgmImage(value);
     }
     public void OnSoundEffectVolumeChanged(float value)
     {
         // 사운드 이펙트 볼륨 값을 변경
         _soundManager.SoundEffectVolume = value;
+        _soundManager.SoundEffectAudioSource.volume = value;
+
+        _soundManager.SaveSettings();
         UpdateSoundEffectImage(value);
     }
     public void OnVibrationToggleChanged(bool value)
@@ -74,6 +80,8 @@ public class OptionalController : MonoBehaviour
         // 위치에 따라 checkmark 좌우로 움직임
         float targetX = value ? _toggleMinX : _toggleMaxX;
         _vibCheckmark.anchoredPosition = new Vector2(targetX, 0f);
+
+        _soundManager.SaveSettings();
     }
     private void UpdateBgmImage(float volume)
     {
