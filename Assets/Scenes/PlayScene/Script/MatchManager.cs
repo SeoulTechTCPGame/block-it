@@ -9,6 +9,7 @@ public class MatchManager : MonoBehaviour
     public GameObject P2Buttons;
     public GameObject P1Plank;
     public GameObject P2Plank;
+    public GameObject WinState;
     public Vector2Int RequestedPawnCoord;
     public Plank RequestedPlank = new Plank();
 
@@ -111,6 +112,8 @@ public class MatchManager : MonoBehaviour
         List<Vector2Int> horizontalPlankDots = _gameLogic.GetPlaceablePlankCoords(EDirection.Horizontal);
         List<Vector2Int> verticalPlankDots = _gameLogic.GetPlaceablePlankCoords(EDirection.Vertical);
         BoardManager.UpdatePlaceablePlanks.Invoke(horizontalPlankDots, verticalPlankDots);
+
+        checkDisplayWin();
     }
 
     private void updateRequestedPawnCoord(Vector2Int coord)
@@ -162,6 +165,24 @@ public class MatchManager : MonoBehaviour
 
         // disable player's put button
         enablePlayerPut(false);
+    }
+
+    private void checkDisplayWin()
+    {
+        if( _gameLogic.Wins(EPlayer.Player1) || _gameLogic.Wins(EPlayer.Player2))
+        {
+            P1Buttons.GetComponent<PlayerButtons>().DisableButtons();
+            P2Buttons.GetComponent<PlayerButtons>().DisableButtons();
+
+            if (_gameLogic.Wins(EPlayer.Player1))
+            {
+                WinState.GetComponent<WinState>().DisplayWin(EPlayer.Player1);
+            }
+            else
+            {
+                WinState.GetComponent<WinState>().DisplayWin(EPlayer.Player2);
+            }
+        }        
     }
 
     private bool isNextTurnAvaible() 

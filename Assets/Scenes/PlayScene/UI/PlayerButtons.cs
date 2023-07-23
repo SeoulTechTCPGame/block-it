@@ -95,6 +95,13 @@ public class PlayerButtons : MonoBehaviour
         PutButton.interactable = bInteractable;
     }
 
+    public void DisableButtons()
+    {
+        PawnButton.gameObject.SetActive(false);
+        PlankButton.gameObject.SetActive(false);
+        PutButton.gameObject.SetActive(false);
+    }
+
     private void onPawnButtonClicked()
     {
         MatchManager.ResetMove.Invoke();

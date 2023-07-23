@@ -700,6 +700,7 @@ MonoBehaviour:
   P2Buttons: {fileID: 64624389}
   P1Plank: {fileID: 0}
   P2Plank: {fileID: 0}
+  WinState: {fileID: 1600761402}
   RequestedPawnCoord: {x: 0, y: 0}
 --- !u!1001 &1981893498
 PrefabInstance:
@@ -941,6 +942,10 @@ PrefabInstance:
     - target: {fileID: 1920057130928042747, guid: 254eef40e24450b4f8eb8c980994be20, type: 3}
       propertyPath: m_Name
       value: Player1Buttons
+      objectReference: {fileID: 0}
+    - target: {fileID: 1920057130928042747, guid: 254eef40e24450b4f8eb8c980994be20, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1923496633302355501, guid: 254eef40e24450b4f8eb8c980994be20, type: 3}
       propertyPath: m_Pivot.x
