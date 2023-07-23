@@ -64,7 +64,7 @@ public class PlayerButtons : MonoBehaviour
                 _plankPanelImage.color = _normalColor;
             }
 
-            setPutButton(true);
+            activatePutButton(true);
         }
         else
         {
@@ -75,7 +75,7 @@ public class PlayerButtons : MonoBehaviour
             PlankButton.interactable = false;
             _plankPanelImage.color = _disabledColor;
             //set Put
-            setPutButton(false);
+            activatePutButton(false);
         }
 
     }
@@ -90,9 +90,14 @@ public class PlayerButtons : MonoBehaviour
         owner = own;
     }
 
+    public void SetPutButtonInteractable(bool bInteractable)
+    {
+        PutButton.interactable = bInteractable;
+    }
 
     private void onPawnButtonClicked()
     {
+        MatchManager.ResetMove.Invoke();
         //set color of the buttons
         _pawnPanelImage.color = _selectedColor;
         if (_bPlankValid)
@@ -108,8 +113,10 @@ public class PlayerButtons : MonoBehaviour
 
     private void onPlankButtonClicked()
     {
+        MatchManager.ResetMove.Invoke();
+
         //set color of the buttons
-        if(_bPlankValid)
+        if (_bPlankValid)
         {
             _pawnPanelImage.color = _normalColor;
             _plankPanelImage.color = _selectedColor;
@@ -142,9 +149,10 @@ public class PlayerButtons : MonoBehaviour
         _plankPanelImage.color = _disabledColor;
     }
 
-    private void setPutButton(bool bOn)
+    private void activatePutButton(bool bOn)
     {
         PutButton.gameObject.SetActive(bOn);
+        PutButton.interactable = false;
     }
 
     private void rotatePlank()

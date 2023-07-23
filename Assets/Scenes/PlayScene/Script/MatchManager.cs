@@ -18,6 +18,7 @@ public class MatchManager : MonoBehaviour
     private bool _bUpdatePlank = false;
 
     public static UnityEvent ToNextTurn;
+    public static UnityEvent ResetMove;
     public static UnityEvent<Vector2Int> SetRequestedPawnCoord = new UnityEvent<Vector2Int>();
     public static UnityEvent<Vector2Int> SetRequestedPlank= new UnityEvent<Vector2Int>();
 
@@ -28,6 +29,9 @@ public class MatchManager : MonoBehaviour
     {
         ToNextTurn = new UnityEvent();
         ToNextTurn.AddListener(nextTurn);
+
+        ResetMove= new UnityEvent();
+        ResetMove.AddListener(resetMove);
 
         SetRequestedPawnCoord = new UnityEvent<Vector2Int>();
         SetRequestedPawnCoord.AddListener(updateRequestedPawnCoord);
@@ -50,6 +54,7 @@ public class MatchManager : MonoBehaviour
         P1Buttons.GetComponent<PlayerButtons>().SetOwner(EPlayer.Player1);
         P2Buttons.GetComponent<PlayerButtons>().SetOwner(EPlayer.Player2);
     }
+
     private void nextTurn() 
     {
         clearTmpView();
@@ -116,7 +121,10 @@ public class MatchManager : MonoBehaviour
 
         BoardManager.RemovePreviewPlank.Invoke();
         BoardManager.UpdateClickedPawn.Invoke(_turn, coord);
+
+        enablePlayerPut(true);
     }
+
     private void updateRequestedPlank(Vector2Int coord)
     {
         GameObject targetButton = (_turn == EPlayer.Player1) ? P1Buttons : P2Buttons;
@@ -136,6 +144,8 @@ public class MatchManager : MonoBehaviour
 
         _bUpdatePawnCoord = false;
         _bUpdatePlank = true;
+
+        enablePlayerPut(true);
     }
 
     private void clearTmpView()
@@ -143,5 +153,44 @@ public class MatchManager : MonoBehaviour
         BoardManager.RemoveMoveablePawns.Invoke();
         BoardManager.RemovePlaceablePlanks.Invoke();
         BoardManager.RemovePreviewPlank.Invoke();
+    }
+
+    private void resetMove()
+    {
+        _bUpdatePawnCoord = false;
+        _bUpdatePlank = false;
+
+        // disable player's put button
+        enablePlayerPut(false);
+    }
+
+    private bool isNextTurnAvaible() 
+    { 
+        if(_bUpdatePawnCoord || _bUpdatePlank)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private void enablePlayerPut(bool bOn)
+    {
+        GameObject targetButton = getCurrentPlayerButton();
+        targetButton.GetComponent<PlayerButtons>().SetPutButtonInteractable(bOn);
+    }
+
+    private GameObject getCurrentPlayerButton()
+    {
+        if(_turn == EPlayer.Player1)
+        {
+            return P1Buttons;
+        }
+        else
+        {
+            return P2Buttons;
+        }
     }
 }

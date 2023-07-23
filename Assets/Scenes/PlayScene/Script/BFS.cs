@@ -1,45 +1,47 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 class BFS
 {
     public bool IsThereAtLeastOneWay(Pawn pawn)
     {
-        int row = pawn.GetCoordinate().y;
-        int col = pawn.GetCoordinate().x;
+        int pawnRow = pawn.GetCoordinate().y;
+        int pawnCol = pawn.GetCoordinate().x;
         int pawnNum = pawn.GetPawnNum();
         Queue<Vector2Int> que = new Queue<Vector2Int>();
-        que.Enqueue(new Vector2Int(col, row));
-
-        GameLogic gameLogic = new GameLogic();
+        que.Enqueue(new Vector2Int(pawnCol, pawnRow));
+        
+        
         int[,] visited = new int[9, 9];
 
         //// NSEW
         while (que.Count != 0)
         {
-            row = que.Peek().y;
-            col = que.Peek().x;
-            visited[row,col] = 1;
-            if (pawnNum == 1 && row == 8 || pawnNum == 2 && row == 0) return true;
+            pawnRow = que.Peek().y;
+            pawnCol = que.Peek().x;
+            visited[pawnRow,pawnCol] = 1;
+            if (pawnNum == 1 && pawnRow == 8 || pawnNum == 2 && pawnRow == 0) return true;
             // NORTH
-            if (visited[row+1,col] != 1 && !gameLogic.IsPlankInTheNorth(row, col))
+
+            if (pawnRow + 1 < 9 && visited[pawnRow+1,pawnCol] != 1 && !GameLogic.instance.IsPlankInTheNorth(pawnRow, pawnCol))
             { 
-                que.Enqueue(new Vector2Int(col, row+1));
+                que.Enqueue(new Vector2Int(pawnCol, pawnRow+1));
             }
             // SOUTH
-            if (visited[row-1, col] != 1 && !gameLogic.IsPlankInTheSouth(row, col))
+            if (pawnRow - 1 >= 0 && visited[pawnRow-1, pawnCol] != 1 && !GameLogic.instance.IsPlankInTheSouth(pawnRow, pawnCol))
             {
-                que.Enqueue(new Vector2Int(col, row-1));
+                que.Enqueue(new Vector2Int(pawnCol, pawnRow-1));
             }
             // EAST
-            if (visited[row, col+1] != 1 && !gameLogic.IsPlankInTheEast(row, col))
+            if (pawnCol + 1 < 9 && visited[pawnRow, pawnCol+1] != 1 && !GameLogic.instance.IsPlankInTheEast(pawnRow, pawnCol))
             {
-                que.Enqueue(new Vector2Int(col+1, row));
+                que.Enqueue(new Vector2Int(pawnCol+1, pawnRow));
             }
             // WEST
-            if (visited[row, col-1] != 1 && !gameLogic.IsPlankInTheWest(row, col))
+            if (pawnCol - 1 >= 0 && visited[pawnRow, pawnCol-1] != 1 && !GameLogic.instance.IsPlankInTheWest(pawnRow, pawnCol))
             {
-                que.Enqueue(new Vector2Int(col-1, row));
+                que.Enqueue(new Vector2Int(pawnCol-1, pawnRow));
             }
 
             que.Dequeue();
