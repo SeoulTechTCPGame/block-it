@@ -146,7 +146,6 @@ public List<Vector2Int> GetPlaceablePlankCoords(EDirection direction)
 
 }
         
-
 public bool IsPlankInTheNorth(int targetRow, int targetCol)
 {
     foreach (Plank plank in planks)
@@ -160,9 +159,6 @@ public bool IsPlankInTheNorth(int targetRow, int targetCol)
 
     return false;
 }
-
-
-
 
 public bool IsPlankInTheSouth(int targetRow, int targetCol)
 {
@@ -243,19 +239,24 @@ public void SetPlank(Plank plank)
     }
 }
 
-public bool Wins(EPlayer ePlayer)//Pawn pawn)
+public bool Wins(EPlayer ePlayer)
 {
     Pawn targetPawn = getTargetPawn(ePlayer);
+    int targetY;
 
-    if (targetPawn.GetPlankNum() == 1 && targetPawn.GetCoordinate().y == 9)
+    if(ePlayer == EPlayer.Player1) 
+    {
+         targetY = 0;
+    }
+	else
+	{
+      targetY = 8;
+	}
+
+    if (targetPawn.GetCoordinate().y == targetY)
     {
         return true;
     }
-    else if (targetPawn.GetPlankNum() == 2 && targetPawn.GetCoordinate().y == 1)
-    {
-        return true;
-    }
-
     return false;
 }
 
