@@ -8,7 +8,6 @@ public enum EPlayer
 }
 
 
-
 public class GameLogic : MonoBehaviour
 {
 private Pawn P1 = new Pawn();
@@ -47,11 +46,12 @@ public Vector2Int GetPawnCoordinate(EPlayer ePlayer)//Pawn pawn)
 }
 
 public List<Vector2Int> GetMoveablePawnCoords(EPlayer ePlayer)//(Pawn pawn)
-{
+{        
+
     Pawn targetPawn = getTargetPawn(ePlayer);
     Pawn opponentPawn = GetOpponentPawn(targetPawn);
 
-    List<Vector2Int> validCoords = new List<Vector2Int>();
+    List<Vector2Int> validCoords = new List<Vector2Int>() { };
 
     int targetRow = targetPawn.GetCoordinate().y;
     int targetCol = targetPawn.GetCoordinate().x;
@@ -113,7 +113,12 @@ public List<Vector2Int> GetMoveablePawnCoords(EPlayer ePlayer)//(Pawn pawn)
         validCoords.Add(new Vector2Int(targetCol - 1, targetRow));
     }
 
-    return validCoords;
+        foreach (Vector2Int coor in validCoords)
+        {
+            Debug.Log("Pawn" + ePlayer + "\'s Coord: " + coor);
+        }
+
+        return validCoords;
 }
 
 // !! FILL THIS METHOD !!
@@ -235,12 +240,26 @@ public void SetPawnPlace(EPlayer ePlayer, Vector2Int coordinate)
 
 public void SetPlank(Plank plank)
 {
-    BFS bfs = new BFS();
-    if (bfs.IsThereAtLeastOneWay(P1) && bfs.IsThereAtLeastOneWay(P2))
+    
+    if (IsThereAtLeastOneWay(P1) && IsThereAtLeastOneWay(P2))
     {
         // TODO 좌표가 동일한 plank 는 추가해서는 안됨
         planks.Add(plank);
+          //  Debug.Log("Plank Added: x = " + plank.GetCoordinate().x + " , y = " + plank.GetCoordinate().y);
     }
+        //else
+    //    {
+    //        Debug.LogWarning("Plank NOT Added: x " + plank.GetCoordinate().x + " , y = " + plank.GetCoordinate().y);
+
+    //    }
+
+    //    Debug.Log("---");
+
+    //foreach(Plank _plank in planks) 
+    //    {
+    //        Debug.Log("Plank: x = " + _plank.GetCoordinate().x + " , y " + _plank.GetCoordinate().y);
+    //    }
+    //    Debug.Log("---");
 }
 
 public bool Wins(EPlayer ePlayer)//Pawn pawn)
@@ -294,5 +313,52 @@ public Pawn getTargetPawn(EPlayer ePlayer)
 
     return targetPawn;
 }
+
+    public bool IsThereAtLeastOneWay(Pawn pawn)
+    {
+        int pawnRow = pawn.GetCoordinate().y;
+        int pawnCol = pawn.GetCoordinate().x;
+        int pawnNum = pawn.GetPawnNum();
+        Queue<Vector2Int> que = new Queue<Vector2Int>();
+        que.Enqueue(new Vector2Int(pawnCol, pawnRow));
+
+
+        int[,] visited = new int[9, 9];
+
+        //// NSEW
+        while (que.Count != 0)
+        {
+            pawnRow = que.Peek().y;
+            pawnCol = que.Peek().x;
+            //Debug.Log("row: " + pawnRow + "col: " + pawnCol);
+            visited[pawnRow, pawnCol] = 1;
+            if (pawnNum == 1 && pawnRow == 8 || pawnNum == 2 && pawnRow == 0) return true;
+            // NORTH
+
+            if (pawnRow + 1 < 9 && visited[pawnRow + 1, pawnCol] != 1 && !GameLogic.instance.IsPlankInTheNorth(pawnRow, pawnCol))
+            {
+                que.Enqueue(new Vector2Int(pawnCol, pawnRow + 1));
+            }
+            // SOUTH
+            if (pawnRow - 1 >= 0 && visited[pawnRow - 1, pawnCol] != 1 && !GameLogic.instance.IsPlankInTheSouth(pawnRow, pawnCol))
+            {
+                que.Enqueue(new Vector2Int(pawnCol, pawnRow - 1));
+            }
+            // EAST
+            if (pawnCol + 1 < 9 && visited[pawnRow, pawnCol + 1] != 1 && !GameLogic.instance.IsPlankInTheEast(pawnRow, pawnCol))
+            {
+                que.Enqueue(new Vector2Int(pawnCol + 1, pawnRow));
+            }
+            // WEST
+            if (pawnCol - 1 >= 0 && visited[pawnRow, pawnCol - 1] != 1 && !GameLogic.instance.IsPlankInTheWest(pawnRow, pawnCol))
+            {
+                que.Enqueue(new Vector2Int(pawnCol - 1, pawnRow));
+            }
+
+            que.Dequeue();
+        }
+
+        return false;
+    }
 
 }
