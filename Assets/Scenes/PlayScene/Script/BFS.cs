@@ -2,9 +2,9 @@
 using System.Collections;
 using UnityEngine;
 
-class BFS
+public static class BFS
 {
-    public bool IsThereAtLeastOneWay(Pawn pawn)
+    public static bool IsThereAtLeastOneWay(Pawn pawn)
     {
         int pawnRow = pawn.GetCoordinate().y;
         int pawnCol = pawn.GetCoordinate().x;

@@ -7,8 +7,6 @@ public enum EPlayer
     Player2
 }
 
-
-
 public class GameLogic : MonoBehaviour
 {
 private Pawn P1 = new Pawn();
@@ -40,18 +38,19 @@ private void SetGame()
 
 public Vector2Int GetPawnCoordinate(EPlayer ePlayer)//Pawn pawn)
 {
-    Pawn targetPawn = getTargetPawn(ePlayer);
+    Pawn targetPawn = GetTargetPawn(ePlayer);
     Vector2Int targetCoord = targetPawn.GetCoordinate();
 
     return targetCoord;
 }
 
 public List<Vector2Int> GetMoveablePawnCoords(EPlayer ePlayer)//(Pawn pawn)
-{
-    Pawn targetPawn = getTargetPawn(ePlayer);
+{        
+
+    Pawn targetPawn = GetTargetPawn(ePlayer);
     Pawn opponentPawn = GetOpponentPawn(targetPawn);
 
-    List<Vector2Int> validCoords = new List<Vector2Int>();
+    List<Vector2Int> validCoords = new List<Vector2Int>() { };
 
     int targetRow = targetPawn.GetCoordinate().y;
     int targetCol = targetPawn.GetCoordinate().x;
@@ -113,37 +112,54 @@ public List<Vector2Int> GetMoveablePawnCoords(EPlayer ePlayer)//(Pawn pawn)
         validCoords.Add(new Vector2Int(targetCol - 1, targetRow));
     }
 
-    return validCoords;
+        //foreach (Vector2Int coor in validCoords)
+        //{
+        //    Debug.Log("Pawn" + ePlayer + "\'s Coord: " + coor);
+        //}
+
+        return validCoords;
 }
 
 // !! FILL THIS METHOD !!
 public List<Vector2Int> GetPlaceablePlankCoords(EDirection direction)
 {
-    List<Vector2Int> target = new List<Vector2Int>();
-    //fill the code
-    bool flag;
-    for (int i = 0; i < 9; i++)
-    {
-        for (int j = 0; j < 9; j++)
+        List<Vector2Int> target = new List<Vector2Int>();
+        //fill the code
+        int plankRow, plankCol;
+        bool flag;
+        for (int row = 0; row < 9; row++)
         {
-            flag = true;
-            foreach (Plank plank in planks)
+            for (int col = 0; col < 9; col++)
             {
-                if (plank.GetDirection() == direction && plank.GetCoordinate().x == i && plank.GetCoordinate().y == j)
+                flag = true;
+                foreach (Plank plank in planks)
                 {
-                    flag = false;
-                    break;
+                    plankRow = plank.GetCoordinate().y;
+                    plankCol = plank.GetCoordinate().x;
+
+                    if (row == plankRow && col == plankCol)
+                    {
+                        flag = false;
+                        break;
+                    }
+                    
+                    if (direction == EDirection.Horizontal)
+                    {
+                        if (plank.GetDirection() == EDirection.Horizontal
+                            && row == plankRow && (col == plankCol + 1 || col == plankCol - 1))
+                        {
+                            flag = false;
+                            break;
+                        }
+                    }
+                }
+                if (flag)
+                {
+                    target.Add(new Vector2Int(col, row));
                 }
             }
-            if (flag)
-            {
-                target.Add(new Vector2Int(i, j));
-            }
         }
-    }
-
-    return target;
-
+        return target;
 }
         
 
@@ -160,9 +176,6 @@ public bool IsPlankInTheNorth(int targetRow, int targetCol)
 
     return false;
 }
-
-
-
 
 public bool IsPlankInTheSouth(int targetRow, int targetCol)
 {
@@ -229,23 +242,35 @@ public bool IsPlankPlaceable(Vector2Int coor)
 
 public void SetPawnPlace(EPlayer ePlayer, Vector2Int coordinate)
 {
-    Pawn targetPawn = getTargetPawn(ePlayer);
+    Pawn targetPawn = GetTargetPawn(ePlayer);
     targetPawn.SetCoordinate(coordinate);
 }
 
 public void SetPlank(Plank plank)
 {
-    BFS bfs = new BFS();
-    if (bfs.IsThereAtLeastOneWay(P1) && bfs.IsThereAtLeastOneWay(P2))
+
+    if (IsThereAtLeastOneWay(EPlayer.Player1) && IsThereAtLeastOneWay(EPlayer.Player2))
     {
         // TODO 좌표가 동일한 plank 는 추가해서는 안됨
         planks.Add(plank);
     }
+    else
+    {
+        Debug.LogWarning("Plank NOT Added: x " + plank.GetCoordinate().x + " , y = " + plank.GetCoordinate().y);
+    }
+
+    Debug.Log("---Length: " + planks.Count);
+
+    foreach (Plank _plank in planks)
+    {
+        Debug.Log("Plank: direction = " + _plank.GetDirection() + " x = " + _plank.GetCoordinate().x + " , y " + _plank.GetCoordinate().y);
+    }
+    Debug.Log("---");
 }
 
 public bool Wins(EPlayer ePlayer)//Pawn pawn)
 {
-    Pawn targetPawn = getTargetPawn(ePlayer);
+    Pawn targetPawn = GetTargetPawn(ePlayer);
 
     if (targetPawn.GetPlankNum() == 1 && targetPawn.GetCoordinate().y == 9)
     {
@@ -280,7 +305,7 @@ public void changeTurn()
     }
 }
 
-public Pawn getTargetPawn(EPlayer ePlayer)
+public Pawn GetTargetPawn(EPlayer ePlayer)
 {
     Pawn targetPawn;
     if (ePlayer == EPlayer.Player1)
@@ -293,6 +318,54 @@ public Pawn getTargetPawn(EPlayer ePlayer)
     }
 
     return targetPawn;
+}
+
+public bool IsThereAtLeastOneWay(EPlayer player)
+{
+    Pawn pawn;
+    if (player == EPlayer.Player1) pawn = P1;
+    else pawn = P2;
+
+    int pawnRow = pawn.GetCoordinate().y;
+    int pawnCol = pawn.GetCoordinate().x;
+    Queue<Vector2Int> que = new Queue<Vector2Int>();
+    que.Enqueue(new Vector2Int(pawnCol, pawnRow));
+
+    int[,] visited = new int[9, 9];
+
+    //// NSEW
+    while (que.Count != 0)
+    {
+        pawnRow = que.Peek().y;
+        pawnCol = que.Peek().x;
+        visited[pawnRow, pawnCol] = 1;
+        if ( (player == EPlayer.Player1 && pawnRow == 0) || (player == EPlayer.Player2 && pawnRow == 8)) return true;
+        // NORTH
+
+        if (pawnRow + 1 < 9 && visited[pawnRow + 1, pawnCol] != 1 && !IsPlankInTheNorth(pawnRow, pawnCol))
+        {
+            que.Enqueue(new Vector2Int(pawnCol, pawnRow + 1));
+        }
+        // SOUTH
+        if (pawnRow - 1 >= 0 && visited[pawnRow - 1, pawnCol] != 1 && !IsPlankInTheSouth(pawnRow, pawnCol))
+        {
+            que.Enqueue(new Vector2Int(pawnCol, pawnRow - 1));
+        }
+        // EAST
+        if (pawnCol + 1 < 9 && visited[pawnRow, pawnCol + 1] != 1 && !IsPlankInTheEast(pawnRow, pawnCol))
+        {
+            que.Enqueue(new Vector2Int(pawnCol + 1, pawnRow));
+        }
+        // WEST
+        if (pawnCol - 1 >= 0 && visited[pawnRow, pawnCol - 1] != 1 && !IsPlankInTheWest(pawnRow, pawnCol))
+        {
+            que.Enqueue(new Vector2Int(pawnCol - 1, pawnRow));
+        }
+
+        que.Dequeue();
+    }
+
+    return false;
 }
 
 }
