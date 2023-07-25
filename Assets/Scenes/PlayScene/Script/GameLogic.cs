@@ -65,8 +65,10 @@ public List<Vector2Int> GetMoveablePawnCoords(EPlayer ePlayer)//(Pawn pawn)
     {
 
     }
-    else if (opponentRow -1 == targetRow && targetCol == opponentCol) // pawn 이 있는지 검사 
+    else if (opponentRow + 1 == targetRow && targetCol == opponentCol) // pawn 이 있는지 검사 
     {
+        Debug.Log("other Pawn is on North");
+
         if (targetRow - 2 >= 0 && !IsPlankInTheNorth(targetCol, targetRow-1))
         {
             validCoords.Add(new Vector2Int(targetCol, targetRow - 2));
