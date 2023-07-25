@@ -269,7 +269,7 @@ public void SetPlank(Plank plank)
 
 public bool Wins(EPlayer ePlayer)
 {
-    Pawn targetPawn = getTargetPawn(ePlayer);
+    Pawn targetPawn = GetTargetPawn(ePlayer);
     int targetY;
 
     if(ePlayer == EPlayer.Player1) 

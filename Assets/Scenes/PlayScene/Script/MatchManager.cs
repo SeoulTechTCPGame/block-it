@@ -90,8 +90,10 @@ public class MatchManager : MonoBehaviour
         }
         if(_bUpdatePlank == true)
         {
-            _gameLogic.SetPlank(RequestedPlank);
-            _gameLogic.getTargetPawn(otherPlayer).UsePlank();
+            Plank newPlank = new Plank();
+            newPlank.SetPlank(RequestedPlank.GetCoordinate(), RequestedPlank.GetDirection());
+            _gameLogic.SetPlank(newPlank);
+            _gameLogic.GetTargetPawn(otherPlayer).UsePlank();
             BoardManager.ReduceRemainPlank.Invoke(otherPlayer);
             BoardManager.PlacePlank.Invoke(RequestedPlank);
         }
