@@ -636,11 +636,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c444556f1db98764ea34f59c4ce097fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dbAddress: host.tcp.or.kr
-  dbPortNumber: 14333
-  dbName: blockit
-  dbId: blockit
-  dbPassword: BlockIt!122
   userId: 1
   userName: {fileID: 819434412}
   userRecord: {fileID: 69640777}
@@ -876,6 +871,7 @@ GameObject:
   - component: {fileID: 460119599}
   - component: {fileID: 460119598}
   - component: {fileID: 460119601}
+  - component: {fileID: 460119602}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -945,6 +941,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c70b398a09793c47a6d84668cf8390d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &460119602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 460119597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a01c88d61895c824d90b39b64f281fc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mClip: {fileID: 8300000, guid: 6c62333a9cf1ce742bb3725fa65e7137, type: 3}
 --- !u!1 &518858897
 GameObject:
   m_ObjectHideFlags: 0
@@ -1130,6 +1139,18 @@ MonoBehaviour:
       - m_Target: {fileID: 460119601}
         m_TargetAssemblyTypeName: MoveScene, Assembly-CSharp
         m_MethodName: ToHome
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 460119602}
+        m_TargetAssemblyTypeName: ButtonClick, Assembly-CSharp
+        m_MethodName: PlayButtonSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
