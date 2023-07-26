@@ -172,7 +172,7 @@ public bool IsPlankInTheNorth(int targetCol, int targetRow)
 {
     foreach (Plank plank in planks)
     {
-        if ( plank.GetDirection() == EDirection.Horizontal && (plank.GetCoordinate().y == targetRow - 1 ) && ( (plank.GetCoordinate().x == targetCol) || (plank.GetCoordinate().x == targetCol -1) ) )
+        if ( plank.GetDirection() == EDirection.Horizontal && (plank.GetCoordinate().y == targetRow - 1 ) && ( (plank.GetCoordinate().x == targetCol) || (plank.GetCoordinate().x == targetCol - 1) ) )
         {
             Debug.Log("No North");
             return true;
@@ -182,12 +182,11 @@ public bool IsPlankInTheNorth(int targetCol, int targetRow)
     return false;
 }
 
-public bool IsPlankInTheSouth(int targetRow, int targetCol)
+public bool IsPlankInTheSouth(int targetCol, int targetRow)
 {
-    foreach (Plank plank in planks)
-    {
-        if (plank.GetDirection() == EDirection.Horizontal && (plank.GetCoordinate().y == targetRow && plank.GetCoordinate().x == targetCol) ||
-            plank.GetCoordinate().y == targetRow && plank.GetCoordinate().x == targetCol - 1)
+        foreach (Plank plank in planks)
+        {
+            if (plank.GetDirection() == EDirection.Horizontal && (plank.GetCoordinate().y == targetRow - 1) && ((plank.GetCoordinate().x == targetCol) || (plank.GetCoordinate().x == targetCol - 1)))
         {
             return true;
         }
@@ -195,12 +194,11 @@ public bool IsPlankInTheSouth(int targetRow, int targetCol)
     return false;
 }
 
-public bool IsPlankInTheEast(int targetRow, int targetCol)
+public bool IsPlankInTheEast(int targetCol, int targetRow)
 {
     foreach (Plank plank in planks)
     {
-        if (plank.GetDirection() == EDirection.Vertical && (plank.GetCoordinate().y == targetRow - 1 && plank.GetCoordinate().x == targetCol) ||
-            plank.GetCoordinate().y == targetRow && plank.GetCoordinate().x == targetCol)
+        if (plank.GetDirection() == EDirection.Vertical && (plank.GetCoordinate().x == targetCol - 1) && ((plank.GetCoordinate().y == targetRow) || (plank.GetCoordinate().y == targetRow - 1)))
         {
             return true;
         }
@@ -208,12 +206,11 @@ public bool IsPlankInTheEast(int targetRow, int targetCol)
     return false;
 }
 
-public bool IsPlankInTheWest(int targetRow, int targetCol)
+public bool IsPlankInTheWest(int targetCol, int targetRow)
 {
     foreach (Plank plank in planks)
     {
-        if (plank.GetDirection() == EDirection.Vertical && (plank.GetCoordinate().y == targetRow - 1 && plank.GetCoordinate().x == targetCol - 1) ||
-            plank.GetCoordinate().y == targetRow && plank.GetCoordinate().x == targetCol - 1)
+        if (plank.GetDirection() == EDirection.Vertical && (plank.GetCoordinate().x == targetCol) && ((plank.GetCoordinate().y == targetRow) || (plank.GetCoordinate().y == targetRow - 1) ) )
         {
             return true;
         }
