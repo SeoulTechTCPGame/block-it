@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.UI;
 
-public class ButtonClick : MonoBehaviour
+public class SoundEffect: MonoBehaviour
 {
     [SerializeField] AudioClip mClip;
 
