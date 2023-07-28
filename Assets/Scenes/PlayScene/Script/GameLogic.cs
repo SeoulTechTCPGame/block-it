@@ -250,6 +250,7 @@ public void SetPawnPlace(EPlayer ePlayer, Vector2Int coordinate)
 
 public void SetPlank(Plank plank)
 {
+    Debug.Log("Game Logic's SetPlank is Called");
 
     if (IsThereAtLeastOneWay(EPlayer.Player1) && IsThereAtLeastOneWay(EPlayer.Player2))
     {
@@ -265,7 +266,7 @@ public void SetPlank(Plank plank)
 
     foreach (Plank _plank in planks)
     {
-        Debug.Log("Plank: direction = " + _plank.GetDirection() + " x = " + _plank.GetCoordinate().x + " , y =" + _plank.GetCoordinate().y);
+        Debug.Log("Game Logic - Plank: direction = " + _plank.GetDirection() + " x = " + _plank.GetCoordinate().x + " , y =" + _plank.GetCoordinate().y);
     }
     Debug.Log("---");
 }
