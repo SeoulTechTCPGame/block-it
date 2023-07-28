@@ -63,15 +63,18 @@ public List<Vector2Int> GetMoveablePawnCoords(EPlayer ePlayer)//(Pawn pawn)
     // NORTH
     if(IsPlankInTheNorth(targetCol, targetRow) || targetRow <= 0)// plank 가 있는지 검사
     {
-
-    }
+            if (targetRow - 2 >= 0 && !IsPlankInTheNorth(targetCol, targetRow - 1))
+            {
+                validCoords.Add(new Vector2Int(targetCol, targetRow - 2));
+            }
+        }
     else if (opponentRow + 1 == targetRow && targetCol == opponentCol) // pawn 이 있는지 검사 
     {
         Debug.Log("other Pawn is on North");
 
         if (targetRow - 2 >= 0 && !IsPlankInTheNorth(targetCol, targetRow-1))
         {
-            validCoords.Add(new Vector2Int(targetCol, targetRow - 2));
+            validCoords.Add(new Vector2Int(targetCol, targetRow - 1));
         }
     }
     else
@@ -174,7 +177,7 @@ public bool IsPlankInTheNorth(int targetCol, int targetRow)
     {
         if ( plank.GetDirection() == EDirection.Horizontal && (plank.GetCoordinate().y == targetRow - 1 ) && ( (plank.GetCoordinate().x == targetCol) || (plank.GetCoordinate().x == targetCol - 1) ) )
         {
-            Debug.Log("No North");
+                //Debug.Log("There is plank in the North");
             return true;
         }
     }
@@ -188,7 +191,8 @@ public bool IsPlankInTheSouth(int targetCol, int targetRow)
         {
             if (plank.GetDirection() == EDirection.Horizontal && (plank.GetCoordinate().y == targetRow - 1) && ((plank.GetCoordinate().x == targetCol) || (plank.GetCoordinate().x == targetCol - 1)))
         {
-            return true;
+                //Debug.Log("There is plank in the South");
+                return true;
         }
     }
     return false;
@@ -200,7 +204,8 @@ public bool IsPlankInTheEast(int targetCol, int targetRow)
     {
         if (plank.GetDirection() == EDirection.Vertical && (plank.GetCoordinate().x == targetCol - 1) && ((plank.GetCoordinate().y == targetRow) || (plank.GetCoordinate().y == targetRow - 1)))
         {
-            return true;
+                //Debug.Log("There is plank in the East");
+                return true;
         }
     }
     return false;
@@ -212,7 +217,8 @@ public bool IsPlankInTheWest(int targetCol, int targetRow)
     {
         if (plank.GetDirection() == EDirection.Vertical && (plank.GetCoordinate().x == targetCol) && ((plank.GetCoordinate().y == targetRow) || (plank.GetCoordinate().y == targetRow - 1) ) )
         {
-            return true;
+                Debug.Log("There is plank in the West");
+                return true;
         }
     }
     return false;
@@ -250,24 +256,20 @@ public void SetPawnPlace(EPlayer ePlayer, Vector2Int coordinate)
 
 public void SetPlank(Plank plank)
 {
+        Debug.Log("Set Plank");
 
-    if (IsThereAtLeastOneWay(EPlayer.Player1) && IsThereAtLeastOneWay(EPlayer.Player2))
+        bool player1 = IsThereAtLeastOneWay(EPlayer.Player1);
+        bool player2 = IsThereAtLeastOneWay(EPlayer.Player2);
+        //Debug.Log("player1: " + player1);
+        //Debug.Log("player2: " + player2);
+
+    if (player1 && player2)
     {
+            //Debug.Log("Added");
         // TODO 좌표가 동일한 plank 는 추가해서는 안됨
         planks.Add(plank);
     }
-    else
-    {
-        Debug.LogWarning("Plank NOT Added: x " + plank.GetCoordinate().x + " , y = " + plank.GetCoordinate().y);
-    }
-
-    Debug.Log("---Length: " + planks.Count);
-
-    foreach (Plank _plank in planks)
-    {
-        Debug.Log("Plank: direction = " + _plank.GetDirection() + " x = " + _plank.GetCoordinate().x + " , y =" + _plank.GetCoordinate().y);
-    }
-    Debug.Log("---");
+    
 }
 
 public bool Wins(EPlayer ePlayer)
@@ -327,16 +329,20 @@ public Pawn GetTargetPawn(EPlayer ePlayer)
     return targetPawn;
 }
 
-public bool IsThereAtLeastOneWay(EPlayer player)
+private bool IsThereAtLeastOneWay(EPlayer player)
 {
+    Debug.Log("IsThereAtLeastOneWay");
     Pawn pawn;
     if (player == EPlayer.Player1) pawn = P1;
     else pawn = P2;
 
     int pawnRow = pawn.GetCoordinate().y;
     int pawnCol = pawn.GetCoordinate().x;
+    //Debug.Log("x: " + pawnCol + "y: " + pawnRow);
+
     Queue<Vector2Int> que = new Queue<Vector2Int>();
     que.Enqueue(new Vector2Int(pawnCol, pawnRow));
+    //Debug.Log("pawn: " + pawn);
 
     int[,] visited = new int[9, 9];
 
@@ -345,33 +351,46 @@ public bool IsThereAtLeastOneWay(EPlayer player)
     {
         pawnRow = que.Peek().y;
         pawnCol = que.Peek().x;
-        visited[pawnRow, pawnCol] = 1;
-        if ( (player == EPlayer.Player1 && pawnRow == 0) || (player == EPlayer.Player2 && pawnRow == 8)) return true;
+        visited[pawnCol, pawnRow] = 1;
+        if ((player == EPlayer.Player1 && pawnRow == 0) || (player == EPlayer.Player2 && pawnRow == 8))
+        {
+            Debug.Log("Success");
+            return true;
+        }
         // NORTH
 
-        if (pawnRow + 1 < 9 && visited[pawnRow + 1, pawnCol] != 1 && !IsPlankInTheNorth(pawnRow, pawnCol))
+        //Debug.Log("y: " + (pawnRow) + "x: " + pawnCol)
+        if (pawnRow - 1 >= 0 && visited[pawnCol, pawnRow - 1] != 1 && !IsPlankInTheNorth(pawnCol, pawnRow))
         {
-            que.Enqueue(new Vector2Int(pawnCol, pawnRow + 1));
-        }
-        // SOUTH
-        if (pawnRow - 1 >= 0 && visited[pawnRow - 1, pawnCol] != 1 && !IsPlankInTheSouth(pawnRow, pawnCol))
-        {
+            //visited[pawnCol, pawnRow - 1] = 1;
+            //Debug.Log("y: " + (pawnRow - 1) + "x: " + pawnCol); 
             que.Enqueue(new Vector2Int(pawnCol, pawnRow - 1));
         }
-        // EAST
-        if (pawnCol + 1 < 9 && visited[pawnRow, pawnCol + 1] != 1 && !IsPlankInTheEast(pawnRow, pawnCol))
+        // SOUTH
+        if (pawnRow + 1 < 9 && visited[pawnCol, pawnRow + 1] != 1 && !IsPlankInTheSouth(pawnCol, pawnRow))
         {
+            //visited[pawnCol, pawnRow + 1] = 1;
+            //Debug.Log("y: " + (pawnRow + 1) + "x: " + pawnCol);
+            que.Enqueue(new Vector2Int(pawnCol, pawnRow + 1));
+        }
+        // EAST
+        if (pawnCol + 1 < 9 && visited[pawnCol + 1 , pawnRow] != 1 && !IsPlankInTheEast(pawnCol, pawnRow))
+        {
+            //visited[pawnCol + 1, pawnRow] = 1;
+            //Debug.Log("y: " + pawnRow + "x: " + (pawnCol + 1));
             que.Enqueue(new Vector2Int(pawnCol + 1, pawnRow));
         }
         // WEST
-        if (pawnCol - 1 >= 0 && visited[pawnRow, pawnCol - 1] != 1 && !IsPlankInTheWest(pawnRow, pawnCol))
+        if (pawnCol - 1 >= 0 && visited[pawnCol - 1, pawnRow] != 1 && !IsPlankInTheWest(pawnCol, pawnRow))
         {
+            //visited[pawnCol - 1, pawnRow] = 1;
+            //Debug.Log("y: " + pawnRow + "x: " + (pawnCol - 1));
             que.Enqueue(new Vector2Int(pawnCol - 1, pawnRow));
         }
 
         que.Dequeue();
     }
-
+        Debug.Log("Failed");
     return false;
 }
 
