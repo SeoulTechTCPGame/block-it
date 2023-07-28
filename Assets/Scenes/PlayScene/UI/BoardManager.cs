@@ -260,6 +260,7 @@ public class BoardManager : MonoBehaviour
     {
         Cell cell1 = GetCell(coordinate.x, coordinate.y);
         Cell cell2;
+        string targetMiddle;
 
         if (eDirection == EDirection.Vertical)
         {
@@ -267,8 +268,7 @@ public class BoardManager : MonoBehaviour
 
             cell1.SetRightPlank(visible, color);
             cell2.SetRightPlank(visible, color);
-            cell1.SetBottomRightPlank("Vertical", visible, color);
-            cell2.SetBottomRightPlank("Vertical", visible, color);
+            targetMiddle = "Vertical";
         }
         else if(eDirection == EDirection.Horizontal)
         {
@@ -276,15 +276,14 @@ public class BoardManager : MonoBehaviour
 
             cell1.SetBottomPlank(visible, color);
             cell2.SetBottomPlank(visible, color);
-            cell1.SetBottomRightPlank("Horizontal", visible, color);
-            cell2.SetBottomRightPlank("Horizontal", visible, color);
-
+            targetMiddle = "Horizontal";
         }
         else
         {
             Debug.LogError("BoardManager - setPlank: Invalid Plank Direction!");
             return;
         }
+        cell1.SetBottomRightPlank(targetMiddle, visible, color);
     }
 
     private void placePreviewPlank(Vector2Int coordinate, EDirection eDirection, EPlayer ePlayer)
