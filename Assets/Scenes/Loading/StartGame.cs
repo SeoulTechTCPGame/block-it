@@ -15,7 +15,7 @@ public class StartGame : MonoBehaviour
     private void Awake()
     {
         _developButton = Canvas.transform.Find("Develop").gameObject;
-        //_signUpButton = Canvas.transform.Find("Sign Up").gameObject;
+        _signUpButton = Canvas.transform.Find("Sign In").gameObject;
         _guestButton = Canvas.transform.Find("Guest").gameObject;
     }
     private void Start()
@@ -47,7 +47,7 @@ public class StartGame : MonoBehaviour
     }
     private void MoveSignUpScene()
     {
-        SceneManager.LoadScene("SignUp");
+        SceneManager.LoadScene("Auth");
     }
     private void MoveHomeScene()
     {
