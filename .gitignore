@@ -70,3 +70,13 @@ crashlytics-build.properties
 # Server Connection Config File
 ConnectionInfo.json
 ConnectionInfo.json.meta
+
+# GoogleServices
+Assets/GoogleService-Info.plist
+Assets/google-services.json
+
+# Firebase
+Assets/Editor Default Resources/
+Assets/ExternalDependencyManager/
+Assets/Firebase/
+Assets/Plugins/
