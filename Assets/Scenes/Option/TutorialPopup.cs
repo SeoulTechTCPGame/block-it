@@ -99,7 +99,7 @@ public class TutorialPopup : MonoBehaviour
         TextAsset jsonAsset = null;
         switch (S.curLangIndex)
         {
-            case 0:
+            case 0: //ToDo: Enums KR and EN
                 jsonPath += "/TutorialEN";
 
                 jsonAsset = Resources.Load<TextAsset>(jsonPath);
