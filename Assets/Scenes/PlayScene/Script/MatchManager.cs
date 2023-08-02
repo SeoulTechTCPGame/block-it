@@ -58,7 +58,7 @@ public class MatchManager : MonoBehaviour
 
     private void nextTurn() 
     {
-        clearTmpView();
+        //        clearTmpView();
         if (_turn == EPlayer.Player1)
         {
             setTurn(EPlayer.Player2);
@@ -67,11 +67,13 @@ public class MatchManager : MonoBehaviour
         {
             setTurn(EPlayer.Player1);
         }
+        BoardManager.UpdateBoard.Invoke();
 
     }
 
     private void setTurn(EPlayer ePlayer)
     {
+        _gameLogic.turn = ePlayer;
         // set target and other player.
         EPlayer otherPlayer = (ePlayer == EPlayer.Player1) ? EPlayer.Player2 : EPlayer.Player1;
 
@@ -94,8 +96,8 @@ public class MatchManager : MonoBehaviour
             newPlank.SetPlank(RequestedPlank.GetCoordinate(), RequestedPlank.GetDirection());
             _gameLogic.SetPlank(newPlank);
             _gameLogic.GetTargetPawn(otherPlayer).UsePlank();
-            BoardManager.ReduceRemainPlank.Invoke(otherPlayer);
-            BoardManager.PlacePlank.Invoke(RequestedPlank);
+//            BoardManager.ReduceRemainPlank.Invoke(otherPlayer);
+//            BoardManager.PlacePlank.Invoke(RequestedPlank);
         }
 
         // change turn and reset the value
@@ -104,16 +106,18 @@ public class MatchManager : MonoBehaviour
         _bUpdatePlank = false;
 
         // Update one Board: MoveablePawn, Pawns' Coord, & MoveableCoord
-        BoardManager.SetPawnCoord.Invoke(ePlayer, _gameLogic.GetPawnCoordinate(ePlayer));
-        BoardManager.SetPawnCoord.Invoke(otherPlayer, _gameLogic.GetPawnCoordinate(otherPlayer));
+//        BoardManager.SetPawnCoord.Invoke(ePlayer, _gameLogic.GetPawnCoordinate(ePlayer));
+//        BoardManager.SetPawnCoord.Invoke(otherPlayer, _gameLogic.GetPawnCoordinate(otherPlayer));
 
         // Set Moveable Coord for pawn on the board.
         List<Vector2Int> moveableCoord = _gameLogic.GetMoveablePawnCoords(ePlayer);
-        BoardManager.UpdateMoveablePawns.Invoke(moveableCoord);
+        //        BoardManager.UpdateMoveablePawns.Invoke(moveableCoord);
 
-        List<Vector2Int> horizontalPlankDots = _gameLogic.GetPlaceablePlankCoords(EDirection.Horizontal);
-        List<Vector2Int> verticalPlankDots = _gameLogic.GetPlaceablePlankCoords(EDirection.Vertical);
-        BoardManager.UpdatePlaceablePlanks.Invoke(horizontalPlankDots, verticalPlankDots);
+        //        List<Vector2Int> horizontalPlankDots = _gameLogic.GetPlaceablePlankCoords(EDirection.Horizontal);
+        //        List<Vector2Int> verticalPlankDots = _gameLogic.GetPlaceablePlankCoords(EDirection.Vertical);
+        //        BoardManager.UpdatePlaceablePlanks.Invoke(horizontalPlankDots, verticalPlankDots);
+        BoardManager.UpdateBoard.Invoke();
+        BoardManager.ResetState.Invoke();
 
         checkDisplayWin();
     }

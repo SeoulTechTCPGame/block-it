@@ -44,6 +44,13 @@ public Vector2Int GetPawnCoordinate(EPlayer ePlayer)//Pawn pawn)
     return targetCoord;
 }
 
+public int GetRemainPlank(EPlayer ePlayer)
+{
+    Pawn targetPawn = GetTargetPawn(ePlayer);
+
+    return targetPawn.GetPlankNum();
+}
+
 public List<Vector2Int> GetMoveablePawnCoords(EPlayer ePlayer)//(Pawn pawn)
 {        
 

@@ -54,7 +54,15 @@ public class Cell : MonoBehaviour
         Coordinate.x = col;
         Coordinate.y = row;
     }
-
+    public void ClearCell()
+    {
+        RemovePawn();
+        SetPlankDot(false, Color.white);
+        SetRightPlank(false, Color.white);
+        SetBottomPlank(false, Color.white);
+        SetBottomRightPlank("Horizontal", false, Color.white);
+    }
+   
     public void SetRightPlank(bool visible, Color color)
     {
         _rightPlankImage.enabled = visible;
@@ -174,4 +182,6 @@ public class Cell : MonoBehaviour
     {
         MatchManager.SetRequestedPlank.Invoke(Coordinate);
     }
+
+   
 }

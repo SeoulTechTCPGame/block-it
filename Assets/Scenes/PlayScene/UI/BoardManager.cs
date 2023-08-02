@@ -13,17 +13,20 @@ public class BoardManager : MonoBehaviour
     [SerializeField] GameObject p2RemainPlank;
 
     private Cell[,] cells = new Cell[COL, ROW];
+    private GameLogic _gameLogic;
+
     private Vector2Int _p1Coordinate = new Vector2Int();
     private Vector2Int _p2Coordinate = new Vector2Int();
     private List<Plank> Planks= new List<Plank>();
-      
     private List<Vector2Int> possiblePawnList = new List<Vector2Int>();
     private List<Vector2Int> placeableVerticalPlanks = new List<Vector2Int>();
     private List<Vector2Int> placeableHorizontalPlanks = new List<Vector2Int>();
-    private Plank _previewPlank = new Plank();
 
+    private Plank _previewPlank = new Plank();
     bool _bPreviewPlank = false;
 
+    #region Colors
+    // needs to be const when it is deteremined
     public Color _p1PawnColor = new Color(0.70f, 0.01f, 0.01f);
     public Color _p2PawnColor = new Color(0.11f, 0.36f, 0.60f);
 
@@ -33,8 +36,9 @@ public class BoardManager : MonoBehaviour
     public Color _p1PreviewColor = new Color(0.45f, 0.76f, 0.96f);
     public Color _p2PreviewColor = new Color(1.00f, 0.82f, 0.18f);
     private Color _disabledColor= new Color(0.66f, 0.80f, 0.86f);
+    #endregion
 
-
+    #region Evenets
     public static UnityEvent<EPlayer, Vector2Int> SetPawnCoord = new UnityEvent<EPlayer, Vector2Int>();
     public static UnityEvent<List<Vector2Int>> UpdateMoveablePawns = new UnityEvent<List<Vector2Int>>();
     public static UnityEvent RemoveMoveablePawns = new UnityEvent();
@@ -49,10 +53,15 @@ public class BoardManager : MonoBehaviour
     public static UnityEvent<Vector2Int, EDirection, EPlayer> PlacePreviewPlank = new UnityEvent<Vector2Int, EDirection, EPlayer>();
     public static UnityEvent RemovePreviewPlank = new UnityEvent();
     public static UnityEvent<Plank> PlacePlank = new UnityEvent<Plank>();
-    
+
+    public static UnityEvent UpdateBoard = new UnityEvent();
+    public static UnityEvent ResetState = new UnityEvent();
+    #endregion
+
     private void Awake()
     {
         setEvents();
+        _gameLogic = FindObjectOfType<GameLogic>();
     }
 
     // Start is called before the first frame update
@@ -104,6 +113,11 @@ public class BoardManager : MonoBehaviour
         ReduceRemainPlank = new UnityEvent<EPlayer>();
         ReduceRemainPlank.AddListener((ePlayer) => reduceRemainPlank(ePlayer));
 
+        UpdateBoard = new UnityEvent();
+        UpdateBoard.AddListener(updateBoard);
+
+        ResetState = new UnityEvent();
+        ResetState.AddListener(resetState);
     }
 
     public Cell GetCell(int col, int row)
@@ -117,24 +131,6 @@ public class BoardManager : MonoBehaviour
             Debug.LogError("Invalid cell coordinates!");
             return null;
         }
-    }
-
-    IEnumerator InitializeBoard()
-    {
-        createBoard();
-          
-        yield return null;
-
-        setEdge();
-
-        setRemainPlank(10);
-    }
-
-
-    private void setRemainPlank(int defaultPlankNum)
-    {
-        p1RemainPlank.GetComponent<RemainPlank>().CreatePlank(defaultPlankNum);
-        p2RemainPlank.GetComponent<RemainPlank>().CreatePlank(defaultPlankNum);
     }
 
     private void reduceRemainPlank(EPlayer ePlayer)
@@ -295,6 +291,7 @@ public class BoardManager : MonoBehaviour
 
         setPlank(coordinate, eDirection, true, color);
         _bPreviewPlank = true;
+
     }
 
     private void removePreviewPlank()
@@ -323,6 +320,23 @@ public class BoardManager : MonoBehaviour
         _bPreviewPlank = false;
     }
 
+    #region Initializing
+    IEnumerator InitializeBoard()
+    {
+        createBoard();
+          
+        yield return null;
+
+        setEdge();
+
+        setRemainPlank(10);
+    }
+
+    private void setRemainPlank(int defaultPlankNum)
+    {
+        p1RemainPlank.GetComponent<RemainPlank>().CreatePlank(defaultPlankNum);
+        p2RemainPlank.GetComponent<RemainPlank>().CreatePlank(defaultPlankNum);
+    }
     private void createBoard()
     {
         for (int row = 0; row < ROW; row++)
@@ -340,7 +354,6 @@ public class BoardManager : MonoBehaviour
             }
         }
     }
-
     private void setEdge()
     {
         for (int row = 0; row < ROW; row++)
@@ -354,6 +367,7 @@ public class BoardManager : MonoBehaviour
             cells[col, ROW - 1].SetPlankDot(false);
         }
     } 
+    #endregion
 
     private void updateClickedPawn(EPlayer ePlayer, Vector2Int clickedCellCoord) 
     {
@@ -370,5 +384,67 @@ public class BoardManager : MonoBehaviour
         Color clickedColor = getClickedColor(ePlayer);
         clickedCell.SetClickablePawn(true, clickedColor);
 
+    }
+
+    #region Updates Infos and Board
+    public void updateBoard()
+    {
+        clearBoard();
+
+        updatePawnCoordination();
+        updatePlanks();
+        updatePossiblePawnList();
+        updatePlaceablePlanks();
+        updateRemainPlankNum();
+    }
+     private void updatePawnCoordination()
+     {
+        _p1Coordinate = _gameLogic.GetPawnCoordinate(EPlayer.Player1);
+        _p2Coordinate = _gameLogic.GetPawnCoordinate(EPlayer.Player2);
+
+        setPawn(EPlayer.Player1, _p1Coordinate);
+        setPawn(EPlayer.Player2, _p2Coordinate);
+     }
+     private void updatePlanks()
+     {
+        Planks = _gameLogic.planks;
+
+        foreach(Plank targetPlank in Planks)
+        {
+            setPlank(targetPlank.GetCoordinate(), targetPlank.GetDirection(), true, Color.black);
+        }
+     }
+     private void updatePossiblePawnList()
+     {
+        possiblePawnList = _gameLogic.GetMoveablePawnCoords(_gameLogic.turn);
+     }
+     private void updatePlaceablePlanks()
+     {
+        placeableHorizontalPlanks = _gameLogic.GetPlaceablePlankCoords(EDirection.Horizontal);
+        placeableVerticalPlanks = _gameLogic.GetPlaceablePlankCoords(EDirection.Vertical);
+     }
+     private void updateRemainPlankNum()
+     {
+        int p1PlankNum = _gameLogic.GetRemainPlank(EPlayer.Player1);
+        int p2PlankNum = _gameLogic.GetRemainPlank(EPlayer.Player2);
+
+        p1RemainPlank.GetComponent<RemainPlank>().DisplayRemainPlank(p1PlankNum);
+        p2RemainPlank.GetComponent<RemainPlank>().DisplayRemainPlank(p2PlankNum);
+    }
+     private void clearBoard()
+     {
+        for (int row = 0; row < ROW; row++)
+        {
+            for (int col = 0; col < COL; col++)
+            {
+                Cell targetCell = GetCell(col, row);
+                targetCell.ClearCell();
+            }
+        }
+    }
+    #endregion
+    private void resetState()
+    {
+        _bPreviewPlank = false;
     }
 }
