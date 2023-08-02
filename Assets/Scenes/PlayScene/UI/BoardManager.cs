@@ -39,20 +39,15 @@ public class BoardManager : MonoBehaviour
     #endregion
 
     #region Evenets
-    public static UnityEvent<EPlayer, Vector2Int> SetPawnCoord = new UnityEvent<EPlayer, Vector2Int>();
-    public static UnityEvent<List<Vector2Int>> UpdateMoveablePawns = new UnityEvent<List<Vector2Int>>();
     public static UnityEvent RemoveMoveablePawns = new UnityEvent();
     public static UnityEvent<EPlayer> ShowMoveablePawns = new UnityEvent<EPlayer>();
-    public static UnityEvent<EPlayer> ReduceRemainPlank = new UnityEvent<EPlayer>();
     public static UnityEvent<EPlayer, Vector2Int> UpdateClickedPawn= new UnityEvent<EPlayer, Vector2Int>();
 
-    public static UnityEvent<List<Vector2Int>, List<Vector2Int>> UpdatePlaceablePlanks = new UnityEvent<List<Vector2Int>, List<Vector2Int>>();
     public static UnityEvent<EDirection, EPlayer> ShowPlaceablePlanks= new UnityEvent<EDirection, EPlayer>();
     public static UnityEvent RemovePlaceablePlanks = new UnityEvent();
 
     public static UnityEvent<Vector2Int, EDirection, EPlayer> PlacePreviewPlank = new UnityEvent<Vector2Int, EDirection, EPlayer>();
     public static UnityEvent RemovePreviewPlank = new UnityEvent();
-    public static UnityEvent<Plank> PlacePlank = new UnityEvent<Plank>();
 
     public static UnityEvent UpdateBoard = new UnityEvent();
     public static UnityEvent ResetState = new UnityEvent();
@@ -73,13 +68,6 @@ public class BoardManager : MonoBehaviour
 
     private void setEvents()
     {
-        //pawn
-        SetPawnCoord = new UnityEvent<EPlayer, Vector2Int>();
-        SetPawnCoord.AddListener((player, coordinate) => setPawn(player, coordinate));
-
-        UpdateMoveablePawns = new UnityEvent<List<Vector2Int>>();
-        UpdateMoveablePawns.AddListener((moveableCoords) => updateMoveablePawns(moveableCoords));
-
         RemoveMoveablePawns = new UnityEvent();
         RemoveMoveablePawns.AddListener(removeMoveablePawn);
 
@@ -88,10 +76,6 @@ public class BoardManager : MonoBehaviour
 
         UpdateClickedPawn = new UnityEvent<EPlayer, Vector2Int>();
         UpdateClickedPawn.AddListener((turn, coordination) => updateClickedPawn(turn, coordination));
-
-        //plank Dot
-        UpdatePlaceablePlanks= new UnityEvent<List<Vector2Int>, List<Vector2Int>>();
-        UpdatePlaceablePlanks.AddListener((horizontal, vertical) => updatePlaceablePlanks(horizontal, vertical));
 
         ShowPlaceablePlanks = new UnityEvent<EDirection, EPlayer>();
         ShowPlaceablePlanks.AddListener((eDirection, ePlayer) => showPlaceablePlankDot(eDirection, ePlayer));
@@ -105,13 +89,6 @@ public class BoardManager : MonoBehaviour
 
         RemovePreviewPlank = new UnityEvent();
         RemovePreviewPlank.AddListener(removePreviewPlank);
-
-        PlacePlank = new UnityEvent<Plank>();
-        PlacePlank.AddListener((plank) => placePlank(plank));
-
-        // remain plank
-        ReduceRemainPlank = new UnityEvent<EPlayer>();
-        ReduceRemainPlank.AddListener((ePlayer) => reduceRemainPlank(ePlayer));
 
         UpdateBoard = new UnityEvent();
         UpdateBoard.AddListener(updateBoard);
@@ -133,27 +110,6 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    private void reduceRemainPlank(EPlayer ePlayer)
-    {
-        GameObject targetRemainPlank;
-        if(ePlayer == EPlayer.Player1) 
-        {
-            targetRemainPlank = p1RemainPlank;
-        }
-        else
-        {
-            targetRemainPlank = p2RemainPlank;
-        }
-
-        targetRemainPlank.GetComponent<RemainPlank>().ReduceRemainPlank();
-    }
-
-    //make only possible route pressable
-    private void updateMoveablePawns(List<Vector2Int> possibleList) 
-    {
-        possiblePawnList = possibleList;
-    }
-
     private void removeMoveablePawn()
     {
         foreach (Vector2Int coord in possiblePawnList)
@@ -172,12 +128,6 @@ public class BoardManager : MonoBehaviour
             Cell targetCell = GetCell(coord.x, coord.y);
             targetCell.SetClickablePawn(true, previewColor);
         }
-    }
-
-    private void updatePlaceablePlanks(List<Vector2Int> horizontal, List<Vector2Int> vertical)
-    {
-        placeableHorizontalPlanks = horizontal;
-        placeableVerticalPlanks = vertical;
     }
 
     private void showPlaceablePlankDot(EDirection eDirection, EPlayer ePlayer)
@@ -305,18 +255,6 @@ public class BoardManager : MonoBehaviour
 
         setPlank(targetCoord, direction, false, Color.white);
 
-        _bPreviewPlank = false;
-    }
-
-    private void placePlank(Plank plank)
-    {
-        Planks.Add(plank);
-        foreach(Plank targetPlank in Planks)
-        {
-            Vector2Int coord = targetPlank.GetCoordinate();
-            EDirection eDirection = targetPlank.GetDirection();
-            setPlank(coord, eDirection, true, Color.black);
-        }
         _bPreviewPlank = false;
     }
 

@@ -58,7 +58,6 @@ public class MatchManager : MonoBehaviour
 
     private void nextTurn() 
     {
-        //        clearTmpView();
         if (_turn == EPlayer.Player1)
         {
             setTurn(EPlayer.Player2);
@@ -96,8 +95,6 @@ public class MatchManager : MonoBehaviour
             newPlank.SetPlank(RequestedPlank.GetCoordinate(), RequestedPlank.GetDirection());
             _gameLogic.SetPlank(newPlank);
             _gameLogic.GetTargetPawn(otherPlayer).UsePlank();
-//            BoardManager.ReduceRemainPlank.Invoke(otherPlayer);
-//            BoardManager.PlacePlank.Invoke(RequestedPlank);
         }
 
         // change turn and reset the value
@@ -105,17 +102,8 @@ public class MatchManager : MonoBehaviour
         _bUpdatePawnCoord = false;
         _bUpdatePlank = false;
 
-        // Update one Board: MoveablePawn, Pawns' Coord, & MoveableCoord
-//        BoardManager.SetPawnCoord.Invoke(ePlayer, _gameLogic.GetPawnCoordinate(ePlayer));
-//        BoardManager.SetPawnCoord.Invoke(otherPlayer, _gameLogic.GetPawnCoordinate(otherPlayer));
-
         // Set Moveable Coord for pawn on the board.
         List<Vector2Int> moveableCoord = _gameLogic.GetMoveablePawnCoords(ePlayer);
-        //        BoardManager.UpdateMoveablePawns.Invoke(moveableCoord);
-
-        //        List<Vector2Int> horizontalPlankDots = _gameLogic.GetPlaceablePlankCoords(EDirection.Horizontal);
-        //        List<Vector2Int> verticalPlankDots = _gameLogic.GetPlaceablePlankCoords(EDirection.Vertical);
-        //        BoardManager.UpdatePlaceablePlanks.Invoke(horizontalPlankDots, verticalPlankDots);
         BoardManager.UpdateBoard.Invoke();
         BoardManager.ResetState.Invoke();
 
@@ -157,12 +145,6 @@ public class MatchManager : MonoBehaviour
         enablePlayerPut(true);
     }
 
-    private void clearTmpView()
-    {
-        BoardManager.RemoveMoveablePawns.Invoke();
-        BoardManager.RemovePlaceablePlanks.Invoke();
-        BoardManager.RemovePreviewPlank.Invoke();
-    }
 
     private void resetMove()
     {

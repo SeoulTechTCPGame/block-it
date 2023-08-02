@@ -131,7 +131,7 @@ public class PlayerButtons : MonoBehaviour
         }
 
         BoardManager.RemovePlaceablePlanks.Invoke();
-
+        BoardManager.RemovePreviewPlank.Invoke();
         //set Rotation
         if (_plankImgState == EPlankImgState.Normal || _plankImgState == EPlankImgState.Vertical)
         {

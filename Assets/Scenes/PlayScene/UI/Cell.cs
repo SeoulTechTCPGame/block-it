@@ -183,5 +183,4 @@ public class Cell : MonoBehaviour
         MatchManager.SetRequestedPlank.Invoke(Coordinate);
     }
 
-   
 }
