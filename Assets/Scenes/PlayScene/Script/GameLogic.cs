@@ -59,8 +59,8 @@ public List<Vector2Int> GetMoveablePawnCoords(EPlayer ePlayer)//(Pawn pawn)
 
     List<Vector2Int> validCoords = new List<Vector2Int>() { };
 
-    int targetRow = targetPawn.GetCoordinate().y;
-    int targetCol = targetPawn.GetCoordinate().x;
+    int coorY = targetPawn.GetCoordinate().y;
+    int coorX = targetPawn.GetCoordinate().x;
 
     int opponentRow = opponentPawn.GetCoordinate().y;
     int opponentCol = opponentPawn.GetCoordinate().x;
@@ -68,61 +68,64 @@ public List<Vector2Int> GetMoveablePawnCoords(EPlayer ePlayer)//(Pawn pawn)
     // Plank, Pawn 둘 모두에 대한 검사를 하여야 함.
 
     // NORTH
-    if(IsPlankInTheNorth(targetCol, targetRow) || targetRow <= 0)// plank 가 있는지 검사
+    if(IsPlankInTheNorth(coorX, coorY) || coorY <= 0)// plank 가 있는지 검사
     {
-
-    }
-    else if (opponentRow + 1 == targetRow && targetCol == opponentCol) // pawn 이 있는지 검사 
+            if (coorY - 2 >= 0 && !IsPlankInTheNorth(coorX, coorY - 1))
+            {
+                validCoords.Add(new Vector2Int(coorX, coorY - 2));
+            }
+        }
+    else if (opponentRow + 1 == coorY && coorX == opponentCol) // pawn 이 있는지 검사 
     {
         Debug.Log("other Pawn is on North");
 
-        if (targetRow - 2 >= 0 && !IsPlankInTheNorth(targetCol, targetRow-1))
+        if (coorY - 2 >= 0 && !IsPlankInTheNorth(coorX, coorY-1))
         {
-            validCoords.Add(new Vector2Int(targetCol, targetRow - 2));
+            validCoords.Add(new Vector2Int(coorX, coorY - 1));
         }
     }
     else
     {
-        validCoords.Add(new Vector2Int(targetCol, targetRow - 1));
+        validCoords.Add(new Vector2Int(coorX, coorY - 1));
     }
 
     // SOUTH
-    if (targetRow + 1 < 9 && opponentRow == targetRow + 1 && targetCol == opponentCol)
+    if (coorY + 1 < 9 && opponentRow == coorY + 1 && coorX == opponentCol)
     {
-        if (targetRow + 2 < 9 && !IsPlankInTheSouth(targetCol, targetRow + 1))
+        if (coorY + 2 < 9 && !IsPlankInTheSouth(coorX, coorY + 1))
         {
-            validCoords.Add(new Vector2Int(targetCol, targetRow + 2));
+            validCoords.Add(new Vector2Int(coorX, coorY + 2));
         }
     }
-    else if (targetRow + 1 < 9 && !IsPlankInTheSouth(targetCol, targetRow + 1))
+    else if (coorY + 1 < 9 && !IsPlankInTheSouth(coorX, coorY + 1))
     {
-        validCoords.Add(new Vector2Int(targetCol, targetRow + 1));
+        validCoords.Add(new Vector2Int(coorX, coorY + 1));
     }
 
     // EAST
-    if (targetCol + 1 < 9 && opponentRow == targetRow && targetCol + 1 == opponentCol)
+    if (coorX + 1 < 9 && opponentRow == coorY && coorX + 1 == opponentCol)
     {
-        if (targetCol + 2 < 9 && !IsPlankInTheEast(targetCol + 1, targetRow))
+        if (coorX + 2 < 9 && !IsPlankInTheEast(coorX + 1, coorY))
         {
-            validCoords.Add(new Vector2Int(targetCol + 2, targetRow));
+            validCoords.Add(new Vector2Int(coorX + 2, coorY));
         }
     }
-    else if (targetCol + 1 < 9 && !IsPlankInTheEast(targetCol + 1, targetRow))
+    else if (coorX + 1 < 9 && !IsPlankInTheEast(coorX + 1, coorY))
     {
-        validCoords.Add(new Vector2Int(targetCol + 1, targetRow));
+        validCoords.Add(new Vector2Int(coorX + 1, coorY));
     }
 
     // WEST
-    if (targetCol - 1 >= 0 && opponentRow == targetRow && targetCol - 1 == opponentCol)
+    if (coorX - 1 >= 0 && opponentRow == coorY && coorX - 1 == opponentCol)
     {
-        if (targetCol - 2 >= 0 && !IsPlankInTheWest(targetCol - 1, targetRow))
+        if (coorX - 2 >= 0 && !IsPlankInTheWest(coorX - 1, coorY))
         {
-            validCoords.Add(new Vector2Int(targetCol - 2, targetRow));
+            validCoords.Add(new Vector2Int(coorX - 2, coorY));
         }
     }
-    else if (targetCol - 1 >= 0 && !IsPlankInTheWest(targetCol - 1, targetRow))
+    else if (coorX - 1 >= 0 && !IsPlankInTheWest(coorX - 1, coorY))
     {
-        validCoords.Add(new Vector2Int(targetCol - 1, targetRow));
+        validCoords.Add(new Vector2Int(coorX - 1, coorY));
     }
 
         //foreach (Vector2Int coor in validCoords)
@@ -175,13 +178,13 @@ public List<Vector2Int> GetPlaceablePlankCoords(EDirection direction)
         return target;
 }
         
-public bool IsPlankInTheNorth(int targetCol, int targetRow)
+public bool IsPlankInTheNorth(int coorX, int coorY)
 {
     foreach (Plank plank in planks)
     {
-        if ( plank.GetDirection() == EDirection.Horizontal && (plank.GetCoordinate().y == targetRow - 1 ) && ( (plank.GetCoordinate().x == targetCol) || (plank.GetCoordinate().x == targetCol - 1) ) )
+        if ( plank.GetDirection() == EDirection.Horizontal && (plank.GetCoordinate().y == coorY - 1 ) && ( (plank.GetCoordinate().x == coorX) || (plank.GetCoordinate().x == coorX - 1) ) )
         {
-            Debug.Log("No North");
+                Debug.Log("There is plank in the North");
             return true;
         }
     }
@@ -189,37 +192,40 @@ public bool IsPlankInTheNorth(int targetCol, int targetRow)
     return false;
 }
 
-public bool IsPlankInTheSouth(int targetCol, int targetRow)
+public bool IsPlankInTheSouth(int coorX, int coorY)
 {
         foreach (Plank plank in planks)
         {
-            if (plank.GetDirection() == EDirection.Horizontal && (plank.GetCoordinate().y == targetRow - 1) && ((plank.GetCoordinate().x == targetCol) || (plank.GetCoordinate().x == targetCol - 1)))
+            if (plank.GetDirection() == EDirection.Horizontal && (plank.GetCoordinate().y == coorY) && ((plank.GetCoordinate().x == coorX) || (plank.GetCoordinate().x == coorX - 1)))
         {
-            return true;
+                Debug.Log("There is plank in the South");
+                return true;
         }
     }
     return false;
 }
 
-public bool IsPlankInTheEast(int targetCol, int targetRow)
+public bool IsPlankInTheEast(int coorX, int coorY)
 {
     foreach (Plank plank in planks)
     {
-        if (plank.GetDirection() == EDirection.Vertical && (plank.GetCoordinate().x == targetCol - 1) && ((plank.GetCoordinate().y == targetRow) || (plank.GetCoordinate().y == targetRow - 1)))
+        if (plank.GetDirection() == EDirection.Vertical && (plank.GetCoordinate().x == coorX) && ((plank.GetCoordinate().y == coorY) || (plank.GetCoordinate().y == coorY - 1)))
         {
-            return true;
+                Debug.Log("There is plank in the East");
+                return true;
         }
     }
     return false;
 }
 
-public bool IsPlankInTheWest(int targetCol, int targetRow)
+public bool IsPlankInTheWest(int coorX, int coorY)
 {
     foreach (Plank plank in planks)
     {
-        if (plank.GetDirection() == EDirection.Vertical && (plank.GetCoordinate().x == targetCol) && ((plank.GetCoordinate().y == targetRow) || (plank.GetCoordinate().y == targetRow - 1) ) )
+        if (plank.GetDirection() == EDirection.Vertical && (plank.GetCoordinate().x == coorX - 1) && ((plank.GetCoordinate().y == coorY) || (plank.GetCoordinate().y == coorY - 1) ) )
         {
-            return true;
+                Debug.Log("There is plank in the West");
+                return true;
         }
     }
     return false;
@@ -258,24 +264,33 @@ public void SetPawnPlace(EPlayer ePlayer, Vector2Int coordinate)
 public void SetPlank(Plank plank)
 {
     Debug.Log("Game Logic's SetPlank is Called");
+    Debug.Log("Set Plank");
 
-    if (IsThereAtLeastOneWay(EPlayer.Player1) && IsThereAtLeastOneWay(EPlayer.Player2))
+    planks.Add(plank);
+
+    bool player1 = IsThereAtLeastOneWay(EPlayer.Player1);
+    bool player2 = IsThereAtLeastOneWay(EPlayer.Player2);
+    //Debug.Log("player1: " + player1);
+    //Debug.Log("player2: " + player2);
+
+    if (!player1 || !player2)
     {
-        // TODO 좌표가 동일한 plank 는 추가해서는 안됨
-        planks.Add(plank);
-    }
-    else
-    {
-        Debug.LogWarning("Plank NOT Added: x " + plank.GetCoordinate().x + " , y = " + plank.GetCoordinate().y);
+            Debug.Log("Removed");
+            // TODO 좌표가 동일한 plank 는 추가해서는 안됨
+            planks.RemoveAt(planks.Count - 1);
     }
 
-    Debug.Log("---Length: " + planks.Count);
+    foreach(Plank _plank in planks)
+        {
+            Debug.Log(_plank.GetCoordinate());
+        }
 
     foreach (Plank _plank in planks)
     {
         Debug.Log("Game Logic - Plank: direction = " + _plank.GetDirection() + " x = " + _plank.GetCoordinate().x + " , y =" + _plank.GetCoordinate().y);
     }
     Debug.Log("---");
+    Debug.Log("Size: " + planks.Count + "--------");
 }
 
 public bool Wins(EPlayer ePlayer)
@@ -335,51 +350,108 @@ public Pawn GetTargetPawn(EPlayer ePlayer)
     return targetPawn;
 }
 
-public bool IsThereAtLeastOneWay(EPlayer player)
+private bool IsThereAtLeastOneWay(EPlayer player)
 {
     Pawn pawn;
     if (player == EPlayer.Player1) pawn = P1;
     else pawn = P2;
 
-    int pawnRow = pawn.GetCoordinate().y;
-    int pawnCol = pawn.GetCoordinate().x;
+    int coorY = pawn.GetCoordinate().y;
+    int coorX = pawn.GetCoordinate().x;
+
     Queue<Vector2Int> que = new Queue<Vector2Int>();
-    que.Enqueue(new Vector2Int(pawnCol, pawnRow));
+
+    que.Enqueue(new Vector2Int(coorX, coorY));
 
     int[,] visited = new int[9, 9];
-
-    //// NSEW
-    while (que.Count != 0)
+    visited[coorY, coorX] = 1;
+        //// NSEW
+        while (que.Count != 0)
     {
-        pawnRow = que.Peek().y;
-        pawnCol = que.Peek().x;
-        visited[pawnRow, pawnCol] = 1;
-        if ( (player == EPlayer.Player1 && pawnRow == 0) || (player == EPlayer.Player2 && pawnRow == 8)) return true;
-        // NORTH
-
-        if (pawnRow + 1 < 9 && visited[pawnRow + 1, pawnCol] != 1 && !IsPlankInTheNorth(pawnRow, pawnCol))
+        coorY = que.Peek().y;
+        coorX = que.Peek().x;
+        visited[coorY, coorX] = 1;
+            
+        if ((player == EPlayer.Player1 && coorY == 0) || (player == EPlayer.Player2 && coorY == 8))
         {
-            que.Enqueue(new Vector2Int(pawnCol, pawnRow + 1));
+                //Debug.Log("------visited------");
+                //for (int i = 0; i < 9; i++)
+                //{
+                //    hey = "";
+                //    for (int j = 0; j < 9; j++)
+                //    {
+                //        hey += visited[i, j].ToString();
+
+                //    }
+                //    Debug.Log(hey);
+                //}
+                //Debug.Log("-------------");
+
+                Debug.Log("Success");
+                return true;
+        }
+        // NORTH
+        if (!IsPlankInTheNorth(coorX, coorY))
+        {
+                if (coorY - 1 >= 0 && visited[coorY - 1, coorX] != 1)
+                {
+                    visited[coorY - 1, coorX] = 1;
+                    Debug.Log("NORTH  y: " + (coorY - 1) + "x: " + coorX);
+                    que.Enqueue(new Vector2Int(coorX, coorY - 1));
+                }
         }
         // SOUTH
-        if (pawnRow - 1 >= 0 && visited[pawnRow - 1, pawnCol] != 1 && !IsPlankInTheSouth(pawnRow, pawnCol))
+        if (!IsPlankInTheSouth(coorX, coorY))
         {
-            que.Enqueue(new Vector2Int(pawnCol, pawnRow - 1));
-        }
-        // EAST
-        if (pawnCol + 1 < 9 && visited[pawnRow, pawnCol + 1] != 1 && !IsPlankInTheEast(pawnRow, pawnCol))
-        {
-            que.Enqueue(new Vector2Int(pawnCol + 1, pawnRow));
+                if (coorY + 1 < 9 && visited[coorY + 1, coorX] != 1)
+                {
+                    visited[coorY + 1, coorX] = 1;
+                    Debug.Log("SOUTH  y: " + (coorY + 1) + "x: " + coorX);
+                    que.Enqueue(new Vector2Int(coorX, coorY + 1));
+                }
         }
         // WEST
-        if (pawnCol - 1 >= 0 && visited[pawnRow, pawnCol - 1] != 1 && !IsPlankInTheWest(pawnRow, pawnCol))
+        if (!IsPlankInTheWest(coorX, coorY))
         {
-            que.Enqueue(new Vector2Int(pawnCol - 1, pawnRow));
+                if (coorX - 1 >= 0 && visited[coorY, coorX - 1] != 1)
+                {
+                    visited[coorY, coorX - 1] = 1;
+                    Debug.Log("WEST  y: " + coorY + "x: " + (coorX - 1));
+                    que.Enqueue(new Vector2Int(coorX - 1, coorY));
+                }
         }
+        // EAST
+        if (!IsPlankInTheEast(coorX, coorY))
+        {
+                if (coorX + 1 < 9 && visited[coorY, coorX + 1] != 1)
+                {
+                    visited[coorY, coorX + 1] = 1;
+                    Debug.Log("EAST  y: " + coorY + "x: " + (coorX + 1));
+                    que.Enqueue(new Vector2Int(coorX + 1, coorY));
+                }
+        }
+
+        
 
         que.Dequeue();
     }
+        //Debug.Log("Y: " + coorY + "X: " + coorX);
+        
+        //Debug.Log("------visited------");
+        //for (int i = 0; i < 9; i++)
+        //{
+        //    hey = "";
+        //    for (int j = 0; j < 9; j++)
+        //    {
+        //        hey += visited[i, j].ToString();
 
+        //    }
+        //    Debug.Log(hey);
+        //}
+        //Debug.Log("-------------");
+
+
+        Debug.Log("Failed");
     return false;
 }
 
