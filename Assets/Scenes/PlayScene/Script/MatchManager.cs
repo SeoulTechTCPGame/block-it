@@ -102,7 +102,7 @@ public class MatchManager : MonoBehaviour
         _bUpdatePawnCoord = false;
         _bUpdatePlank = false;
 
-        // Set Moveable Coord for pawn on the board.
+        // Set Moveable Coord for pawn on the board
         List<Vector2Int> moveableCoord = _gameLogic.GetMoveablePawnCoords(ePlayer);
         BoardManager.UpdateBoard.Invoke();
         BoardManager.ResetState.Invoke();
