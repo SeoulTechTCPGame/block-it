@@ -104,9 +104,10 @@ public class AuthManager : MonoBehaviour
         {
             User = LoginTask.Result.User;
             Debug.Log(LoginTask.Result);
-            Debug.LogFormat("user signed in successfully: {0} ({1})", User.DisplayName, User.Email);
+            Debug.LogFormat("user signed in successfully: {0} ({1}) ({2})", User.DisplayName, User.Email, User.UserId);
             warningLoginText.text = "";
             confirmLoginText.text = "Logged In";
+            yield return User.UserId;
         }
     }
 
@@ -164,7 +165,7 @@ public class AuthManager : MonoBehaviour
                     {
                       rng.GetBytes(bytes);
                     }
-                    string _username = BitConverter.ToString(bytes);
+                    string _username = BitConverter.ToString(bytes).Replace("-", "").ToLower();
                     UserProfile profile = new UserProfile { DisplayName = _username };
 
                     var ProfileTask = User.UpdateUserProfileAsync(profile);
