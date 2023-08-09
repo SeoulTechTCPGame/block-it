@@ -63,6 +63,8 @@ crashlytics-build.properties
 /[Uu]serSettings/
 /Test/
 /ProjectSettings/ProjectSettings.asset
+ProjectSettings\GvhProjectSettings.xml
+
 
 #Ds_store
 **/.Ds_store
@@ -74,9 +76,12 @@ ConnectionInfo.json.meta
 # GoogleServices
 Assets/GoogleService-Info.plist
 Assets/google-services.json
+Assets\StreamingAssets\google-services-desktop.json.meta
 
 # Firebase
 Assets/Editor Default Resources/
 Assets/ExternalDependencyManager/
 Assets/Firebase/
 Assets/Plugins/
+Assets\Editor Default Resources.meta
+Assets\ExternalDependencyManager.meta
