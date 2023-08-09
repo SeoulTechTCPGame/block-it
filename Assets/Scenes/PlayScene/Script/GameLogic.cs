@@ -164,6 +164,16 @@ public List<Vector2Int> GetPlaceablePlankCoords(EDirection direction)
                         }
                     }
 
+                    if (direction == EDirection.Vertical)
+                    {
+                        if (plank.GetDirection() == EDirection.Vertical
+                            && col == plankCol && (row == plankRow + 1 || row == plankRow - 1))
+                        {
+                            flag = false;
+                            break;
+                        }
+                    }
+
                 }
 
                 Plank _plank = new Plank();
