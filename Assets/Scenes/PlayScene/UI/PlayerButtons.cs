@@ -16,8 +16,8 @@ public class PlayerButtons : MonoBehaviour
     public Button PutButton;
     public GameObject PlankImage;
 
-    private Enums.EPlayer owner;
-    private bool _bPlankValid = true;
+    private Enums.EPlayer _owner;
+    private bool _isPlankValid = true;
 
     private Image _pawnPanelImage;
     private Image _plankPanelImage;
@@ -33,14 +33,14 @@ public class PlayerButtons : MonoBehaviour
     private Vector3 _verticalRotation = new Vector3(0f, 0f, 45f);
     private Vector3 _horizontalRotation = new Vector3(0f, 0f, -45f);
 
-    private void Awake()
+    void Awake()
     {
         _pawnPanelImage = PawnButton.GetComponent<Image>();
         _plankPanelImage = PlankButton.GetComponent<Image>();
         _plankImgTransform = PlankImage.GetComponent<RectTransform>();
 
-        PawnButton.onClick.AddListener(onPawnButtonClicked);
-        PlankButton.onClick.AddListener(onPlankButtonClicked);
+        PawnButton.onClick.AddListener(OnPawnButtonClicked);
+        PlankButton.onClick.AddListener(OnPlankButtonClicked);
         PutButton.onClick.AddListener(OnPutButtonClicked);
     }
 
@@ -51,20 +51,20 @@ public class PlayerButtons : MonoBehaviour
 
     public void SetButtons(bool bTurn)
     {
-        resetPlankState();
+        ResetPlankState();
 
         if (bTurn == true)
         {
             PawnButton.interactable = true;
-            PlankButton.interactable = _bPlankValid;
+            PlankButton.interactable = _isPlankValid;
 
             _pawnPanelImage.color = _normalColor;
-            if (_bPlankValid == true)
+            if (_isPlankValid == true)
             {
                 _plankPanelImage.color = _normalColor;
             }
 
-            activatePutButton(true);
+            ActivatePutButton(true);
         }
         else
         {
@@ -75,7 +75,7 @@ public class PlayerButtons : MonoBehaviour
             PlankButton.interactable = false;
             _plankPanelImage.color = _disabledColor;
             //set Put
-            activatePutButton(false);
+            ActivatePutButton(false);
         }
 
     }
@@ -87,7 +87,7 @@ public class PlayerButtons : MonoBehaviour
 
     public void SetOwner(Enums.EPlayer own)
     {
-        owner = own;
+        _owner = own;
     }
 
     public void SetPutButtonInteractable(bool bInteractable)
@@ -102,28 +102,28 @@ public class PlayerButtons : MonoBehaviour
         PutButton.gameObject.SetActive(false);
     }
 
-    private void onPawnButtonClicked()
+    private void OnPawnButtonClicked()
     {
         MatchManager.ResetMove.Invoke();
         //set color of the buttons
         _pawnPanelImage.color = _selectedColor;
-        if (_bPlankValid)
+        if (_isPlankValid)
         {
             _plankPanelImage.color = _normalColor;
         }
         BoardManager.RemovePlaceablePlanks.Invoke();
         BoardManager.RemovePreviewPlank.Invoke();
-        BoardManager.ShowMoveablePawns.Invoke(owner);
+        BoardManager.ShowMoveablePawns.Invoke(_owner);
 
         PawnButton.Select();
     }
 
-    private void onPlankButtonClicked()
+    private void OnPlankButtonClicked()
     {
         MatchManager.ResetMove.Invoke();
 
         //set color of the buttons
-        if (_bPlankValid)
+        if (_isPlankValid)
         {
             _pawnPanelImage.color = _normalColor;
             _plankPanelImage.color = _selectedColor;
@@ -136,33 +136,33 @@ public class PlayerButtons : MonoBehaviour
         if (_plankImgState == EPlankImgState.Normal || _plankImgState == EPlankImgState.Vertical)
         {
             _plankImgState = EPlankImgState.Horizontal;
-            BoardManager.ShowPlaceablePlanks.Invoke(EDirection.Horizontal, owner);
+            BoardManager.ShowPlaceablePlanks.Invoke(EDirection.Horizontal, _owner);
         }
         else
         {
             _plankImgState = EPlankImgState.Vertical;
-            BoardManager.ShowPlaceablePlanks.Invoke(EDirection.Vertical, owner);
+            BoardManager.ShowPlaceablePlanks.Invoke(EDirection.Vertical, _owner);
         }
-        rotatePlank();
+        RotatePlank();
 
         // Remove MoveablePawns Locations
         BoardManager.RemoveMoveablePawns.Invoke();
     }
 
-    private void setPlankButtonDisable()
+    private void SetPlankButtonDisable()
     {
-        _bPlankValid = false;
+        _isPlankValid = false;
         PlankButton.interactable = false;
         _plankPanelImage.color = _disabledColor;
     }
 
-    private void activatePutButton(bool bOn)
+    private void ActivatePutButton(bool bOn)
     {
         PutButton.gameObject.SetActive(bOn);
         PutButton.interactable = false;
     }
 
-    private void rotatePlank()
+    private void RotatePlank()
     {
         Vector3 targetRotation = _normalRotation;
 
@@ -182,10 +182,10 @@ public class PlayerButtons : MonoBehaviour
         _plankImgTransform.rotation = Quaternion.Euler(targetRotation);
     }
 
-    private void resetPlankState()
+    private void ResetPlankState()
     {
         _plankImgState = EPlankImgState.Normal;
-        rotatePlank();
+        RotatePlank();
     }
 
 }

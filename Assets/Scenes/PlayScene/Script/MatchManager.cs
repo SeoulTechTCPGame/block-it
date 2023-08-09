@@ -15,62 +15,62 @@ public class MatchManager : MonoBehaviour
 
     private Enums.EPlayer _turn;
     private GameLogic _gameLogic;
-    private bool _bUpdatePawnCoord = false;
-    private bool _bUpdatePlank = false;
+    private bool _isUpdatePawnCoord = false;
+    private bool _isUpdatePlank = false;
 
     public static UnityEvent ToNextTurn;
     public static UnityEvent ResetMove;
     public static UnityEvent<Vector2Int> SetRequestedPawnCoord = new UnityEvent<Vector2Int>();
     public static UnityEvent<Vector2Int> SetRequestedPlank= new UnityEvent<Vector2Int>();
 
-    private List<Vector2Int> placeableVerticalPlanks = new List<Vector2Int>();
-    private List<Vector2Int> placeableHorizontalPlanks = new List<Vector2Int>();
+    private List<Vector2Int> _placeableVerticalPlanks = new List<Vector2Int>();
+    private List<Vector2Int> _placeableHorizontalPlanks = new List<Vector2Int>();
 
     void Awake()
     {
         ToNextTurn = new UnityEvent();
-        ToNextTurn.AddListener(nextTurn);
+        ToNextTurn.AddListener(NextTurn);
 
         ResetMove= new UnityEvent();
-        ResetMove.AddListener(resetMove);
+        ResetMove.AddListener(ResetIsUpdate);
 
         SetRequestedPawnCoord = new UnityEvent<Vector2Int>();
-        SetRequestedPawnCoord.AddListener(updateRequestedPawnCoord);
+        SetRequestedPawnCoord.AddListener(UpdateRequestedPawnCoord);
 
         SetRequestedPlank = new UnityEvent<Vector2Int>();
-        SetRequestedPlank.AddListener((coord)=>updateRequestedPlank(coord));
+        SetRequestedPlank.AddListener((coord)=>UpdateRequestedPlank(coord));
 
         _gameLogic = FindObjectOfType<GameLogic>();
 
-        setButtonsOwner();
+        SetButtonsOwner();
     }
     // Start is called before the first frame update
     void Start()
     {
-        setTurn(Enums.EPlayer.Player1);
+        SetTurn(Enums.EPlayer.Player1);
     }
 
-    private void setButtonsOwner()
+    private void SetButtonsOwner()
     {
         P1Buttons.GetComponent<PlayerButtons>().SetOwner(Enums.EPlayer.Player1);
         P2Buttons.GetComponent<PlayerButtons>().SetOwner(Enums.EPlayer.Player2);
     }
 
-    private void nextTurn() 
+    private void NextTurn() 
     {
         if (_turn == Enums.EPlayer.Player1)
         {
-            setTurn(Enums.EPlayer.Player2);
+            SetTurn(Enums.EPlayer.Player2);
         }
         else
         {
-            setTurn(Enums.EPlayer.Player1);
+            SetTurn(Enums.EPlayer.Player1);
         }
         BoardManager.UpdateBoard.Invoke();
 
     }
 
-    private void setTurn(Enums.EPlayer ePlayer)
+    private void SetTurn(Enums.EPlayer ePlayer)
     {
         _gameLogic.turn = ePlayer;
         // set target and other player.
@@ -85,11 +85,11 @@ public class MatchManager : MonoBehaviour
         otherButton.GetComponent<PlayerButtons>().SetButtons(false);
 
         // if the last turn has certain changes, apply on GameLogic.
-        if (_bUpdatePawnCoord == true)
+        if (_isUpdatePawnCoord == true)
         {
             _gameLogic.SetPawnPlace(otherPlayer, RequestedPawnCoord);
         }
-        if(_bUpdatePlank == true)
+        if(_isUpdatePlank == true)
         {
             Plank newPlank = new Plank();
             newPlank.SetPlank(RequestedPlank.GetCoordinate(), RequestedPlank.GetDirection());
@@ -99,30 +99,30 @@ public class MatchManager : MonoBehaviour
 
         // change turn and reset the value
         _turn = ePlayer;
-        _bUpdatePawnCoord = false;
-        _bUpdatePlank = false;
+        _isUpdatePawnCoord = false;
+        _isUpdatePlank = false;
 
         // Set Moveable Coord for pawn on the board
         List<Vector2Int> moveableCoord = _gameLogic.GetMoveablePawnCoords(ePlayer);
         BoardManager.UpdateBoard.Invoke();
         BoardManager.ResetState.Invoke();
 
-        checkDisplayWin();
+        CheckDisplayWin();
     }
 
-    private void updateRequestedPawnCoord(Vector2Int coord)
+    private void UpdateRequestedPawnCoord(Vector2Int coord)
     {
         RequestedPawnCoord = coord;
-        _bUpdatePawnCoord = true;
-        _bUpdatePlank = false;
+        _isUpdatePawnCoord = true;
+        _isUpdatePlank = false;
 
         BoardManager.RemovePreviewPlank.Invoke();
         BoardManager.UpdateClickedPawn.Invoke(_turn, coord);
 
-        enablePlayerPut(true);
+        EnablePlayerPut(true);
     }
 
-    private void updateRequestedPlank(Vector2Int coord)
+    private void UpdateRequestedPlank(Vector2Int coord)
     {
         GameObject targetButton = (_turn == Enums.EPlayer.Player1) ? P1Buttons : P2Buttons;
 
@@ -139,23 +139,22 @@ public class MatchManager : MonoBehaviour
         RequestedPlank.SetPlank(coord, eDirection);
         BoardManager.PlacePreviewPlank.Invoke(coord, eDirection, _turn);
 
-        _bUpdatePawnCoord = false;
-        _bUpdatePlank = true;
+        _isUpdatePawnCoord = false;
+        _isUpdatePlank = true;
 
-        enablePlayerPut(true);
+        EnablePlayerPut(true);
     }
 
-
-    private void resetMove()
+    private void ResetIsUpdate()
     {
-        _bUpdatePawnCoord = false;
-        _bUpdatePlank = false;
+        _isUpdatePawnCoord = false;
+        _isUpdatePlank = false;
 
         // disable player's put button
-        enablePlayerPut(false);
+        EnablePlayerPut(false);
     }
 
-    private void checkDisplayWin()
+    private void CheckDisplayWin()
     {
         if( _gameLogic.Wins(Enums.EPlayer.Player1) || _gameLogic.Wins(Enums.EPlayer.Player2))
         {
@@ -173,9 +172,9 @@ public class MatchManager : MonoBehaviour
         }        
     }
 
-    private bool isNextTurnAvaible() 
+    private bool IsNextTurnAvaible() 
     { 
-        if(_bUpdatePawnCoord || _bUpdatePlank)
+        if(_isUpdatePawnCoord || _isUpdatePlank)
         {
             return true;
         }
@@ -185,13 +184,13 @@ public class MatchManager : MonoBehaviour
         }
     }
 
-    private void enablePlayerPut(bool bOn)
+    private void EnablePlayerPut(bool bOn)
     {
-        GameObject targetButton = getCurrentPlayerButton();
+        GameObject targetButton = GetCurrentPlayerButton();
         targetButton.GetComponent<PlayerButtons>().SetPutButtonInteractable(bOn);
     }
 
-    private GameObject getCurrentPlayerButton()
+    private GameObject GetCurrentPlayerButton()
     {
         if(_turn == Enums.EPlayer.Player1)
         {

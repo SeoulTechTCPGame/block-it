@@ -7,7 +7,7 @@ using System.Collections;
 
 public class Cell : MonoBehaviour
 {
-    private Vector2Int Coordinate = new Vector2Int();
+    private Vector2Int _coordinate = new Vector2Int();
 
     [SerializeField] GameObject _rightPlank;
     [SerializeField] GameObject _bottomPlank;
@@ -16,8 +16,8 @@ public class Cell : MonoBehaviour
     [SerializeField] GameObject _box;
     [SerializeField] GameObject _pawn;
 
-    private bool bRightEdge;
-    private bool bBottomEdge;
+    private bool _isRightEdge;
+    private bool _isBottomEdge;
     private Image _rightPlankImage;
     private Image _bottomPlankImage;
     private Image _pawnImage;
@@ -37,22 +37,22 @@ public class Cell : MonoBehaviour
         _plankDotButton = _plankDot.GetComponent<Button>();
 
 
-        _pawnButton.onClick.AddListener(() => buttonClicked());
-        _plankDotButton.onClick.AddListener(() => plankDotClicked());
+        _pawnButton.onClick.AddListener(() => ButtonClicked());
+        _plankDotButton.onClick.AddListener(() => PlankDotClicked());
 
-        initBottomRightPlanks();
-        offEdge();
+        InitBottomRightPlanks();
+        OffEdge();
     }
 
     public void SetEdge(bool rightEdge, bool bottomEdge)
     {
-        bRightEdge = rightEdge;
-        bBottomEdge = bottomEdge;
+        _isRightEdge = rightEdge;
+        _isBottomEdge = bottomEdge;
     }
     public void SetCoordinate(int col, int row)
     {
-        Coordinate.x = col;
-        Coordinate.y = row;
+        _coordinate.x = col;
+        _coordinate.y = row;
     }
     public void ClearCell()
     {
@@ -83,7 +83,7 @@ public class Cell : MonoBehaviour
         target.enabled = visible;
         target.color = color;
 
-        offOtherImages(key);
+        OffOtherImages(key);
     }
 
     public void SetPawn(bool visible, Color color)
@@ -121,9 +121,9 @@ public class Cell : MonoBehaviour
             _plankDotImage.color = color;
         }
     }
-    private void initBottomRightPlanks()
+    private void InitBottomRightPlanks()
     {
-        initBottomRightDictionary();
+        InitBottomRightDictionary();
 
         Transform parentTransform = _bottomRightPlank.transform;
         List<string> dictionaryKeys = new List<string>(_bottomRightDictionary.Keys);
@@ -138,12 +138,12 @@ public class Cell : MonoBehaviour
         }
 
     }
-    private void initBottomRightDictionary()
+    private void InitBottomRightDictionary()
     {
         _bottomRightDictionary.Add("Horizontal", null);
         _bottomRightDictionary.Add("Vertical", null);
     }
-    private void offOtherImages(string key)
+    private void OffOtherImages(string key)
     {
         List<string> keysToTurnOff = new List<string>();
 
@@ -160,27 +160,27 @@ public class Cell : MonoBehaviour
             _bottomRightDictionary[name].enabled = false;
         }
     }
-    private void offEdge()
+    private void OffEdge()
     {
-        if (bRightEdge)
+        if (_isRightEdge)
         {
             _rightPlank.gameObject.SetActive(false);
             _bottomRightPlank.gameObject.SetActive(false);
         }
-        if (bBottomEdge)
+        if (_isBottomEdge)
         {
             _bottomPlank.gameObject.SetActive(false);
             _bottomRightPlank.gameObject.SetActive(false);
         }
     }
 
-    private void buttonClicked()
+    private void ButtonClicked()
     {
-        MatchManager.SetRequestedPawnCoord.Invoke(Coordinate);
+        MatchManager.SetRequestedPawnCoord.Invoke(_coordinate);
     }
-    private void plankDotClicked()
+    private void PlankDotClicked()
     {
-        MatchManager.SetRequestedPlank.Invoke(Coordinate);
+        MatchManager.SetRequestedPlank.Invoke(_coordinate);
     }
 
 }
