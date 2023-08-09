@@ -16,7 +16,7 @@ public class PlayerButtons : MonoBehaviour
     public Button PutButton;
     public GameObject PlankImage;
 
-    private EPlayer owner;
+    private Enums.EPlayer owner;
     private bool _bPlankValid = true;
 
     private Image _pawnPanelImage;
@@ -85,7 +85,7 @@ public class PlayerButtons : MonoBehaviour
         MatchManager.ToNextTurn.Invoke();
     }
 
-    public void SetOwner(EPlayer own)
+    public void SetOwner(Enums.EPlayer own)
     {
         owner = own;
     }

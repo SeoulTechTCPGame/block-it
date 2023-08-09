@@ -1,18 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public enum EPlayer
-{
-    Player1,
-    Player2
-}
-
 public class GameLogic : MonoBehaviour
 {
 private Pawn P1 = new Pawn();
 private Pawn P2 = new Pawn();
 
-public EPlayer turn;
+public Enums.EPlayer turn;
 
 public List<Plank> planks = new List<Plank>();
 
@@ -33,10 +27,10 @@ private void SetGame()
 
     P2.SetCoordinate(new Vector2Int(4, 1));
 
-    turn = EPlayer.Player1;
+    turn = Enums.EPlayer.Player1;
 }
 
-public Vector2Int GetPawnCoordinate(EPlayer ePlayer)//Pawn pawn)
+public Vector2Int GetPawnCoordinate(Enums.EPlayer ePlayer)//Pawn pawn)
 {
     Pawn targetPawn = GetTargetPawn(ePlayer);
     Vector2Int targetCoord = targetPawn.GetCoordinate();
@@ -44,13 +38,13 @@ public Vector2Int GetPawnCoordinate(EPlayer ePlayer)//Pawn pawn)
     return targetCoord;
 }
 
-public int GetRemainPlank(EPlayer ePlayer)
+public int GetRemainPlank(Enums.EPlayer ePlayer)
 {
     Pawn targetPawn = GetTargetPawn(ePlayer);
     return targetPawn.GetPlankNum();
 }
 
-public List<Vector2Int> GetMoveablePawnCoords(EPlayer ePlayer)//(Pawn pawn)
+public List<Vector2Int> GetMoveablePawnCoords(Enums.EPlayer ePlayer)//(Pawn pawn)
 {        
 
     Pawn targetPawn = GetTargetPawn(ePlayer);
@@ -181,7 +175,7 @@ public List<Vector2Int> GetPlaceablePlankCoords(EDirection direction)
                 _plank.SetDirection(direction);
                 planks.Add(_plank);
 
-                if (!IsThereAtLeastOneWay(EPlayer.Player1) || !IsThereAtLeastOneWay(EPlayer.Player2))
+                if (!IsThereAtLeastOneWay(Enums.EPlayer.Player1) || !IsThereAtLeastOneWay(Enums.EPlayer.Player2))
                 {
                     flag = false;
                 }
@@ -277,7 +271,7 @@ public bool IsPlankPlaceable(Vector2Int coor)
     return true;
 }
 
-public void SetPawnPlace(EPlayer ePlayer, Vector2Int coordinate)
+public void SetPawnPlace(Enums.EPlayer ePlayer, Vector2Int coordinate)
 {
     Pawn targetPawn = GetTargetPawn(ePlayer);
     targetPawn.SetCoordinate(coordinate);
@@ -290,8 +284,8 @@ public void SetPlank(Plank plank)
 
     planks.Add(plank);
 
-    bool player1 = IsThereAtLeastOneWay(EPlayer.Player1);
-    bool player2 = IsThereAtLeastOneWay(EPlayer.Player2);
+    bool player1 = IsThereAtLeastOneWay(Enums.EPlayer.Player1);
+    bool player2 = IsThereAtLeastOneWay(Enums.EPlayer.Player2);
     //Debug.Log("player1: " + player1);
     //Debug.Log("player2: " + player2);
 
@@ -315,12 +309,12 @@ public void SetPlank(Plank plank)
     //Debug.Log("Size: " + planks.Count + "--------");
 }
 
-public bool Wins(EPlayer ePlayer)
+public bool Wins(Enums.EPlayer ePlayer)
 {
     Pawn targetPawn = GetTargetPawn(ePlayer);
     int targetY;
 
-    if(ePlayer == EPlayer.Player1) 
+    if(ePlayer == Enums.EPlayer.Player1) 
     {
          targetY = 0;
     }
@@ -347,20 +341,20 @@ public bool IsOutOfBoundary(int row, int col)
 
 public void changeTurn()
 {
-    if (turn == EPlayer.Player1)
+    if (turn == Enums.EPlayer.Player1)
     {
-        turn = EPlayer.Player2;
+        turn = Enums.EPlayer.Player2;
     }
     else
     {
-        turn = EPlayer.Player1;
+        turn = Enums.EPlayer.Player1;
     }
 }
 
-public Pawn GetTargetPawn(EPlayer ePlayer)
+public Pawn GetTargetPawn(Enums.EPlayer ePlayer)
 {
     Pawn targetPawn;
-    if (ePlayer == EPlayer.Player1)
+    if (ePlayer == Enums.EPlayer.Player1)
     {
         targetPawn = P1;
     }
@@ -372,10 +366,10 @@ public Pawn GetTargetPawn(EPlayer ePlayer)
     return targetPawn;
 }
 
-private bool IsThereAtLeastOneWay(EPlayer player)
+private bool IsThereAtLeastOneWay(Enums.EPlayer player)
 {
     Pawn pawn;
-    if (player == EPlayer.Player1) pawn = P1;
+    if (player == Enums.EPlayer.Player1) pawn = P1;
     else pawn = P2;
 
     int coorY = pawn.GetCoordinate().y;
@@ -394,7 +388,7 @@ private bool IsThereAtLeastOneWay(EPlayer player)
         coorX = que.Peek().x;
         visited[coorY, coorX] = 1;
             
-        if ((player == EPlayer.Player1 && coorY == 0) || (player == EPlayer.Player2 && coorY == 8))
+        if ((player == Enums.EPlayer.Player1 && coorY == 0) || (player == Enums.EPlayer.Player2 && coorY == 8))
         {
                 Debug.Log("Success");
                 return true;

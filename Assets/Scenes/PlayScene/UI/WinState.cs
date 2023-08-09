@@ -19,11 +19,11 @@ public class WinState : MonoBehaviour
         textComponent.enabled = false;
     }
 
-    public void DisplayWin(EPlayer ePlayer)
+    public void DisplayWin(Enums.EPlayer ePlayer)
     {
         textComponent.enabled = true;
 
-        if (ePlayer == EPlayer.Player1)
+        if (ePlayer == Enums.EPlayer.Player1)
         {
             // Change text content
             textComponent.text = "Player 1 Wins!";

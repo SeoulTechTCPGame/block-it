@@ -17,4 +17,8 @@ public class MoveScene : MonoBehaviour
     {
         SceneManager.LoadScene("Home");
     }
+    public void ToLocalPlay()
+    {
+        SceneManager.LoadScene("LocalPlay");
+    }
 }
