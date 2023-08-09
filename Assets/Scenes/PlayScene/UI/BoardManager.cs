@@ -40,13 +40,13 @@ public class BoardManager : MonoBehaviour
 
     #region Evenets
     public static UnityEvent RemoveMoveablePawns = new UnityEvent();
-    public static UnityEvent<EPlayer> ShowMoveablePawns = new UnityEvent<EPlayer>();
-    public static UnityEvent<EPlayer, Vector2Int> UpdateClickedPawn= new UnityEvent<EPlayer, Vector2Int>();
+    public static UnityEvent<Enums.EPlayer> ShowMoveablePawns = new UnityEvent<Enums.EPlayer>();
+    public static UnityEvent<Enums.EPlayer, Vector2Int> UpdateClickedPawn= new UnityEvent<Enums.EPlayer, Vector2Int>();
 
-    public static UnityEvent<EDirection, EPlayer> ShowPlaceablePlanks= new UnityEvent<EDirection, EPlayer>();
+    public static UnityEvent<EDirection, Enums.EPlayer> ShowPlaceablePlanks= new UnityEvent<EDirection, Enums.EPlayer>();
     public static UnityEvent RemovePlaceablePlanks = new UnityEvent();
 
-    public static UnityEvent<Vector2Int, EDirection, EPlayer> PlacePreviewPlank = new UnityEvent<Vector2Int, EDirection, EPlayer>();
+    public static UnityEvent<Vector2Int, EDirection, Enums.EPlayer> PlacePreviewPlank = new UnityEvent<Vector2Int, EDirection, Enums.EPlayer>();
     public static UnityEvent RemovePreviewPlank = new UnityEvent();
 
     public static UnityEvent UpdateBoard = new UnityEvent();
@@ -71,20 +71,20 @@ public class BoardManager : MonoBehaviour
         RemoveMoveablePawns = new UnityEvent();
         RemoveMoveablePawns.AddListener(removeMoveablePawn);
 
-        ShowMoveablePawns = new UnityEvent<EPlayer>();
+        ShowMoveablePawns = new UnityEvent<Enums.EPlayer>();
         ShowMoveablePawns.AddListener((ePlayer) => showMoveablePawns(ePlayer));
 
-        UpdateClickedPawn = new UnityEvent<EPlayer, Vector2Int>();
+        UpdateClickedPawn = new UnityEvent<Enums.EPlayer, Vector2Int>();
         UpdateClickedPawn.AddListener((turn, coordination) => updateClickedPawn(turn, coordination));
 
-        ShowPlaceablePlanks = new UnityEvent<EDirection, EPlayer>();
+        ShowPlaceablePlanks = new UnityEvent<EDirection, Enums.EPlayer>();
         ShowPlaceablePlanks.AddListener((eDirection, ePlayer) => showPlaceablePlankDot(eDirection, ePlayer));
 
         RemovePlaceablePlanks = new UnityEvent();
         RemovePlaceablePlanks.AddListener(removePlaceablePlankDot);
 
         // Plank
-        PlacePreviewPlank = new UnityEvent<Vector2Int, EDirection, EPlayer>();
+        PlacePreviewPlank = new UnityEvent<Vector2Int, EDirection, Enums.EPlayer>();
         PlacePreviewPlank.AddListener((coord, direction, player) => placePreviewPlank(coord, direction, player));
 
         RemovePreviewPlank = new UnityEvent();
@@ -119,7 +119,7 @@ public class BoardManager : MonoBehaviour
         }
     }
     
-    private void showMoveablePawns(EPlayer ePlayer)
+    private void showMoveablePawns(Enums.EPlayer ePlayer)
     {
         Color previewColor = getPreviewColor(ePlayer);
 
@@ -130,7 +130,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    private void showPlaceablePlankDot(EDirection eDirection, EPlayer ePlayer)
+    private void showPlaceablePlankDot(EDirection eDirection, Enums.EPlayer ePlayer)
     {
         removePlaceablePlankDot();
         List<Vector2Int> targetCoords = getPlaceablePlankDots(eDirection);
@@ -163,22 +163,22 @@ public class BoardManager : MonoBehaviour
         return eDirection == EDirection.Horizontal ? placeableHorizontalPlanks : placeableVerticalPlanks;
     }
 
-    private Color getPreviewColor(EPlayer ePlayer)
+    private Color getPreviewColor(Enums.EPlayer ePlayer)
     {
-        return ePlayer == EPlayer.Player1 ? _p1PreviewColor : _p2PreviewColor;
+        return ePlayer == Enums.EPlayer.Player1 ? _p1PreviewColor : _p2PreviewColor;
     }
 
-    private Color getClickedColor(EPlayer ePlayer)
+    private Color getClickedColor(Enums.EPlayer ePlayer)
     {
-        return ePlayer == EPlayer.Player1 ? _p1SelectedPreviewColor : _p2SelectedPreviewColor;
+        return ePlayer == Enums.EPlayer.Player1 ? _p1SelectedPreviewColor : _p2SelectedPreviewColor;
     }
 
-    private void setPawn(EPlayer ePlayer, Vector2Int coordinate) {
+    private void setPawn(Enums.EPlayer ePlayer, Vector2Int coordinate) {
 
         Vector2Int previousCoordinate = Vector2Int.zero;
         Color pawnColor = Color.white;
 
-        if (ePlayer == EPlayer.Player1)
+        if (ePlayer == Enums.EPlayer.Player1)
         {
             previousCoordinate = _p1Coordinate;
             _p1Coordinate = coordinate;
@@ -232,7 +232,7 @@ public class BoardManager : MonoBehaviour
         cell1.SetBottomRightPlank(targetMiddle, visible, color);
     }
 
-    private void placePreviewPlank(Vector2Int coordinate, EDirection eDirection, EPlayer ePlayer)
+    private void placePreviewPlank(Vector2Int coordinate, EDirection eDirection, Enums.EPlayer ePlayer)
     {
         removePreviewPlank();
         _previewPlank.SetPlank(coordinate, eDirection);
@@ -307,7 +307,7 @@ public class BoardManager : MonoBehaviour
     } 
     #endregion
 
-    private void updateClickedPawn(EPlayer ePlayer, Vector2Int clickedCellCoord) 
+    private void updateClickedPawn(Enums.EPlayer ePlayer, Vector2Int clickedCellCoord) 
     {
         Color previewColor = getPreviewColor(ePlayer);
         for (int i = 0; i < possiblePawnList.Count; i++)
@@ -337,11 +337,11 @@ public class BoardManager : MonoBehaviour
     }
      private void updatePawnCoordination()
      {
-        _p1Coordinate = _gameLogic.GetPawnCoordinate(EPlayer.Player1);
-        _p2Coordinate = _gameLogic.GetPawnCoordinate(EPlayer.Player2);
+        _p1Coordinate = _gameLogic.GetPawnCoordinate(Enums.EPlayer.Player1);
+        _p2Coordinate = _gameLogic.GetPawnCoordinate(Enums.EPlayer.Player2);
 
-        setPawn(EPlayer.Player1, _p1Coordinate);
-        setPawn(EPlayer.Player2, _p2Coordinate);
+        setPawn(Enums.EPlayer.Player1, _p1Coordinate);
+        setPawn(Enums.EPlayer.Player2, _p2Coordinate);
      }
      private void updatePlanks()
      {
@@ -363,8 +363,8 @@ public class BoardManager : MonoBehaviour
      }
      private void updateRemainPlankNum()
      {
-        int p1PlankNum = _gameLogic.GetRemainPlank(EPlayer.Player1);
-        int p2PlankNum = _gameLogic.GetRemainPlank(EPlayer.Player2);
+        int p1PlankNum = _gameLogic.GetRemainPlank(Enums.EPlayer.Player1);
+        int p2PlankNum = _gameLogic.GetRemainPlank(Enums.EPlayer.Player2);
 
         p1RemainPlank.GetComponent<RemainPlank>().DisplayRemainPlank(p1PlankNum);
         p2RemainPlank.GetComponent<RemainPlank>().DisplayRemainPlank(p2PlankNum);

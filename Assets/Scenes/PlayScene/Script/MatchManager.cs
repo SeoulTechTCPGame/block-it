@@ -13,7 +13,7 @@ public class MatchManager : MonoBehaviour
     public Vector2Int RequestedPawnCoord;
     public Plank RequestedPlank = new Plank();
 
-    private EPlayer _turn;
+    private Enums.EPlayer _turn;
     private GameLogic _gameLogic;
     private bool _bUpdatePawnCoord = false;
     private bool _bUpdatePlank = false;
@@ -47,38 +47,38 @@ public class MatchManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        setTurn(EPlayer.Player1);
+        setTurn(Enums.EPlayer.Player1);
     }
 
     private void setButtonsOwner()
     {
-        P1Buttons.GetComponent<PlayerButtons>().SetOwner(EPlayer.Player1);
-        P2Buttons.GetComponent<PlayerButtons>().SetOwner(EPlayer.Player2);
+        P1Buttons.GetComponent<PlayerButtons>().SetOwner(Enums.EPlayer.Player1);
+        P2Buttons.GetComponent<PlayerButtons>().SetOwner(Enums.EPlayer.Player2);
     }
 
     private void nextTurn() 
     {
-        if (_turn == EPlayer.Player1)
+        if (_turn == Enums.EPlayer.Player1)
         {
-            setTurn(EPlayer.Player2);
+            setTurn(Enums.EPlayer.Player2);
         }
         else
         {
-            setTurn(EPlayer.Player1);
+            setTurn(Enums.EPlayer.Player1);
         }
         BoardManager.UpdateBoard.Invoke();
 
     }
 
-    private void setTurn(EPlayer ePlayer)
+    private void setTurn(Enums.EPlayer ePlayer)
     {
         _gameLogic.turn = ePlayer;
         // set target and other player.
-        EPlayer otherPlayer = (ePlayer == EPlayer.Player1) ? EPlayer.Player2 : EPlayer.Player1;
+        Enums.EPlayer otherPlayer = (ePlayer == Enums.EPlayer.Player1) ? Enums.EPlayer.Player2 : Enums.EPlayer.Player1;
 
         // get Buttons and distinguish which one is ePlayer one and other player one.
-        GameObject theButton = (ePlayer == EPlayer.Player1) ? P1Buttons : P2Buttons;
-        GameObject otherButton = (ePlayer == EPlayer.Player1) ? P2Buttons : P1Buttons;
+        GameObject theButton = (ePlayer == Enums.EPlayer.Player1) ? P1Buttons : P2Buttons;
+        GameObject otherButton = (ePlayer == Enums.EPlayer.Player1) ? P2Buttons : P1Buttons;
 
         // set Put Button on the board - the target Player's put button will be activated while the other won't be.
         theButton.GetComponent<PlayerButtons>().SetButtons(true);
@@ -124,7 +124,7 @@ public class MatchManager : MonoBehaviour
 
     private void updateRequestedPlank(Vector2Int coord)
     {
-        GameObject targetButton = (_turn == EPlayer.Player1) ? P1Buttons : P2Buttons;
+        GameObject targetButton = (_turn == Enums.EPlayer.Player1) ? P1Buttons : P2Buttons;
 
         EPlankImgState plankState = targetButton.GetComponent<PlayerButtons>().GetPlankState();
 
@@ -157,18 +157,18 @@ public class MatchManager : MonoBehaviour
 
     private void checkDisplayWin()
     {
-        if( _gameLogic.Wins(EPlayer.Player1) || _gameLogic.Wins(EPlayer.Player2))
+        if( _gameLogic.Wins(Enums.EPlayer.Player1) || _gameLogic.Wins(Enums.EPlayer.Player2))
         {
             P1Buttons.GetComponent<PlayerButtons>().DisableButtons();
             P2Buttons.GetComponent<PlayerButtons>().DisableButtons();
 
-            if (_gameLogic.Wins(EPlayer.Player1))
+            if (_gameLogic.Wins(Enums.EPlayer.Player1))
             {
-                WinState.GetComponent<WinState>().DisplayWin(EPlayer.Player1);
+                WinState.GetComponent<WinState>().DisplayWin(Enums.EPlayer.Player1);
             }
             else
             {
-                WinState.GetComponent<WinState>().DisplayWin(EPlayer.Player2);
+                WinState.GetComponent<WinState>().DisplayWin(Enums.EPlayer.Player2);
             }
         }        
     }
@@ -193,7 +193,7 @@ public class MatchManager : MonoBehaviour
 
     private GameObject getCurrentPlayerButton()
     {
-        if(_turn == EPlayer.Player1)
+        if(_turn == Enums.EPlayer.Player1)
         {
             return P1Buttons;
         }
