@@ -1480,6 +1480,8 @@ MonoBehaviour:
     - Close
     - Next
     - Guest
+    - Accept
+    - Refusal
   - lang: "Korean\r"
     langLocalize: "\uD55C\uAD6D\uC778\r"
     value:
@@ -1505,4 +1507,6 @@ MonoBehaviour:
     - "\uC635\uC158\r"
     - "\uB2EB\uAE30\r"
     - "\uB2E4\uC74C\r"
-    - "\uAC8C\uC2A4\uD2B8"
+    - "\uAC8C\uC2A4\uD2B8\r"
+    - "\uC218\uB77D\r"
+    - "\uAC70\uBD80"
