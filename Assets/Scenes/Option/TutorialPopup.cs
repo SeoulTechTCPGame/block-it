@@ -99,7 +99,7 @@ public class TutorialPopup : MonoBehaviour
         TextAsset jsonAsset = null;
         switch (S.curLangIndex)
         {
-            case 0: //ToDo: Enums KR and EN
+            case ((int)Enums.ELanguage.EN): //ToDo: Enums KR and EN
                 jsonPath += "/TutorialEN";
 
                 jsonAsset = Resources.Load<TextAsset>(jsonPath);
@@ -114,7 +114,7 @@ public class TutorialPopup : MonoBehaviour
                     return;
                 }
                 break;
-            case 1:
+            case ((int)Enums.ELanguage.KR):
                 jsonPath += "/TutorialKR";
 
                 jsonAsset = Resources.Load<TextAsset>(jsonPath);

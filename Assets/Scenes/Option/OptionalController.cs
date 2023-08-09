@@ -30,8 +30,8 @@ public class OptionalController : MonoBehaviour
         _soundEffectSlider.onValueChanged.AddListener(OnSoundEffectVolumeChanged);
         _vibrationToggle.onValueChanged.AddListener(OnVibrationToggleChanged);
 
-        _englishBtn.onClick.AddListener(() => S.SetLangIndex(0));   //ToDo: 0을 Enum의 English로, 1을 Korean으로 변경
-        _koreanBtn.onClick.AddListener(() =>S.SetLangIndex(1));
+        _englishBtn.onClick.AddListener(() => S.SetLangIndex(((int)Enums.ELanguage.EN)));
+        _koreanBtn.onClick.AddListener(() =>S.SetLangIndex(((int)Enums.ELanguage.KR)));
     }
     #region Sound
     private void LoadSettings()
