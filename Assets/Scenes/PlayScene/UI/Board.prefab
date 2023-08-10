@@ -83,15 +83,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 951f7a73ededf5f48b6096563e986db0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellPrefab: {fileID: 4392110539606930648, guid: b6a6f4c7b1912214d9409aa679128cc6, type: 3}
-  p1RemainPlank: {fileID: 3929583860099001614}
-  p2RemainPlank: {fileID: 41854709914582819}
-  _p1PawnColor: {r: 0.7, g: 0.01, b: 0.01, a: 1}
-  _p2PawnColor: {r: 0.11, g: 0.36, b: 0.6, a: 1}
-  _p1SelectedPreviewColor: {r: 0.96, g: 0.57, b: 0.15, a: 1}
-  _p2SelectedPreviewColor: {r: 0.45, g: 0.76, b: 0.96, a: 1}
-  _p1PreviewColor: {r: 0.45, g: 0.76, b: 0.96, a: 1}
-  _p2PreviewColor: {r: 1, g: 0.82, b: 0.18, a: 1}
+  _cellPrefab: {fileID: 4392110539606930648, guid: b6a6f4c7b1912214d9409aa679128cc6, type: 3}
+  _p1RemainPlank: {fileID: 3929583860099001614}
+  _p2RemainPlank: {fileID: 41854709914582819}
+  P1_PAWN_COLOR: {r: 0.7, g: 0.01, b: 0.01, a: 1}
+  P2_PAWN_COLOR: {r: 0.11, g: 0.36, b: 0.6, a: 1}
+  P1_SELECTED_PREVIEW_COLOR: {r: 0.96, g: 0.57, b: 0.15, a: 1}
+  P2_SELECTED_PREVIEW_COLOR: {r: 0.45, g: 0.76, b: 0.96, a: 1}
+  P1_PREVIEW_COLOR: {r: 0.45, g: 0.76, b: 0.96, a: 1}
+  P2_PREVIEW_COLOR: {r: 1, g: 0.82, b: 0.18, a: 1}
 --- !u!1 &4101675420334971334
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,13 +185,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8223754907501733006}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.745283, g: 0.745283, b: 0.745283, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -220,6 +220,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RemainingPlanks (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4700341160352809785, guid: bb8e521c1a4fcb442ba67feea63a099b, type: 3}
+      propertyPath: _plankImage
+      value: 
+      objectReference: {fileID: 1977448958629149686, guid: 9ba7cc88053d80c41b47045d73293c2b, type: 3}
     - target: {fileID: 4700341160352809785, guid: bb8e521c1a4fcb442ba67feea63a099b, type: 3}
       propertyPath: StartPlankNum
       value: 3
@@ -335,6 +339,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RemainingPlanks
       objectReference: {fileID: 0}
+    - target: {fileID: 4700341160352809785, guid: bb8e521c1a4fcb442ba67feea63a099b, type: 3}
+      propertyPath: _plankImage
+      value: 
+      objectReference: {fileID: 1977448958629149686, guid: 9ba7cc88053d80c41b47045d73293c2b, type: 3}
     - target: {fileID: 4700341160352809785, guid: bb8e521c1a4fcb442ba67feea63a099b, type: 3}
       propertyPath: StartPlankNum
       value: 15

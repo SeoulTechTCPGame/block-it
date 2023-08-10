@@ -68,32 +68,32 @@ public class BoardManager : MonoBehaviour
     private void SetEvents()
     {
         RemoveMoveablePawns = new UnityEvent();
-        RemoveMoveablePawns.AddListener(removeMoveablePawn);
+        RemoveMoveablePawns.AddListener(UnmarkMoveablePawn);
 
         ShowMoveablePawns = new UnityEvent<Enums.EPlayer>();
-        ShowMoveablePawns.AddListener((ePlayer) => showMoveablePawns(ePlayer));
+        ShowMoveablePawns.AddListener((ePlayer) => MarkMoveablePawn(ePlayer));
 
         UpdateClickedPawn = new UnityEvent<Enums.EPlayer, Vector2Int>();
-        UpdateClickedPawn.AddListener((turn, coordination) => updateClickedPawn(turn, coordination));
+        UpdateClickedPawn.AddListener((turn, coordination) => MarkClickedPawn(turn, coordination));
 
         ShowPlaceablePlanks = new UnityEvent<EDirection, Enums.EPlayer>();
-        ShowPlaceablePlanks.AddListener((eDirection, ePlayer) => showPlaceablePlankDot(eDirection, ePlayer));
+        ShowPlaceablePlanks.AddListener((eDirection, ePlayer) => MarkPlaceablePlankDot(eDirection, ePlayer));
 
         RemovePlaceablePlanks = new UnityEvent();
-        RemovePlaceablePlanks.AddListener(removePlaceablePlankDot);
+        RemovePlaceablePlanks.AddListener(UnmarkPlaceablePlankDot);
 
         // Plank
         PlacePreviewPlank = new UnityEvent<Vector2Int, EDirection, Enums.EPlayer>();
-        PlacePreviewPlank.AddListener((coord, direction, player) => placePreviewPlank(coord, direction, player));
+        PlacePreviewPlank.AddListener((coord, direction, player) => MarkPreviewPlank(coord, direction, player));
 
         RemovePreviewPlank = new UnityEvent();
-        RemovePreviewPlank.AddListener(removePreviewPlank);
+        RemovePreviewPlank.AddListener(UnmarkPreviewPlank);
 
         UpdateBoard = new UnityEvent();
-        UpdateBoard.AddListener(updateBoard);
+        UpdateBoard.AddListener(Refresh);
 
         ResetState = new UnityEvent();
-        ResetState.AddListener(resetState);
+        ResetState.AddListener(ResetStates);
     }
 
     public Cell GetCell(int col, int row)
@@ -109,7 +109,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    private void removeMoveablePawn()
+    private void UnmarkMoveablePawn()
     {
         foreach (Vector2Int coord in _possiblePawnList)
         {
@@ -118,9 +118,9 @@ public class BoardManager : MonoBehaviour
         }
     }
     
-    private void showMoveablePawns(Enums.EPlayer ePlayer)
+    private void MarkMoveablePawn(Enums.EPlayer ePlayer)
     {
-        Color previewColor = getPreviewColor(ePlayer);
+        Color previewColor = GetPreviewColor(ePlayer);
 
         foreach (Vector2Int coord in _possiblePawnList)
         {
@@ -129,11 +129,11 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    private void showPlaceablePlankDot(EDirection eDirection, Enums.EPlayer ePlayer)
+    private void MarkPlaceablePlankDot(EDirection eDirection, Enums.EPlayer ePlayer)
     {
-        removePlaceablePlankDot();
-        List<Vector2Int> targetCoords = getPlaceablePlankDots(eDirection);
-        Color color = getPreviewColor(ePlayer);
+        UnmarkPlaceablePlankDot();
+        List<Vector2Int> targetCoords = GetPlaceablePlankDots(eDirection);
+        Color color = GetPreviewColor(ePlayer);
 
         foreach (Vector2Int coord in targetCoords)
         {
@@ -142,7 +142,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    private void removePlaceablePlankDot()
+    private void UnmarkPlaceablePlankDot()
     {
         foreach (Vector2Int coord in _placeableVerticalPlanks)
         {
@@ -157,22 +157,22 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    private List<Vector2Int> getPlaceablePlankDots(EDirection eDirection)
+    private List<Vector2Int> GetPlaceablePlankDots(EDirection eDirection)
     {
         return eDirection == EDirection.Horizontal ? _placeableHorizontalPlanks : _placeableVerticalPlanks;
     }
 
-    private Color getPreviewColor(Enums.EPlayer ePlayer)
+    private Color GetPreviewColor(Enums.EPlayer ePlayer)
     {
         return ePlayer == Enums.EPlayer.Player1 ? P1_PREVIEW_COLOR : P2_PREVIEW_COLOR;
     }
 
-    private Color getClickedColor(Enums.EPlayer ePlayer)
+    private Color GetClickedColor(Enums.EPlayer ePlayer)
     {
         return ePlayer == Enums.EPlayer.Player1 ? P1_SELECTED_PREVIEW_COLOR : P2_SELECTED_PREVIEW_COLOR;
     }
 
-    private void setPawn(Enums.EPlayer ePlayer, Vector2Int coordinate) {
+    private void SetPawn(Enums.EPlayer ePlayer, Vector2Int coordinate) {
 
         Vector2Int previousCoordinate = Vector2Int.zero;
         Color pawnColor = Color.white;
@@ -201,7 +201,7 @@ public class BoardManager : MonoBehaviour
         targetCell.SetPawn(true, pawnColor);
     }
 
-    private void setPlank(Vector2Int coordinate, EDirection eDirection, bool visible, Color color )
+    private void SetPlank(Vector2Int coordinate, EDirection eDirection, bool visible, Color color )
     {
         Cell cell1 = GetCell(coordinate.x, coordinate.y);
         Cell cell2;
@@ -225,25 +225,25 @@ public class BoardManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("BoardManager - setPlank: Invalid Plank Direction!");
+            Debug.LogError("BoardManager - SetPlank: Invalid Plank Direction!");
             return;
         }
         cell1.SetBottomRightPlank(targetMiddle, visible, color);
     }
 
-    private void placePreviewPlank(Vector2Int coordinate, EDirection eDirection, Enums.EPlayer ePlayer)
+    private void MarkPreviewPlank(Vector2Int coordinate, EDirection eDirection, Enums.EPlayer ePlayer)
     {
-        removePreviewPlank();
+        UnmarkPreviewPlank();
         _previewPlank.SetPlank(coordinate, eDirection);
 
-        Color color= getClickedColor(ePlayer);
+        Color color= GetClickedColor(ePlayer);
 
-        setPlank(coordinate, eDirection, true, color);
+        SetPlank(coordinate, eDirection, true, color);
         _isPreviewPlank = true;
 
     }
 
-    private void removePreviewPlank()
+    private void UnmarkPreviewPlank()
     {
         if(_isPreviewPlank == false)
         {
@@ -252,7 +252,7 @@ public class BoardManager : MonoBehaviour
         Vector2Int targetCoord = _previewPlank.GetCoordinate();
         EDirection direction = _previewPlank.GetDirection();
 
-        setPlank(targetCoord, direction, false, Color.white);
+        SetPlank(targetCoord, direction, false, Color.white);
 
         _isPreviewPlank = false;
     }
@@ -306,9 +306,9 @@ public class BoardManager : MonoBehaviour
     } 
     #endregion
 
-    private void updateClickedPawn(Enums.EPlayer ePlayer, Vector2Int clickedCellCoord) 
+    private void MarkClickedPawn(Enums.EPlayer ePlayer, Vector2Int clickedCellCoord) 
     {
-        Color previewColor = getPreviewColor(ePlayer);
+        Color previewColor = GetPreviewColor(ePlayer);
         for (int i = 0; i < _possiblePawnList.Count; i++)
         {
             Vector2Int coord = _possiblePawnList[i];
@@ -318,49 +318,49 @@ public class BoardManager : MonoBehaviour
 
         
         Cell clickedCell = GetCell(clickedCellCoord.x, clickedCellCoord.y);
-        Color clickedColor = getClickedColor(ePlayer);
+        Color clickedColor = GetClickedColor(ePlayer);
         clickedCell.SetClickablePawn(true, clickedColor);
 
     }
 
     #region Updates Infos and Board
-    public void updateBoard()
+    public void Refresh()
     {
-        clearBoard();
+        ClearBoard();
 
-        updatePawnCoordination();
-        updatePlanks();
-        updatePossiblePawnList();
-        updatePlaceablePlanks();
-        updateRemainPlankNum();
+        UpdatePawnCoordination();
+        UpdatePlanks();
+        UpdateMoveablePawn();
+        UpdatePlaceablePlanks();
+        UpdateRemainPlankNum();
     }
-     private void updatePawnCoordination()
+    private void UpdatePawnCoordination()
      {
         _p1Coordinate = _gameLogic.GetPawnCoordinate(Enums.EPlayer.Player1);
         _p2Coordinate = _gameLogic.GetPawnCoordinate(Enums.EPlayer.Player2);
 
-        setPawn(Enums.EPlayer.Player1, _p1Coordinate);
-        setPawn(Enums.EPlayer.Player2, _p2Coordinate);
+        SetPawn(Enums.EPlayer.Player1, _p1Coordinate);
+        SetPawn(Enums.EPlayer.Player2, _p2Coordinate);
      }
-     private void updatePlanks()
+    private void UpdatePlanks()
      {
         _planks = _gameLogic.planks;
 
         foreach(Plank targetPlank in _planks)
         {
-            setPlank(targetPlank.GetCoordinate(), targetPlank.GetDirection(), true, Color.black);
+            SetPlank(targetPlank.GetCoordinate(), targetPlank.GetDirection(), true, Color.black);
         }
      }
-     private void updatePossiblePawnList()
+    private void UpdateMoveablePawn()
      {
         _possiblePawnList = _gameLogic.GetMoveablePawnCoords(_gameLogic.turn);
      }
-     private void updatePlaceablePlanks()
+    private void UpdatePlaceablePlanks()
      {
         _placeableHorizontalPlanks = _gameLogic.GetPlaceablePlankCoords(EDirection.Horizontal);
         _placeableVerticalPlanks = _gameLogic.GetPlaceablePlankCoords(EDirection.Vertical);
      }
-     private void updateRemainPlankNum()
+    private void UpdateRemainPlankNum()
      {
         int p1PlankNum = _gameLogic.GetRemainPlank(Enums.EPlayer.Player1);
         int p2PlankNum = _gameLogic.GetRemainPlank(Enums.EPlayer.Player2);
@@ -368,7 +368,7 @@ public class BoardManager : MonoBehaviour
         _p1RemainPlank.GetComponent<RemainPlank>().DisplayRemainPlank(p1PlankNum);
         _p2RemainPlank.GetComponent<RemainPlank>().DisplayRemainPlank(p2PlankNum);
     }
-     private void clearBoard()
+    private void ClearBoard()
      {
         for (int row = 0; row < ROW; row++)
         {
@@ -380,7 +380,7 @@ public class BoardManager : MonoBehaviour
         }
     }
     #endregion
-    private void resetState()
+    private void ResetStates()
     {
         _isPreviewPlank = false;
     }
