@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+// 남은 플랭크의 갯수를 표시해주는 Class
 public class RemainPlank : MonoBehaviour
 {
     [SerializeField] Image _plankImage;

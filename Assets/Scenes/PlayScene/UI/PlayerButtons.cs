@@ -9,16 +9,23 @@ public enum EPlankImgState
     Vertical
 }
 
+/*
+ * 'PlayerButtons'는 pawn이동시키기, plank 놓기, Put (수 결정하기) 버튼 관리 및 표시하는 클래스이다.
+ */
 public class PlayerButtons : MonoBehaviour
 {
+    #region buttons, GameObjects
     public Button PawnButton;
     public Button PlankButton;
     public Button PutButton;
     public GameObject PlankImage;
+    #endregion
 
-    private Enums.EPlayer _owner;
-    private bool _isPlankValid = true;
+    private Enums.EPlayer _owner; // playerButton의 주인
+    private bool _isPlankValid = true; // plank를 놓을 수 있는가? (남은 plank가 없으면 false)
+    private EPlankImgState _plankImgState = EPlankImgState.Normal; // plank image의 state
 
+    #region Image, Color, PlankRotations
     private Image _pawnPanelImage;
     private Image _plankPanelImage;
     private RectTransform _plankImgTransform;
@@ -27,13 +34,12 @@ public class PlayerButtons : MonoBehaviour
     private Color _disabledColor = new Color(0.44f, 0.44f, 0.44f);
     private Color _normalColor = new Color(0.78f, 0.91f, 0.91f);
 
-    private EPlankImgState _plankImgState = EPlankImgState.Normal;
-
     private Vector3 _normalRotation = new Vector3(0f, 0f, 0f);
     private Vector3 _verticalRotation = new Vector3(0f, 0f, 45f);
     private Vector3 _horizontalRotation = new Vector3(0f, 0f, -45f);
+    #endregion
 
-    void Awake()
+    void Awake() // 이미지 받기, 버튼 클릭 이벤트 할당
     {
         _pawnPanelImage = PawnButton.GetComponent<Image>();
         _plankPanelImage = PlankButton.GetComponent<Image>();
@@ -49,7 +55,7 @@ public class PlayerButtons : MonoBehaviour
         return _plankImgState;
     }
 
-    public void SetButtons(bool bTurn)
+    public void SetButtons(bool bTurn) // 전체 버튼 활성화/비활성화
     {
         ResetPlankState();
 
@@ -80,7 +86,7 @@ public class PlayerButtons : MonoBehaviour
 
     }
 
-    public void OnPutButtonClicked()
+    public void OnPutButtonClicked() // put 버튼이 눌리면 다음 턴으로
     {
         MatchManager.ToNextTurn.Invoke();
     }
@@ -90,19 +96,19 @@ public class PlayerButtons : MonoBehaviour
         _owner = own;
     }
 
-    public void SetPutButtonInteractable(bool bInteractable)
+   public void SetPutButtonInteractable(bool bInteractable) // put 버튼 활성화/비활성화
     {
         PutButton.interactable = bInteractable;
     }
 
-    public void DisableButtons()
+    public void DisableButtons() // 전체 버튼 비활성화
     {
         PawnButton.gameObject.SetActive(false);
         PlankButton.gameObject.SetActive(false);
         PutButton.gameObject.SetActive(false);
     }
 
-    private void OnPawnButtonClicked()
+    private void OnPawnButtonClicked() // pawn이동 버튼 클릭시, 보드에 이동가능한 위치 표시 등 보드 요청
     {
         MatchManager.ResetMove.Invoke();
         //set color of the buttons
@@ -118,7 +124,7 @@ public class PlayerButtons : MonoBehaviour
         PawnButton.Select();
     }
 
-    private void OnPlankButtonClicked()
+    private void OnPlankButtonClicked() // plank 놓기 버튼 클릭시, 보드에 설치 가능 위치 표시 등 보드 요청
     {
         MatchManager.ResetMove.Invoke();
 
@@ -149,14 +155,14 @@ public class PlayerButtons : MonoBehaviour
         BoardManager.RemoveMoveablePawns.Invoke();
     }
 
-    private void SetPlankButtonDisable()
+    private void SetPlankButtonDisable() // plank 놓기 버튼 비활성화
     {
         _isPlankValid = false;
         PlankButton.interactable = false;
         _plankPanelImage.color = _disabledColor;
     }
 
-    private void ActivatePutButton(bool bOn)
+    private void ActivatePutButton(bool bOn) // put버튼 활성화/비활성화
     {
         PutButton.gameObject.SetActive(bOn);
         PutButton.interactable = false;

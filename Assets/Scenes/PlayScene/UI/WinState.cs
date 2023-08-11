@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+// 플레이어 중 하나가 이기면, Win Massage를 띄운다.
 public class WinState : MonoBehaviour
 {
     private Text _textComponent;
