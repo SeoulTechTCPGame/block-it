@@ -7,7 +7,7 @@ public enum EDirection
     Horizontal
 }
 
-public class Plank
+public class Plank  // 플랭크 객체 
 {
     private Vector2Int mCoordinate;
     private EDirection mDirection;
