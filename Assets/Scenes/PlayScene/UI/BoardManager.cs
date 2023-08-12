@@ -70,7 +70,7 @@ public class BoardManager : MonoBehaviour
 
     void Awake() // 이벤트 세팅, GameLogic 받기
     {
-        SetEvents();
+        InitEvents();
         _gameLogic = FindObjectOfType<GameLogic>();
     }
 
@@ -80,7 +80,7 @@ public class BoardManager : MonoBehaviour
         StartCoroutine(InitializeBoard());
     }
 
-    private void SetEvents() // 이벤트 세팅
+    private void InitEvents() // 이벤트 세팅
     {
         RemoveMoveablePawns = new UnityEvent();
         RemoveMoveablePawns.AddListener(UnmarkMoveablePawn);
@@ -187,7 +187,7 @@ public class BoardManager : MonoBehaviour
         return ePlayer == Enums.EPlayer.Player1 ? P1_SELECTED_PREVIEW_COLOR : P2_SELECTED_PREVIEW_COLOR;
     }
 
-    private void SetPawn(Enums.EPlayer ePlayer, Vector2Int coordinate) // pawn 표시
+    private void PlacePawn(Enums.EPlayer ePlayer, Vector2Int coordinate) // pawn 표시
     {
         Vector2Int previousCoordinate = Vector2Int.zero;
         Color pawnColor = Color.white;
@@ -216,7 +216,7 @@ public class BoardManager : MonoBehaviour
         targetCell.SetPawn(true, pawnColor);
     }
 
-    private void SetPlank(Vector2Int coordinate, EDirection eDirection, bool visible, Color color ) // plank 표시
+    private void PlacePlank(Vector2Int coordinate, EDirection eDirection, bool visible, Color color ) // plank 표시
     {
         Cell cell1 = GetCell(coordinate.x, coordinate.y);
         Cell cell2;
@@ -240,7 +240,7 @@ public class BoardManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("BoardManager - SetPlank: Invalid Plank Direction!");
+            Debug.LogError("BoardManager - PlacePlank: Invalid Plank Direction!");
             return;
         }
         cell1.SetBottomRightPlank(targetMiddle, visible, color);
@@ -253,7 +253,7 @@ public class BoardManager : MonoBehaviour
 
         Color color= GetClickedColor(ePlayer);
 
-        SetPlank(coordinate, eDirection, true, color);
+        PlacePlank(coordinate, eDirection, true, color);
         _isPreviewPlank = true;
 
     }
@@ -267,11 +267,11 @@ public class BoardManager : MonoBehaviour
         Vector2Int targetCoord = _previewPlank.GetCoordinate();
         EDirection direction = _previewPlank.GetDirection();
 
-        SetPlank(targetCoord, direction, false, Color.white);
+        PlacePlank(targetCoord, direction, false, Color.white);
 
         _isPreviewPlank = false;
     }
-
+    //Create Board and RemainPlanks
     #region Initializing
     IEnumerator InitializeBoard()
     {
@@ -354,8 +354,8 @@ public class BoardManager : MonoBehaviour
         _p1Coordinate = _gameLogic.GetPawnCoordinate(Enums.EPlayer.Player1);
         _p2Coordinate = _gameLogic.GetPawnCoordinate(Enums.EPlayer.Player2);
 
-        SetPawn(Enums.EPlayer.Player1, _p1Coordinate);
-        SetPawn(Enums.EPlayer.Player2, _p2Coordinate);
+        PlacePawn(Enums.EPlayer.Player1, _p1Coordinate);
+        PlacePawn(Enums.EPlayer.Player2, _p2Coordinate);
      }
     private void UpdatePlanks()
      {
@@ -363,7 +363,7 @@ public class BoardManager : MonoBehaviour
 
         foreach(Plank targetPlank in _planks)
         {
-            SetPlank(targetPlank.GetCoordinate(), targetPlank.GetDirection(), true, Color.black);
+            PlacePlank(targetPlank.GetCoordinate(), targetPlank.GetDirection(), true, Color.black);
         }
      }
     private void UpdateMoveablePawn()
