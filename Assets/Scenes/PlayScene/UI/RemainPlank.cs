@@ -62,6 +62,10 @@ public class RemainPlank : MonoBehaviour
     }
     private void clearRemainPlank()
     {
+        if(_plankImages == null)
+        {
+            return;
+        }
         foreach(Image image in _plankImages)
         {
             image.enabled = false;

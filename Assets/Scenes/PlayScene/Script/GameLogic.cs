@@ -23,9 +23,9 @@ private void Start()
 
 private void SetGame()
 {
-    P1.SetCoordinate(new Vector2Int(4, 7));  // 게임이 시작되었을 때 Player1의 좌표는 2차원 평면상의 (4, 7) 
+    P1.SetCoordinate(new Vector2Int(4, 8));  // 게임이 시작되었을 때 Player1의 좌표는 2차원 평면상의 (4, 7) 
 
-    P2.SetCoordinate(new Vector2Int(4, 1));  // 게임이 시작되었을 때 Player2의 좌표는 2차원 평면상의 (4, 1) 
+    P2.SetCoordinate(new Vector2Int(4, 0));  // 게임이 시작되었을 때 Player2의 좌표는 2차원 평면상의 (4, 1) 
 
         turn = Enums.EPlayer.Player1; // 게임이 시작되었을 때 첫 번째 턴은 Player1 이 가져간다 
 }
