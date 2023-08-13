@@ -2,15 +2,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+// 로그인 여부 판단하여, 시작 씬의 UI를 보여주는 클래스
 public class StartGame : MonoBehaviour
 {
-    [SerializeField] float _TouchTimeout = 1f;
+    [SerializeField] float _TouchTimeout = 1f;  // 대기 시간
     [SerializeField] GameObject Canvas;
-    private float _timer;
-    private bool _loggedIn = false;
-    private GameObject _signUpButton;
-    private GameObject _guestButton;
-    private GameObject _developButton;
+
+    private float _timer;   // 시간 지났는 지 여부
+    private bool _loggedIn = false; //로그인 여부
+    private GameObject _signUpButton;   //로그인 버튼
+    private GameObject _guestButton;    //게스트 모드 버튼
+    private GameObject _developButton;  //개발자 모드 버튼으로 ToDo: 삭제 예정
 
     private void Awake()
     {
@@ -20,13 +22,14 @@ public class StartGame : MonoBehaviour
     }
     private void Start()
     {
-        ButtonsVisibility();
-        _developButton.GetComponent<Button>().onClick.AddListener(MoveHomeScene);
+        ButtonsVisibility();    // 버튼 보이는 지 여부 판단
+        _developButton.GetComponent<Button>().onClick.AddListener(MoveHomeScene);   // 개발자용으로 ToDo: 삭제 예정
     }
     private void Update()
     {
         _timer += Time.deltaTime;
         if (_loggedIn && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) || _timer >= _TouchTimeout))
+            // 로그인이 되어 있으면서 화면을 터치했거나 시간이 지나면 자동으로 화면 전환
         {
             MoveHomeScene();
         }
