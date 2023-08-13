@@ -1,16 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// 탐색된 플레이어를 보여주고 경기 여부 판단 클래스
 public class ProfilePrefab : MonoBehaviour
 {
-    private Button _btn;
-    private Image _panel;
+    private GameObject _btn;    // 탐색된 플레이어를 보여줄 버튼 프리팹
+    private Image _panel;   // 수락 거절 패널
 
     private void Start()
     {
-        _btn.onClick.AddListener(TransferInformation);
+        _btn.GetComponent<Button>().onClick.AddListener(TransferInformation);
     }
     private void TransferInformation()
     {
