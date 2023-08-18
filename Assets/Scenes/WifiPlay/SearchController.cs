@@ -1,50 +1,74 @@
 using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.UI;
 using TMPro;
 using Mirror;
 
 public class SearchController : MonoBehaviour
 {
-    [SerializeField] private GameObject _searchPanel;
-    [SerializeField] private GameObject _matchPanel;
-    [SerializeField] private Button _back;
-    [SerializeField] private Button _search;
-    [SerializeField] private Button _accept;
-    [SerializeField] private Transform _grid;
-    [SerializeField] private GameObject _playerButtonPrefab;
-    [SerializeField] private TMP_Text _warningText;
+    [SerializeField] private GameObject _searchPanel;   // 상대방 찾는 화면
+    [SerializeField] private GameObject _matchPanel;    // 대전 수락 화면
+    [SerializeField] private Button _back;  // 뒤로가기 버튼
+    [SerializeField] private Button _search;    // 상대방 찾기 버튼
+    [SerializeField] private Button _accept;    // 대전 수락 버튼
+    [SerializeField] private Button _refuse;    // 대전 거부 버튼
+    [SerializeField] private Image _image;    // 상대방 이미지
+    [SerializeField] private Transform _grid;   // 상대방 나열 그리드
+    [SerializeField] private GameObject _playerButtonPrefab;    // 플레이어 프리팹
+    [SerializeField] private GameObject _loading; // 로딩 이미지
+    [SerializeField] private TMP_Text _warningText; // 경고 문구
 
-    private TMP_Text _searchButtonText;
-    private bool _searching;         // 상대방 검색 중인지 여부
-    private bool _opponentFound;     // 상대방을 찾았는지 여부
+    private bool _isSearching;  // 상대방 검색 중인지 여부
+    private bool _DoIAccpet; // 내가 수락 여부
+    private bool _DoYouAccpet;  // 상대가 수락 여부
     private GameObject _currentPanel;    // 현재 활성화된 패널
+    private List<NetworkConnection> connectedClients = new List<NetworkConnection>();   // 찾은 상대들
+    private NetworkConnection _opponent;    // 대전 상대
+    private MoveScene _ms = new MoveScene();
+    private TMP_Text _searchButtonText;
 
     private void Start()
     {
+        _searchPanel.SetActive(true);
+        _matchPanel.SetActive(false);
+        _currentPanel = _searchPanel;
+
         _searchButtonText = _search.GetComponentInChildren<TMP_Text>();
-        _searching = false;
+        _isSearching = false;
         OnSearchButtonClicked();
 
         _search.onClick.AddListener(OnSearchButtonClicked);
         _accept.onClick.AddListener(OnAcceptButtonClicked);
+        _refuse.onClick.AddListener(OnRefuseButtonClicked);
         _back.onClick.AddListener(OnBackButtonClicked);
     }
-    // 검색 버튼을 클릭했을 때 호출되는 메서드
+    #region 서치 패널
+    // 상대방 검색 버튼을 클릭했을 때
     private void OnSearchButtonClicked()
     {
-        if (!_searching)
+        if (!_isSearching)
         {
             _searchButtonText.text = "Searching...";
-            // 상대방을 찾기
-            _searching = true;
+            FindConnectedClients();  // 상대방을 찾기
+            _isSearching = true;
             OpponentGridData();
+        }
+    }
+    // 상대방 찾기
+    private void FindConnectedClients()
+    {
+        foreach (var client in connectedClients)
+        {
+            if (client.isReady)
+            {
+                //Debug.Log("Connected client: " + client.address);
+            }
         }
     }
     // 가상의 상대방 데이터로 그리드를 채우는 메서드
     private void OpponentGridData()
     {
-        // 상대방 계정 정보 가져오기
-        string[] opponentNames = { "Opponent1", "Opponent2", "Opponent3" }; // ToDo: 상대방 데이터 가져오기
+        string[] opponentNames = { "Opponent1", "Opponent2", "Opponent3" }; // ToDo: 찾은 상대방 데이터 가져오기
 
         foreach (string opponentName in opponentNames)
         {
@@ -59,59 +83,63 @@ public class SearchController : MonoBehaviour
     // 상대방 버튼을 클릭했을 때 호출되는 메서드
     private void OnOpponentButtonClicked(string opponentName)
     {
-        DestroyCurrentPanel();
+        TMP_Text opponentNameText = _currentPanel.GetComponentInChildren<TMP_Text>();
+        opponentNameText.text = opponentName;
 
-        TextMeshProUGUI 상대방_이름_텍스트 = _currentPanel.GetComponentInChildren<TextMeshProUGUI>();
-        상대방_이름_텍스트.text = "상대방: " + opponentName;
-
-        // 패널이 이전 화면을 덮도록 처리합니다.
-
-        // 이미지를 X축을 기준으로 회전합니다.
-        Image 상대방_이미지 = _currentPanel.GetComponentInChildren<Image>();
-        상대방_이미지.transform.Rotate(new Vector3(1, 0, 0), 45f);
-
-        // 수락 및 거절 버튼을 활성화합니다.
-        _accept.gameObject.SetActive(true);
+        MovePanel();
     }
+    #endregion
+    #region 매치 패널
     // 수락 버튼을 클릭했을 때 호출되는 메서드
     private void OnAcceptButtonClicked()
     {
-        // 대전 씬을 로드하거나 수락에 대한 처리를 수행합니다.
-        // ...
-        DestroyCurrentPanel();
+        // ToDo: 두 플레이어가 수락했는 지 확인 후 대전 씬을 로드 _ms.To()
     }
-    // 거절 버튼을 클릭했을 때 호출되는 메서드
-    private void OnRefusalButtonClicked()
+    private void OnRefuseButtonClicked()
     {
-        // 상대방이 거절한 메시지를 표시합니다.
-        _warningText.text = "상대방이 대전을 거절했습니다.";
-        DestroyCurrentPanel();
+        // ToDo: 거부
+        MovePanel();
+    }
+    #endregion
+    #region 공통
+    // 패널 이동할 때마다 호출되는 메서드
+    private void MovePanel()
+    {
+        if (_currentPanel == _matchPanel)
+        {
+            // ToDo: 거절
+            _matchPanel.SetActive(false);
+            _searchPanel.SetActive(true);
+            _currentPanel = _searchPanel;
+
+            _searchButtonText.text = "Search";
+            _isSearching = false;
+
+            foreach (Transform child in _grid)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+        else
+        {
+            _matchPanel.SetActive(true);
+            _searchPanel.SetActive(false);
+            _currentPanel = _matchPanel;
+
+            //_image.sprite = 찾은 상대방의 닉네임과 이미지
+        }
     }
     // 뒤로 가기 버튼을 클릭했을 때 호출되는 메서드
     private void OnBackButtonClicked()
     {
-        DestroyCurrentPanel();
-        _searchButtonText.text = "검색";
-        _searching = false;
-
-        // 그리드 내용을 지웁니다.
-        foreach (Transform child in _grid)
+        if (_currentPanel == _matchPanel)
         {
-            Destroy(child.gameObject);
+            MovePanel();
+        }
+        else
+        {
+            _ms.ToHome();
         }
     }
-    // 현재 패널을 파괴하고 관련 UI 상태를 초기화하는 메서드
-    private void DestroyCurrentPanel()
-    {
-        if (_currentPanel != null)
-        {
-            Destroy(_currentPanel);
-        }
-
-        // 수락 및 거절 버튼을 숨깁니다.
-        _accept.gameObject.SetActive(false);
-
-        // 경고 메시지를 초기화합니다.
-        _warningText.text = "";
-    }
+    #endregion
 }
