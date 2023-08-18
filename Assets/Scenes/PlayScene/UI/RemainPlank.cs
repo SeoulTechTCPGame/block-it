@@ -1,13 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+// 남은 플랭크의 갯수를 표시해주는 Class
 public class RemainPlank : MonoBehaviour
 {
-    [SerializeField] Image PlankImage;
+    [SerializeField] Image _plankImage;
 
-    private int initPlankNum;
-    private int plankNum;
-    private Image[] plankImages;
+    private int _initPlankNum;
+    private int _plankNum;
+    private Image[] _plankImages;
 
     void Start()
     {
@@ -16,9 +17,9 @@ public class RemainPlank : MonoBehaviour
 
     public void CreatePlank(int defaultPlankNum)
     {
-        initPlankNum = defaultPlankNum;
-        plankNum = defaultPlankNum;
-        plankImages = new Image[plankNum];
+        _initPlankNum = defaultPlankNum;
+        _plankNum = defaultPlankNum;
+        _plankImages = new Image[_plankNum];
 
         // Clear existing plank images
         foreach (Transform child in transform)
@@ -27,20 +28,20 @@ public class RemainPlank : MonoBehaviour
         }
 
 
-        // Instantiate and position plank images based on plankNum
-        for (int i = 0; i < plankNum; i++)
+        // Instantiate and position plank images based on _plankNum
+        for (int i = 0; i < _plankNum; i++)
         {
-            Image plankImage = Instantiate(PlankImage, transform);
-            plankImages[i] = plankImage;
+            Image plankImage = Instantiate(_plankImage, transform);
+            _plankImages[i] = plankImage;
         }
     }
     public void ReduceRemainPlank()
     {
-        if(plankNum > 0)
+        if(_plankNum > 0)
         {
-            plankNum--;
-//            Destroy(plankImages[plankNum].gameObject);
-            plankImages[plankNum].enabled = false;
+            _plankNum--;
+//            Destroy(_plankImages[_plankNum].gameObject);
+            _plankImages[_plankNum].enabled = false;
         }
 
     }
@@ -48,7 +49,7 @@ public class RemainPlank : MonoBehaviour
     {
         clearRemainPlank();
 
-        if(displayNum>initPlankNum || displayNum < 0)
+        if(displayNum>_initPlankNum || displayNum < 0)
         {
             Debug.Log("Remain Plank: Invalid displayNum has passed");
             return;
@@ -56,12 +57,16 @@ public class RemainPlank : MonoBehaviour
 
         for(int i = 0; i < displayNum; i++)
         {
-            plankImages[i].enabled = true;
+            _plankImages[i].enabled = true;
         }
     }
     private void clearRemainPlank()
     {
-        foreach(Image image in plankImages)
+        if(_plankImages == null)
+        {
+            return;
+        }
+        foreach(Image image in _plankImages)
         {
             image.enabled = false;
         }
