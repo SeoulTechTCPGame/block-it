@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 public class GameLogic : MonoBehaviour
 {
-private Pawn P1 = new Pawn();
-private Pawn P2 = new Pawn();
+private Pawn _p1 = new Pawn();  // Player1 인스턴스 생성 
+private Pawn _p2 = new Pawn();  // Player2 인스턴스 생성  
 
-public Enums.EPlayer turn;
+public Enums.EPlayer Turn;
 
-public List<Plank> planks = new List<Plank>();
+public List<Plank> Planks = new List<Plank>();  // 생성된 Plank 인스턴스를 담은 리스트  
 
-public static GameLogic instance;
+public static GameLogic s_instance;
 private void Awake()
 {
-    instance = this;
+    s_instance = this;
 }
 
 private void Start()
@@ -23,14 +23,14 @@ private void Start()
 
 private void SetGame()
 {
-    P1.SetCoordinate(new Vector2Int(4, 7));
+    _p1.SetCoordinate(new Vector2Int(4, 8));  // 게임이 시작되었을 때 Player1의 좌표는 2차원 평면상의 (4, 7) 
 
-    P2.SetCoordinate(new Vector2Int(4, 1));
+    _p2.SetCoordinate(new Vector2Int(4, 0));  // 게임이 시작되었을 때 Player2의 좌표는 2차원 평면상의 (4, 1) 
 
-    turn = Enums.EPlayer.Player1;
+    Turn = Enums.EPlayer.Player1; // 게임이 시작되었을 때 첫 번째 턴은 Player1 이 가져간다 
 }
 
-public Vector2Int GetPawnCoordinate(Enums.EPlayer ePlayer)//Pawn pawn)
+public Vector2Int GetPawnCoordinate(Enums.EPlayer ePlayer)  // 해당 Player 의 보드판에서의 좌표를 리턴한다 
 {
     Pawn targetPawn = GetTargetPawn(ePlayer);
     Vector2Int targetCoord = targetPawn.GetCoordinate();
@@ -38,94 +38,86 @@ public Vector2Int GetPawnCoordinate(Enums.EPlayer ePlayer)//Pawn pawn)
     return targetCoord;
 }
 
-public int GetRemainPlank(Enums.EPlayer ePlayer)
+public int GetRemainPlank(Enums.EPlayer ePlayer)  // 해당 Player 에게 남은 나무 판자의 개수를 리턴한다  
 {
     Pawn targetPawn = GetTargetPawn(ePlayer);
     return targetPawn.GetPlankNum();
 }
 
-public List<Vector2Int> GetMoveablePawnCoords(Enums.EPlayer ePlayer)//(Pawn pawn)
-{        
-
-    Pawn targetPawn = GetTargetPawn(ePlayer);
-    Pawn opponentPawn = GetOpponentPawn(targetPawn);
-
-    List<Vector2Int> validCoords = new List<Vector2Int>() { };
-
-    int coorY = targetPawn.GetCoordinate().y;
-    int coorX = targetPawn.GetCoordinate().x;
-
-    int opponentRow = opponentPawn.GetCoordinate().y;
-    int opponentCol = opponentPawn.GetCoordinate().x;
-
-    // Plank, Pawn 둘 모두에 대한 검사를 하여야 함.
-
-    // NORTH
-    if(IsPlankInTheNorth(coorX, coorY) || coorY <= 0)// plank 가 있는지 검사
+    public List<Vector2Int> GetMoveablePawnCoords(Enums.EPlayer ePlayer)  // 보드판의 경계와 Plank 의 유무를 판단하여 해당 Player가 상하좌우 중 갈 수 있는 좌표들을 리턴한다  
     {
+
+        Pawn targetPawn = GetTargetPawn(ePlayer);
+        Pawn opponentPawn = GetOpponentPawn(targetPawn);
+
+        List<Vector2Int> validCoords = new List<Vector2Int>() { };
+
+        int coorY = targetPawn.GetCoordinate().y;
+        int coorX = targetPawn.GetCoordinate().x;
+
+        int opponentRow = opponentPawn.GetCoordinate().y;
+        int opponentCol = opponentPawn.GetCoordinate().x;
+
+        // NORTH
+        if (coorY - 1 >= 0 && opponentRow == coorY - 1 && coorX == opponentCol)
+        {
             if (coorY - 2 >= 0 && !IsPlankInTheNorth(coorX, coorY - 1))
             {
                 validCoords.Add(new Vector2Int(coorX, coorY - 2));
             }
         }
-    else if (opponentRow + 1 == coorY && coorX == opponentCol) // pawn 이 있는지 검사 
-    {
-        Debug.Log("other Pawn is on North");
-
-        if (coorY - 2 >= 0 && !IsPlankInTheNorth(coorX, coorY-1))
+        else if (coorY - 1 >= 0 && !IsPlankInTheNorth(coorX, coorY))
         {
             validCoords.Add(new Vector2Int(coorX, coorY - 1));
+            
         }
-    }
-    else
-    {
-        validCoords.Add(new Vector2Int(coorX, coorY - 1));
-    }
+        
 
-    // SOUTH
-    if (coorY + 1 < 9 && opponentRow == coorY + 1 && coorX == opponentCol)
-    {
-        if (coorY + 2 < 9 && !IsPlankInTheSouth(coorX, coorY + 1))
+        // SOUTH
+        if (coorY + 1 < 9 && opponentRow == coorY + 1 && coorX == opponentCol)
         {
-            validCoords.Add(new Vector2Int(coorX, coorY + 2));
+            if (coorY + 2 < 9 && !IsPlankInTheSouth(coorX, coorY + 1))
+            {
+                validCoords.Add(new Vector2Int(coorX, coorY + 2));
+            }
         }
-    }
-    else if (coorY + 1 < 9 && !IsPlankInTheSouth(coorX, coorY + 1))
-    {
-        validCoords.Add(new Vector2Int(coorX, coorY + 1));
-    }
-
-    // EAST
-    if (coorX + 1 < 9 && opponentRow == coorY && coorX + 1 == opponentCol)
-    {
-        if (coorX + 2 < 9 && !IsPlankInTheEast(coorX + 1, coorY))
+        else if (coorY + 1 < 9 && !IsPlankInTheSouth(coorX, coorY))
         {
-            validCoords.Add(new Vector2Int(coorX + 2, coorY));
+            validCoords.Add(new Vector2Int(coorX, coorY + 1));
         }
-    }
-    else if (coorX + 1 < 9 && !IsPlankInTheEast(coorX + 1, coorY))
-    {
-        validCoords.Add(new Vector2Int(coorX + 1, coorY));
-    }
 
-    // WEST
-    if (coorX - 1 >= 0 && opponentRow == coorY && coorX - 1 == opponentCol)
-    {
-        if (coorX - 2 >= 0 && !IsPlankInTheWest(coorX - 1, coorY))
+        // EAST
+        if (coorX + 1 < 9 && opponentRow == coorY && coorX + 1 == opponentCol)
         {
-            validCoords.Add(new Vector2Int(coorX - 2, coorY));
+            if (coorX + 2 < 9 && !IsPlankInTheEast(coorX + 1, coorY))
+            {
+                validCoords.Add(new Vector2Int(coorX + 2, coorY));
+            }
         }
-    }
-    else if (coorX - 1 >= 0 && !IsPlankInTheWest(coorX - 1, coorY))
-    {
-        validCoords.Add(new Vector2Int(coorX - 1, coorY));
+        else if (coorX + 1 < 9 && !IsPlankInTheEast(coorX, coorY))
+        {
+            validCoords.Add(new Vector2Int(coorX + 1, coorY));
+        }
+
+        // WEST
+        if (coorX - 1 >= 0 && opponentRow == coorY && coorX - 1 == opponentCol)
+        {
+            if (coorX - 2 >= 0 && !IsPlankInTheWest(coorX - 1, coorY))
+            {
+                validCoords.Add(new Vector2Int(coorX - 2, coorY));
+            }
+        }
+        else if (coorX - 1 >= 0 && !IsPlankInTheWest(coorX, coorY))
+        {
+            validCoords.Add(new Vector2Int(coorX - 1, coorY));
+        }
+
+        return validCoords;
     }
 
-    return validCoords;
-}
 
-// !! FILL THIS METHOD !!
-public List<Vector2Int> GetPlaceablePlankCoords(EDirection direction)
+
+    public List<Vector2Int> GetPlaceablePlankCoords(EDirection Direction)  // 보드판에서 Plank 가 놓일 수 있는 좌표들을 모두 리턴한다  
 {
         List<Vector2Int> target = new List<Vector2Int>();
         //fill the code
@@ -137,7 +129,7 @@ public List<Vector2Int> GetPlaceablePlankCoords(EDirection direction)
             {
                 flag = true;
 
-                foreach (Plank plank in planks)
+                foreach (Plank plank in Planks)
                 {
                     plankRow = plank.GetCoordinate().y;
                     plankCol = plank.GetCoordinate().x;
@@ -148,7 +140,7 @@ public List<Vector2Int> GetPlaceablePlankCoords(EDirection direction)
                         break;
                     }
                     
-                    if (direction == EDirection.Horizontal)
+                    if (Direction == EDirection.Horizontal)
                     {
                         if (plank.GetDirection() == EDirection.Horizontal
                             && row == plankRow && (col == plankCol + 1 || col == plankCol - 1))
@@ -158,7 +150,7 @@ public List<Vector2Int> GetPlaceablePlankCoords(EDirection direction)
                         }
                     }
 
-                    if (direction == EDirection.Vertical)
+                    if (Direction == EDirection.Vertical)
                     {
                         if (plank.GetDirection() == EDirection.Vertical
                             && col == plankCol && (row == plankRow + 1 || row == plankRow - 1))
@@ -170,17 +162,17 @@ public List<Vector2Int> GetPlaceablePlankCoords(EDirection direction)
 
                 }
 
-                Plank _plank = new Plank();
-                _plank.SetCoordinate(new Vector2Int(col, row));
-                _plank.SetDirection(direction);
-                planks.Add(_plank);
+                Plank newPlank = new Plank();
+                newPlank.SetCoordinate(new Vector2Int(col, row));
+                newPlank.SetDirection(Direction);
+                Planks.Add(newPlank);
 
                 if (!IsThereAtLeastOneWay(Enums.EPlayer.Player1) || !IsThereAtLeastOneWay(Enums.EPlayer.Player2))
                 {
                     flag = false;
                 }
 
-                planks.RemoveAt(planks.Count - 1);
+                Planks.RemoveAt(Planks.Count - 1);
 
                 if (flag)
                 {
@@ -189,18 +181,12 @@ public List<Vector2Int> GetPlaceablePlankCoords(EDirection direction)
             }
         }
 
-        Debug.Log("GetPlaceablePlankCoords: ======");
-        foreach (Vector2Int _target in target)
-        {
-            Debug.Log(_target);
-        }
-        Debug.Log("---------");
         return target;
 }
         
-public bool IsPlankInTheNorth(int coorX, int coorY)
+public bool IsPlankInTheNorth(int coorX, int coorY)  // 인자로 받은 좌표를 기준으로 북쪽에 Plank 가 있는지를 판단하여 bool 값을 리턴한다  
 {
-    foreach (Plank plank in planks)
+    foreach (Plank plank in Planks)
     {
         if ( plank.GetDirection() == EDirection.Horizontal && (plank.GetCoordinate().y == coorY - 1 ) && ( (plank.GetCoordinate().x == coorX) || (plank.GetCoordinate().x == coorX - 1) ) )
         {
@@ -211,9 +197,9 @@ public bool IsPlankInTheNorth(int coorX, int coorY)
     return false;
 }
 
-public bool IsPlankInTheSouth(int coorX, int coorY)
-{
-        foreach (Plank plank in planks)
+public bool IsPlankInTheSouth(int coorX, int coorY)  // 인자로 받은 좌표를 기준으로 남쪽에 Plank 가 있는지를 판단하여 bool 값을 리턴한다  
+    {
+        foreach (Plank plank in Planks)
         {
             if (plank.GetDirection() == EDirection.Horizontal && (plank.GetCoordinate().y == coorY) && ((plank.GetCoordinate().x == coorX) || (plank.GetCoordinate().x == coorX - 1)))
         {
@@ -223,9 +209,9 @@ public bool IsPlankInTheSouth(int coorX, int coorY)
     return false;
 }
 
-public bool IsPlankInTheEast(int coorX, int coorY)
-{
-    foreach (Plank plank in planks)
+public bool IsPlankInTheEast(int coorX, int coorY)  // 인자로 받은 좌표를 기준으로 동쪽에 Plank 가 있는지를 판단하여 bool 값을 리턴한다  
+    {
+    foreach (Plank plank in Planks)
     {
         if (plank.GetDirection() == EDirection.Vertical && (plank.GetCoordinate().x == coorX) && ((plank.GetCoordinate().y == coorY) || (plank.GetCoordinate().y == coorY - 1)))
         {
@@ -235,9 +221,9 @@ public bool IsPlankInTheEast(int coorX, int coorY)
     return false;
 }
 
-public bool IsPlankInTheWest(int coorX, int coorY)
-{
-    foreach (Plank plank in planks)
+public bool IsPlankInTheWest(int coorX, int coorY)   // 인자로 받은 좌표를 기준으로 서쪽에 Plank 가 있는지를 판단하여 bool 값을 리턴한다   
+    {
+    foreach (Plank plank in Planks)
     {
         if (plank.GetDirection() == EDirection.Vertical && (plank.GetCoordinate().x == coorX - 1) && ((plank.GetCoordinate().y == coorY) || (plank.GetCoordinate().y == coorY - 1) ) )
         {
@@ -247,21 +233,21 @@ public bool IsPlankInTheWest(int coorX, int coorY)
     return false;
 }
 
-public Pawn GetOpponentPawn(Pawn targetPawn)
+public Pawn GetOpponentPawn(Pawn targetPawn)  // 상대 Player 의 객체를 리턴한다  
 {
-    if (targetPawn == P1)
+    if (targetPawn == _p1)
     {
-        return P2;
+        return _p2;
     }
     else
     {
-        return P1;
+        return _p1;
     }
 }
 
-public bool IsPlankPlaceable(Vector2Int coor)
+public bool IsPlankPlaceable(Vector2Int coor)  // 해당 좌표에 Plank 를 둘 수 있는지를 판단하여 bool 값을 리턴한다  
 {
-    foreach (Plank plank in planks)
+    foreach (Plank plank in Planks)
     {
         if (plank.GetCoordinate() == coor)
         {
@@ -271,45 +257,27 @@ public bool IsPlankPlaceable(Vector2Int coor)
     return true;
 }
 
-public void SetPawnPlace(Enums.EPlayer ePlayer, Vector2Int coordinate)
+public void SetPawnPlace(Enums.EPlayer ePlayer, Vector2Int coordinate)  // Player 를 의도한 좌표로 이동시킨다  
 {
     Pawn targetPawn = GetTargetPawn(ePlayer);
     targetPawn.SetCoordinate(coordinate);
 }
 
-public void SetPlank(Plank plank)
+public void SetPlank(Plank plank)  // Plank 를 의도한 좌표에 둔
 {
-    //Debug.Log("Game Logic's SetPlank is Called");
-    //Debug.Log("Set Plank");
-
-    planks.Add(plank);
+    Planks.Add(plank);
 
     bool player1 = IsThereAtLeastOneWay(Enums.EPlayer.Player1);
     bool player2 = IsThereAtLeastOneWay(Enums.EPlayer.Player2);
-    //Debug.Log("player1: " + player1);
-    //Debug.Log("player2: " + player2);
-
+    
     if (!player1 || !player2)
     {
-            //Debug.Log("Removed");
-            // TODO 좌표가 동일한 plank 는 추가해서는 안됨
-            planks.RemoveAt(planks.Count - 1);
+            Planks.RemoveAt(Planks.Count - 1);
     }
 
-    //foreach(Plank _plank in planks)
-    //    {
-    //        Debug.Log(_plank.GetCoordinate());
-    //    }
-
-    //foreach (Plank _plank in planks)
-    //{
-    //    Debug.Log("Game Logic - Plank: direction = " + _plank.GetDirection() + " x = " + _plank.GetCoordinate().x + " , y =" + _plank.GetCoordinate().y);
-    //}
-    //Debug.Log("---");
-    //Debug.Log("Size: " + planks.Count + "--------");
 }
 
-public bool Wins(Enums.EPlayer ePlayer)
+public bool Wins(Enums.EPlayer ePlayer)  // 해당 Player 가 이겼는지를 판단한다
 {
     Pawn targetPawn = GetTargetPawn(ePlayer);
     int targetY;
@@ -330,7 +298,7 @@ public bool Wins(Enums.EPlayer ePlayer)
     return false;
 }
 
-public bool IsOutOfBoundary(int row, int col)
+public bool IsOutOfBoundary(int row, int col)  // 해당 좌표가 보드판의 경계를 넘는지를 판단한다  
 {
     if (row <= 0 || row > 9 || col <= 0 || col > 9)
     {
@@ -339,38 +307,38 @@ public bool IsOutOfBoundary(int row, int col)
     return false;
 }
 
-public void changeTurn()
+public void changeTurn()  // 턴을 넘긴다
 {
-    if (turn == Enums.EPlayer.Player1)
+    if (Turn == Enums.EPlayer.Player1)
     {
-        turn = Enums.EPlayer.Player2;
+        Turn = Enums.EPlayer.Player2;
     }
     else
     {
-        turn = Enums.EPlayer.Player1;
+        Turn = Enums.EPlayer.Player1;
     }
 }
 
-public Pawn GetTargetPawn(Enums.EPlayer ePlayer)
+public Pawn GetTargetPawn(Enums.EPlayer ePlayer)  // Player 의 Pawn 인스턴스를 리턴한다  
 {
     Pawn targetPawn;
     if (ePlayer == Enums.EPlayer.Player1)
     {
-        targetPawn = P1;
+        targetPawn = _p1;
     }
     else
     {
-        targetPawn = P2;
+        targetPawn = _p2;
     }
 
     return targetPawn;
 }
 
-private bool IsThereAtLeastOneWay(Enums.EPlayer player)
+private bool IsThereAtLeastOneWay(Enums.EPlayer player)  // Player 의 사방이 Plank 로 막히는지를 판단한다  
 {
     Pawn pawn;
-    if (player == Enums.EPlayer.Player1) pawn = P1;
-    else pawn = P2;
+    if (player == Enums.EPlayer.Player1) pawn = _p1;
+    else pawn = _p2;
 
     int coorY = pawn.GetCoordinate().y;
     int coorX = pawn.GetCoordinate().x;
@@ -429,8 +397,6 @@ private bool IsThereAtLeastOneWay(Enums.EPlayer player)
                     que.Enqueue(new Vector2Int(coorX + 1, coorY));
                 }
         }
-
-        
 
         que.Dequeue();
     }
