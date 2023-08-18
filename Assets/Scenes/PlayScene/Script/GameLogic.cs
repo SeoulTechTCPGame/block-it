@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 public class GameLogic : MonoBehaviour
 {
-private Pawn P1 = new Pawn();  // Player1 인스턴스 생성 
-private Pawn P2 = new Pawn();  // Player2 인스턴스 생
+private Pawn _P1 = new Pawn();  // Player1 인스턴스 생성 
+private Pawn _P2 = new Pawn();  // Player2 인스턴스 생
 
 public Enums.EPlayer turn;
 
@@ -23,9 +23,9 @@ private void Start()
 
 private void SetGame()
 {
-    P1.SetCoordinate(new Vector2Int(4, 8));  // 게임이 시작되었을 때 Player1의 좌표는 2차원 평면상의 (4, 7) 
+    _P1.SetCoordinate(new Vector2Int(4, 8));  // 게임이 시작되었을 때 Player1의 좌표는 2차원 평면상의 (4, 7) 
 
-    P2.SetCoordinate(new Vector2Int(4, 0));  // 게임이 시작되었을 때 Player2의 좌표는 2차원 평면상의 (4, 1) 
+    _P2.SetCoordinate(new Vector2Int(4, 0));  // 게임이 시작되었을 때 Player2의 좌표는 2차원 평면상의 (4, 1) 
 
         turn = Enums.EPlayer.Player1; // 게임이 시작되었을 때 첫 번째 턴은 Player1 이 가져간다 
 }
@@ -241,13 +241,13 @@ public bool IsPlankInTheWest(int coorX, int coorY)   // 인자로 받은 좌표�
 
 public Pawn GetOpponentPawn(Pawn targetPawn)  // 상대 Player 의 객체를 리턴한다  
 {
-    if (targetPawn == P1)
+    if (targetPawn == _P1)
     {
-        return P2;
+        return _P2;
     }
     else
     {
-        return P1;
+        return _P1;
     }
 }
 
@@ -330,11 +330,11 @@ public Pawn GetTargetPawn(Enums.EPlayer ePlayer)  // Player 의 Pawn 인스턴�
     Pawn targetPawn;
     if (ePlayer == Enums.EPlayer.Player1)
     {
-        targetPawn = P1;
+        targetPawn = _P1;
     }
     else
     {
-        targetPawn = P2;
+        targetPawn = _P2;
     }
 
     return targetPawn;
@@ -343,8 +343,8 @@ public Pawn GetTargetPawn(Enums.EPlayer ePlayer)  // Player 의 Pawn 인스턴�
 private bool IsThereAtLeastOneWay(Enums.EPlayer player)  // Player 의 사방이 Plank 로 막히는지를 판단한다  
 {
     Pawn pawn;
-    if (player == Enums.EPlayer.Player1) pawn = P1;
-    else pawn = P2;
+    if (player == Enums.EPlayer.Player1) pawn = _P1;
+    else pawn = _P2;
 
     int coorY = pawn.GetCoordinate().y;
     int coorX = pawn.GetCoordinate().x;
