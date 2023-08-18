@@ -44,84 +44,80 @@ public int GetRemainPlank(Enums.EPlayer ePlayer)  // 해당 Player 에게 남은
     return targetPawn.GetPlankNum();
 }
 
-public List<Vector2Int> GetMoveablePawnCoords(Enums.EPlayer ePlayer)  // 보드판의 경계와 Plank 의 유무를 판단하여 해당 Player가 상하좌우 중 갈 수 있는 좌표들을 리턴한다  
-{        
-
-    Pawn targetPawn = GetTargetPawn(ePlayer);
-    Pawn opponentPawn = GetOpponentPawn(targetPawn);
-
-    List<Vector2Int> validCoords = new List<Vector2Int>() { };
-
-    int coorY = targetPawn.GetCoordinate().y;
-    int coorX = targetPawn.GetCoordinate().x;
-
-    int opponentRow = opponentPawn.GetCoordinate().y;
-    int opponentCol = opponentPawn.GetCoordinate().x;
-
-    // NORTH
-    if(IsPlankInTheNorth(coorX, coorY) || coorY <= 0)
+    public List<Vector2Int> GetMoveablePawnCoords(Enums.EPlayer ePlayer)  // 보드판의 경계와 Plank 의 유무를 판단하여 해당 Player가 상하좌우 중 갈 수 있는 좌표들을 리턴한다  
     {
+
+        Pawn targetPawn = GetTargetPawn(ePlayer);
+        Pawn opponentPawn = GetOpponentPawn(targetPawn);
+
+        List<Vector2Int> validCoords = new List<Vector2Int>() { };
+
+        int coorY = targetPawn.GetCoordinate().y;
+        int coorX = targetPawn.GetCoordinate().x;
+
+        int opponentRow = opponentPawn.GetCoordinate().y;
+        int opponentCol = opponentPawn.GetCoordinate().x;
+
+        // NORTH
+        if (coorY - 1 >= 0 && opponentRow == coorY - 1 && coorX == opponentCol)
+        {
             if (coorY - 2 >= 0 && !IsPlankInTheNorth(coorX, coorY - 1))
             {
                 validCoords.Add(new Vector2Int(coorX, coorY - 2));
             }
         }
-    else if (opponentRow + 1 == coorY && coorX == opponentCol)
-    {
-        if (coorY - 2 >= 0 && !IsPlankInTheNorth(coorX, coorY-1))
+        else if (coorY - 1 >= 0 && !IsPlankInTheNorth(coorX, coorY))
         {
             validCoords.Add(new Vector2Int(coorX, coorY - 1));
+            
         }
-    }
-    else
-    {
-        validCoords.Add(new Vector2Int(coorX, coorY - 1));
-    }
+        
 
-    // SOUTH
-    if (coorY + 1 < 9 && opponentRow == coorY + 1 && coorX == opponentCol)
-    {
-        if (coorY + 2 < 9 && !IsPlankInTheSouth(coorX, coorY + 1))
+        // SOUTH
+        if (coorY + 1 < 9 && opponentRow == coorY + 1 && coorX == opponentCol)
         {
-            validCoords.Add(new Vector2Int(coorX, coorY + 2));
+            if (coorY + 2 < 9 && !IsPlankInTheSouth(coorX, coorY + 1))
+            {
+                validCoords.Add(new Vector2Int(coorX, coorY + 2));
+            }
         }
-    }
-    else if (coorY + 1 < 9 && !IsPlankInTheSouth(coorX, coorY + 1))
-    {
-        validCoords.Add(new Vector2Int(coorX, coorY + 1));
-    }
-
-    // EAST
-    if (coorX + 1 < 9 && opponentRow == coorY && coorX + 1 == opponentCol)
-    {
-        if (coorX + 2 < 9 && !IsPlankInTheEast(coorX + 1, coorY))
+        else if (coorY + 1 < 9 && !IsPlankInTheSouth(coorX, coorY))
         {
-            validCoords.Add(new Vector2Int(coorX + 2, coorY));
+            validCoords.Add(new Vector2Int(coorX, coorY + 1));
         }
-    }
-    else if (coorX + 1 < 9 && !IsPlankInTheEast(coorX + 1, coorY))
-    {
-        validCoords.Add(new Vector2Int(coorX + 1, coorY));
-    }
 
-    // WEST
-    if (coorX - 1 >= 0 && opponentRow == coorY && coorX - 1 == opponentCol)
-    {
-        if (coorX - 2 >= 0 && !IsPlankInTheWest(coorX - 1, coorY))
+        // EAST
+        if (coorX + 1 < 9 && opponentRow == coorY && coorX + 1 == opponentCol)
         {
-            validCoords.Add(new Vector2Int(coorX - 2, coorY));
+            if (coorX + 2 < 9 && !IsPlankInTheEast(coorX + 1, coorY))
+            {
+                validCoords.Add(new Vector2Int(coorX + 2, coorY));
+            }
         }
+        else if (coorX + 1 < 9 && !IsPlankInTheEast(coorX, coorY))
+        {
+            validCoords.Add(new Vector2Int(coorX + 1, coorY));
+        }
+
+        // WEST
+        if (coorX - 1 >= 0 && opponentRow == coorY && coorX - 1 == opponentCol)
+        {
+            if (coorX - 2 >= 0 && !IsPlankInTheWest(coorX - 1, coorY))
+            {
+                validCoords.Add(new Vector2Int(coorX - 2, coorY));
+            }
+        }
+        else if (coorX - 1 >= 0 && !IsPlankInTheWest(coorX, coorY))
+        {
+            validCoords.Add(new Vector2Int(coorX - 1, coorY));
+        }
+
+        return validCoords;
     }
-    else if (coorX - 1 >= 0 && !IsPlankInTheWest(coorX - 1, coorY))
-    {
-        validCoords.Add(new Vector2Int(coorX - 1, coorY));
-    }
-
-    return validCoords;
-}
 
 
-public List<Vector2Int> GetPlaceablePlankCoords(EDirection Direction)  // 보드판에서 Plank 가 놓일 수 있는 좌표들을 모두 리턴한다  
+
+    public List<Vector2Int> GetPlaceablePlankCoords(EDirection Direction)  // 보드판에서 Plank 가 놓일 수 있는 좌표들을 모두 리턴한다  
 {
         List<Vector2Int> target = new List<Vector2Int>();
         //fill the code
