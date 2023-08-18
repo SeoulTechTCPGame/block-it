@@ -9,47 +9,47 @@ public enum EDirection
 
 public class Plank
 {
-    private Vector2Int mCoordinate;
-    private EDirection mDirection;
+    private Vector2Int _coordinate;
+    private EDirection _direction;
 
     public void SetPlank(Vector2Int coord, EDirection eDirection)
     {
-        mCoordinate = coord;
-        mDirection = eDirection;
+        _coordinate = coord;
+        _direction = eDirection;
     }
     public void SetPlank(Vector2Int coord)
     {
-        mCoordinate = coord;
+        _coordinate = coord;
     }
     public void SetPlank(EDirection eDirection)
     {
-        mDirection = eDirection;
+        _direction = eDirection;
     }
 
     public Vector2Int GetCoordinate()
     {
-        return mCoordinate;
+        return _coordinate;
     }
 
     public EDirection GetDirection()
     {
-        return mDirection;
+        return _direction;
     }
 
     public void SetDirection(EDirection direction)
     {
-        mDirection = direction;
+        _direction = direction;
     }
 
     public void SetCoordinate(Vector2Int vector2Int)
     {
-        mCoordinate = vector2Int;
+        _coordinate = vector2Int;
     }
 
     public void SetAll(EDirection direction, Vector2Int vector2Int)
     {
-        mDirection = direction;
-        mCoordinate = vector2Int;
+        _direction = direction;
+        _coordinate = vector2Int;
     }
 
 }
