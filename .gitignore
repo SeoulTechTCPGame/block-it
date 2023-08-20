@@ -81,7 +81,7 @@ Assets/ExternalDependencyManager/
 Assets/Firebase/
 Assets/Plugins/
 
-Assets/google-services-desktop.json.meta
+Assets/StreamingAssets/google-services-desktop.json.meta
 Assets/Editor Default Resources.meta
 Assets/ExternalDependencyManager.meta
 Assets/Firebase.meta
