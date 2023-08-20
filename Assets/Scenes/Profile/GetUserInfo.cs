@@ -8,8 +8,9 @@ using TMPro;
 using Newtonsoft.Json;
 using System.IO;
 using Newtonsoft.Json.Linq;
+using Mirror;
 
-public class GetUserInfo : MonoBehaviour
+public class GetUserInfo : NetworkBehaviour
 {
     [Header("정보를 불러올 유저의 ID")]
     [SerializeField] string userId;
@@ -33,70 +34,47 @@ public class GetUserInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SqlDataReader queryResult = GetInfo();
+        NetworkManager.singleton.StartClient();
+        NetworkClient.RegisterHandler<ResponseUserProfileMessage>(OnReceiveDataResponse);
+        StartCoroutine(WaitForConnectionAndSend(userId));
 
-        while (queryResult.Read())
+        if (gameCount != 0)
         {
-            userName.text = queryResult[0] as string;
-            gameScore = (int)queryResult[1];
-            gameCount = (int)queryResult[2];
-            winCount = (int)queryResult[3];
+            userRecord.text = gameCount + " 게임, 승률: " + winCount * 100 / gameCount + "%";
         }
-
-        userRecord.text = gameCount + " 게임, 승률: " + winCount * 100 / gameCount + "%";
-
-        queryResult.Close();
-    }
-
-    //데이터 조회
-    public SqlDataReader GetInfo()
-    {
-        SqlDataReader reader = null;
-        try
+        else
         {
-            string strConn = GetConnectionString();
-            string query = @"SELECT [User].name, [Rank].score, [Rank].totalgamecount, [Rank].wincount 
-                             FROM [User] JOIN [Rank] ON [User].id = [Rank].id WHERE [User].id = " + userId + ";";
-
-            SqlConnection conn = new SqlConnection(strConn);
-            conn.Open();
-
-            SqlCommand cmd = new SqlCommand(query, conn);
-            reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-            return reader;
-        }
-        catch (Exception ex)
-        {
-            Debug.LogException(ex);
-            return reader;
+            userRecord.text = gameCount + " 게임, 승률: - %";
         }
     }
 
-    // 연결 정보 가져오기
-    private string GetConnectionString()
+    private IEnumerator WaitForConnectionAndSend(string userId)
     {
-        string jsonFilepath = @"Assets/Resources/Json/ConnectionInfo.json";
-        string strConn = string.Empty;
-        try
+        // Wait until the client is connected
+        while (!NetworkClient.isConnected)
         {
-            string jsonText = System.IO.File.ReadAllText(jsonFilepath);
-            JObject jsonData = JObject.Parse(jsonText);
-
-            string dbAddress = (string)jsonData["DB"]["Address"];
-            string dbPortNumber = (string)jsonData["DB"]["Port"];
-            string dbName = (string)jsonData["DB"]["DBName"];
-            string dbId = (string)jsonData["DB"]["ID"];
-            string dbPassword = (string)jsonData["DB"]["Password"];
-
-            strConn = "Server=" + dbAddress + "," + dbPortNumber + ";Database=" + dbName + ";Uid=" + dbId + ";Pwd=" + dbPassword + ";";
-            Debug.Log(strConn);
-
-            return strConn;
+            yield return null; // Wait for the next frame
         }
-        catch (Exception e)
-        {
-            Debug.LogException(e);
-            return strConn;
-        }
+
+        SendDataRequest(userId);
+    }
+
+    private void SendDataRequest(string userId)
+    {
+        RequestUserProfileMessage requestData = new RequestUserProfileMessage { userId = userId };
+        NetworkClient.Send(requestData);
+    }
+
+    private void OnReceiveDataResponse(ResponseUserProfileMessage msg)
+    {
+        // Handle the received data, e.g., update the UI
+        string nickname = msg.nickname;
+        int playCount = msg.playCount;
+        int winCount = msg.winCount;
+        string profilePicturePath = msg.profilePicturePath;
+
+        // Implement UI updates or other logic here
+        userName.text = nickname;
+        userRecord.text = playCount + " 게임, 승률: " + winCount * 100 / playCount + "%";
     }
 }
