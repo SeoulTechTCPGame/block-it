@@ -19,8 +19,8 @@ public class SearchController : MonoBehaviour
     [SerializeField] private TMP_Text _warningText; // 경고 문구
 
     private bool _isSearching;  // 상대방 검색 중인지 여부
-    private bool _DoIAccpet; // 내가 수락 여부
-    private bool _DoYouAccpet;  // 상대가 수락 여부
+    private bool _doIAccpet; // 내가 수락 여부
+    private bool _doYouAccpet;  // 상대가 수락 여부
     private GameObject _currentPanel;    // 현재 활성화된 패널
     private List<NetworkConnection> connectedClients = new List<NetworkConnection>();   // 찾은 상대들
     private NetworkConnection _opponent;    // 대전 상대
