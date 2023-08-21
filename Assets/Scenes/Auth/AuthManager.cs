@@ -34,7 +34,7 @@ public class AuthManager : MonoBehaviour
     private string userId;
 
     /** load login info **/
-    private void LoadUserInfo()
+    public void LoadUserInfo()
     {
         userName = PlayerPrefs.GetString("User_Display_Name", null);
         userId = PlayerPrefs.GetString("User_Id", null);
