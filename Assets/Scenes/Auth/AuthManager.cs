@@ -29,6 +29,32 @@ public class AuthManager : MonoBehaviour
     public TMP_InputField passwordRegisterVerifyField;
     public TMP_Text warningRegisterText;
 
+    //User Information
+    private string userName;
+    private string userEmail;
+    private string userId;
+
+    /** load login info **/
+    private void LoadUserInfo()
+    {
+        userName = PlayerPrefs.GetString("User_Display_Name", null);
+        userEmail = PlayerPrefs.GetString("User_EMail", null);
+        userId = PlayerPrefs.GetString("User_Id", null);
+    }
+
+    /** save login info **/
+    private void SaveUserInfo()
+    {
+        PlayerPrefs.SetString("User_Display_Name", userName);
+        PlayerPrefs.SetString("User_EMail", userEmail);
+        PlayerPrefs.SetString("User_Id", userId);
+    }
+
+    private void Start()
+    {
+        LoadUserInfo();
+    }
+
     private void Awake()
     {
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
@@ -107,6 +133,10 @@ public class AuthManager : MonoBehaviour
             Debug.LogFormat("user signed in successfully: {0} ({1}) ({2})", User.DisplayName, User.Email, User.UserId);
             warningLoginText.text = "";
             confirmLoginText.text = "Logged In";
+            userName = User.DisplayName;
+            userEmail = User.Email;
+            userId = User.UserId;
+            SaveUserInfo();
             yield return User.UserId;
         }
     }
