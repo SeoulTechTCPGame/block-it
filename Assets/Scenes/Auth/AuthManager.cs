@@ -31,14 +31,12 @@ public class AuthManager : MonoBehaviour
 
     //User Information
     private string userName;
-    private string userEmail;
     private string userId;
 
     /** load login info **/
     private void LoadUserInfo()
     {
         userName = PlayerPrefs.GetString("User_Display_Name", null);
-        userEmail = PlayerPrefs.GetString("User_EMail", null);
         userId = PlayerPrefs.GetString("User_Id", null);
     }
 
@@ -46,7 +44,6 @@ public class AuthManager : MonoBehaviour
     private void SaveUserInfo()
     {
         PlayerPrefs.SetString("User_Display_Name", userName);
-        PlayerPrefs.SetString("User_EMail", userEmail);
         PlayerPrefs.SetString("User_Id", userId);
     }
 
@@ -134,7 +131,6 @@ public class AuthManager : MonoBehaviour
             warningLoginText.text = "";
             confirmLoginText.text = "Logged In";
             userName = User.DisplayName;
-            userEmail = User.Email;
             userId = User.UserId;
             SaveUserInfo();
             yield return User.UserId;
