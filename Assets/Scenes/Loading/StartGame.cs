@@ -13,11 +13,10 @@ public class StartGame : MonoBehaviour
     private GameObject _signUpButton;   //로그인 버튼
     private GameObject _guestButton;    //게스트 모드 버튼
     private GameObject _developButton;  //개발자 모드 버튼으로 ToDo: 삭제 예정
-    private AuthManager _auth;
 
-    private void Awake()
+    private void Start()
     {
-        _auth.LoadUserInfo();
+        UserData.instance.LoadUserInfo();
         if (PlayerPrefs.GetString("User_Display_Name") != null)
         {
             _loggedIn = true;
@@ -26,9 +25,7 @@ public class StartGame : MonoBehaviour
         _developButton = Canvas.transform.Find("Develop").gameObject;
         _signUpButton = Canvas.transform.Find("Sign In").gameObject;
         _guestButton = Canvas.transform.Find("Guest").gameObject;
-    }
-    private void Start()
-    {
+
         ButtonsVisibility();    // 버튼 보이는 지 여부 판단
         _developButton.GetComponent<Button>().onClick.AddListener(MoveHomeScene);   // 개발자용으로 ToDo: 삭제 예정
     }
@@ -43,9 +40,8 @@ public class StartGame : MonoBehaviour
     }
     private void ButtonsVisibility()
     {
-        if (_loggedIn == false)
+        if (_loggedIn == true)
         {
-            Debug.Log("check");
             _signUpButton.SetActive(!_loggedIn);
             _guestButton.SetActive(!_loggedIn);
 

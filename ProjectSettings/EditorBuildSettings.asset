@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PlayScene/LocalPlay.unity
     guid: 2acf54705f57bd244886693c3828090f
+  - enabled: 1
+    path: Assets/Scenes/WifiPlay/Search.unity
+    guid: b5997fefd56082e43959b3f6b2ae4d20
   m_configObjects: {}

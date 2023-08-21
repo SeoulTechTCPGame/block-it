@@ -20,4 +20,8 @@ public class MoveScene : MonoBehaviour
     {
         SceneManager.LoadScene("LocalPlay");
     }
+    public void ToWifiLoby()
+    {
+        SceneManager.LoadScene("Search");
+    }
 }

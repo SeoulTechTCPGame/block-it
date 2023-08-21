@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using TMPro;
@@ -17,15 +18,16 @@ public class SearchController : MonoBehaviour
     [SerializeField] private GameObject _playerButtonPrefab;    // 플레이어 프리팹
     [SerializeField] private GameObject _loading; // 로딩 이미지
     [SerializeField] private TMP_Text _warningText; // 경고 문구
+    [SerializeField] private MoveScene _ms;
 
     private bool _isSearching;  // 상대방 검색 중인지 여부
+    private Coroutine searchCoroutine; // 검색 코루틴 참조를 저장하기 위한 변수
     private bool _doIAccpet; // 내가 수락 여부
     private bool _doYouAccpet;  // 상대가 수락 여부
     private GameObject _currentPanel;    // 현재 활성화된 패널
     private List<NetworkConnection> connectedClients = new List<NetworkConnection>();   // 찾은 상대들
     private NetworkConnection _opponent;    // 대전 상대
-    private MoveScene _ms = new MoveScene();
-    private TMP_Text _searchButtonText;
+    private LocalizeScript _searchLocalize;
 
     private void Start()
     {
@@ -33,7 +35,7 @@ public class SearchController : MonoBehaviour
         _matchPanel.SetActive(false);
         _currentPanel = _searchPanel;
 
-        _searchButtonText = _search.GetComponentInChildren<TMP_Text>();
+        _searchLocalize = _search.GetComponentInChildren<TMP_Text>().GetComponent<LocalizeScript>();
         _isSearching = false;
         OnSearchButtonClicked();
 
@@ -48,22 +50,29 @@ public class SearchController : MonoBehaviour
     {
         if (!_isSearching)
         {
-            _searchButtonText.text = "Searching...";
-            FindConnectedClients();  // 상대방을 찾기
+            _searchLocalize.TextKey = "Searching";
+            searchCoroutine = StartCoroutine(FindConnectedClients());
             _isSearching = true;
             OpponentGridData();
         }
     }
     // 상대방 찾기
-    private void FindConnectedClients()
+    private IEnumerator FindConnectedClients()
     {
-        foreach (var client in connectedClients)
+        _loading.SetActive(true);
+        while (searchCoroutine != null)
         {
-            if (client.isReady)
+            foreach (var client in connectedClients)    //ToDo: 상대방 찾기
             {
-                //Debug.Log("Connected client: " + client.address);
+                _loading.transform.Rotate(Vector3.right, Time.deltaTime * 100);
+                if (client.isReady)
+                {
+                    //Debug.Log("Connected client: " + client.address);
+                }
+                yield return null;
             }
         }
+        _loading.SetActive(false);
     }
     // 가상의 상대방 데이터로 그리드를 채우는 메서드
     private void OpponentGridData()
@@ -83,10 +92,10 @@ public class SearchController : MonoBehaviour
     // 상대방 버튼을 클릭했을 때 호출되는 메서드
     private void OnOpponentButtonClicked(string opponentName)
     {
+        MovePanel();
+
         TMP_Text opponentNameText = _currentPanel.GetComponentInChildren<TMP_Text>();
         opponentNameText.text = opponentName;
-
-        MovePanel();
     }
     #endregion
     #region 매치 패널
@@ -112,7 +121,7 @@ public class SearchController : MonoBehaviour
             _searchPanel.SetActive(true);
             _currentPanel = _searchPanel;
 
-            _searchButtonText.text = "Search";
+            _searchLocalize.TextKey = "Search";
             _isSearching = false;
 
             foreach (Transform child in _grid)
