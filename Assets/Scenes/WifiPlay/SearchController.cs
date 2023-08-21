@@ -64,7 +64,7 @@ public class SearchController : MonoBehaviour
         {
             foreach (var client in connectedClients)    //ToDo: 상대방 찾기
             {
-                _loading.transform.Rotate(Vector3.right, Time.deltaTime * 100);
+                _loading.transform.Rotate(Vector3.back, Time.deltaTime * 100);
                 if (client.isReady)
                 {
                     //Debug.Log("Connected client: " + client.address);
