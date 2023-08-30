@@ -1,15 +1,15 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// 사운드 및 진동 관련한 것을 관리하는 클래스
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance;
-    public static SoundManager Instance { get { return instance; } }
     // 볼륨 값 변수들
     public float BgmVolume { get; set; } = 1.0f; // BGM 볼륨
     public float SoundEffectVolume { get; set; } = 1.0f; // 사운드 이펙트 볼륨
-    public bool IsVibrationEnabled { get; set; } = true;
-    public AudioClip[] Bgm;
+    public bool IsVibrationEnabled { get; set; } = true;    // 진동 토글 온오프 게임
+    public AudioClip[] Bgm; // 모든 BGM 클립
     public AudioSource BgmAudioSource; // BGM을 재생할 오디오 소스
     public AudioSource SoundEffectAudioSource; // 사운드 이펙트를 재생할 오디오 소스
 
@@ -90,6 +90,7 @@ public class SoundManager : MonoBehaviour
             }
         }
     }
+    // 상황에 맞는 BGM 선정
     private void PlayBgm(string sceneName)
     {
         if (BgmAudioSource == null)

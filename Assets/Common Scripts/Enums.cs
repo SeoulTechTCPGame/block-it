@@ -5,4 +5,9 @@ public static class Enums
         Player1,
         Player2
     }
+    public enum ELanguage
+    {
+        EN,
+        KR
+    }
 }

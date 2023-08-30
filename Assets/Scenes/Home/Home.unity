@@ -219,6 +219,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1842585887}
+        m_TargetAssemblyTypeName: MoveScene, Assembly-CSharp
+        m_MethodName: ToWifiLoby
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &61378069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -912,7 +924,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TextKey: Paly with Others
+  TextKey: Play with Others
 --- !u!1 &1329400478
 GameObject:
   m_ObjectHideFlags: 0
@@ -1572,7 +1584,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a01c88d61895c824d90b39b64f281fc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mClip: {fileID: 8300000, guid: 6c62333a9cf1ce742bb3725fa65e7137, type: 3}
+  _Clip: {fileID: 8300000, guid: 6c62333a9cf1ce742bb3725fa65e7137, type: 3}
 --- !u!1 &1964044800
 GameObject:
   m_ObjectHideFlags: 0
