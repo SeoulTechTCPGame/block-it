@@ -12,17 +12,23 @@ public class GetUserProfile : MonoBehaviour
     void Start()
     {
         BlockItUser user = CurrentLoginSession.Instance.user;
-        user.getUserData();
-
-        userName.text = user.Nickname;
-
-        if (user.PlayCount == 0)
+        if (user != null)
         {
-            userRecord.text = "플레이 기록이 없습니다.";
-        }
-        else
+            user.getUserData();
+
+            userName.text = user.Nickname;
+
+            if (user.PlayCount == 0)
+            {
+                userRecord.text = "플레이 기록이 없습니다.";
+            }
+            else
+            {
+                userRecord.text = user.PlayCount + " 게임, 승률: " + user.WinCount * 100 / user.PlayCount + "%";
+            }
+        } else
         {
-            userRecord.text = user.PlayCount + " 게임, 승률: " + user.WinCount * 100 / user.PlayCount + "%";
+            CurrentLoginSession.Instance.IsGuest = true;
         }
     }
 }
