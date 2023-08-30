@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PlayScene/LocalPlay.unity
     guid: 2acf54705f57bd244886693c3828090f
+  - enabled: 1
+    path: Assets/Scenes/Auth/Auth.unity
+    guid: 0874527e38daa412f84ab6f3e95f27a8
   m_configObjects: {}
