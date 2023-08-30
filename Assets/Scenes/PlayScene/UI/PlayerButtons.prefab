@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4308883407001193182}
   - component: {fileID: 760984374370528809}
   - component: {fileID: 7762327267523855190}
+  - component: {fileID: 8171579239910909895}
   m_Layer: 5
   m_Name: PutButton
   m_TagString: Untagged
@@ -121,7 +122,32 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 760984374370528809}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8171579239910909895}
+        m_TargetAssemblyTypeName: SoundEffect, Assembly-CSharp
+        m_MethodName: PlayButtonSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &8171579239910909895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 70530416786746803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a01c88d61895c824d90b39b64f281fc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mClip: {fileID: 8300000, guid: 6c62333a9cf1ce742bb3725fa65e7137, type: 3}
 --- !u!1 &366462769106272863
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,6 +297,7 @@ GameObject:
   - component: {fileID: 448868964511837128}
   - component: {fileID: 3947898056509491836}
   - component: {fileID: 6183586701670424040}
+  - component: {fileID: 1435734174371240324}
   m_Layer: 5
   m_Name: PlankButton
   m_TagString: Untagged
@@ -380,7 +407,32 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3947898056509491836}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1435734174371240324}
+        m_TargetAssemblyTypeName: SoundEffect, Assembly-CSharp
+        m_MethodName: PlayButtonSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1435734174371240324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 722370767406701095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a01c88d61895c824d90b39b64f281fc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mClip: {fileID: 8300000, guid: f518960108a5911478cdc2c7991f528a, type: 3}
 --- !u!1 &1661864093519671298
 GameObject:
   m_ObjectHideFlags: 0
@@ -540,7 +592,6 @@ MonoBehaviour:
   PlankButton: {fileID: 6183586701670424040}
   PutButton: {fileID: 7762327267523855190}
   PlankImage: {fileID: 7761852165576493070}
-  RemainPlank: {fileID: 1097805059226780493, guid: bb8e521c1a4fcb442ba67feea63a099b, type: 3}
 --- !u!1 &4470084202857352304
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,6 +604,7 @@ GameObject:
   - component: {fileID: 7532714240438414396}
   - component: {fileID: 7686913206136720190}
   - component: {fileID: 7653274623355134793}
+  - component: {fileID: 5779607866046323408}
   m_Layer: 5
   m_Name: PawnButton
   m_TagString: Untagged
@@ -662,7 +714,32 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7686913206136720190}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5779607866046323408}
+        m_TargetAssemblyTypeName: SoundEffect, Assembly-CSharp
+        m_MethodName: PlayButtonSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5779607866046323408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4470084202857352304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a01c88d61895c824d90b39b64f281fc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mClip: {fileID: 8300000, guid: 6c62333a9cf1ce742bb3725fa65e7137, type: 3}
 --- !u!1 &7761852165576493070
 GameObject:
   m_ObjectHideFlags: 0
