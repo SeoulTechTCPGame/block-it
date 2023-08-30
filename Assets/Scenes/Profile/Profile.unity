@@ -636,7 +636,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c444556f1db98764ea34f59c4ce097fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userId: 1
   userName: {fileID: 819434412}
   userRecord: {fileID: 69640777}
 --- !u!1 &166371605

@@ -65,7 +65,7 @@ crashlytics-build.properties
 /ProjectSettings/ProjectSettings.asset
 ProjectSettings/GvhProjectSettings.xml
 
-#Ds_store
+# DS_store
 **/.Ds_store
 
 # Server Connection Config File
@@ -87,6 +87,13 @@ Assets/ExternalDependencyManager/
 Assets/Firebase/
 Assets/Firebase.meta
 Assets/Plugins/
-Assets/Plugins.meta
+
+Assets/StreamingAssets/google-services-desktop.json.meta
 Assets/Editor Default Resources.meta
 Assets/ExternalDependencyManager.meta
+Assets/Firebase.meta
+Assets/Plugins.meta
+Assets/GoogleService-Info.plist.meta
+Assets/google-services.json.meta
+ProjectSettings/GvhProjectSettings.xml
+ProjectSettings/GvhProjectSettings.xml.meta

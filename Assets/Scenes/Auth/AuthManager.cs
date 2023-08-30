@@ -1,11 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Firebase;
 using Firebase.Auth;
 using TMPro;
 using System;
 using System.Security.Cryptography;
+using UnityEngine.SceneManagement;
 
 public class AuthManager : MonoBehaviour
 {
@@ -116,9 +116,9 @@ public class AuthManager : MonoBehaviour
             Debug.LogFormat("user signed in successfully: {0} ({1}) ({2})", User.DisplayName, User.Email, User.UserId);
             warningLoginText.text = "";
             confirmLoginText.text = "Logged In";
-            userName = User.DisplayName;
-            userId = User.UserId;
-            UserData.instance.SaveUserInfo();
+            CurrentLoginSession.Instance.user = new BlockItUser(User.UserId);
+            SceneManager.LoadScene("Home");
+
             yield return User.UserId;
         }
     }
@@ -169,13 +169,13 @@ public class AuthManager : MonoBehaviour
                 User = RegisterTask.Result.User;
 
                 // 회원가입에 성공 검증
-                if(User != null)
+                if (User != null)
                 {
-                    //유저네임 랜덤 생성 및 셋업
+                    // 유저네임 랜덤 생성 및 셋업
                     var bytes = new byte[16];
                     using (var rng = new RNGCryptoServiceProvider())
                     {
-                      rng.GetBytes(bytes);
+                        rng.GetBytes(bytes);
                     }
                     string _username = BitConverter.ToString(bytes).Replace("-", "").ToLower();
                     UserProfile profile = new UserProfile { DisplayName = _username };
@@ -184,15 +184,18 @@ public class AuthManager : MonoBehaviour
 
                     yield return new WaitUntil(predicate: () => ProfileTask.IsCompleted);
 
-                    if(ProfileTask.Exception != null)
+                    if (ProfileTask.Exception != null)
                     {
                         Debug.LogWarning(message: $"Failed to register task with {ProfileTask.Exception}");
                         FirebaseException firebaseEx = ProfileTask.Exception.GetBaseException() as FirebaseException;
                         AuthError errorCode = (AuthError)firebaseEx.ErrorCode;
                         warningRegisterText.text = "username Set Failed!";
                     }
-                    else //검증 성공
+                    else // 검증 성공
                     {
+                        // 서버에 유저 정보 등록
+                        Debug.Log("Firebase로 " + User.UserId + "(UserName: " + _username + ") 회원가입 성공");
+                        new BlockItUser(User.UserId, _username).SignUpUserToServer();
                         UIManager.instance.LoginScreen();
                         warningRegisterText.text = "";
                     }
