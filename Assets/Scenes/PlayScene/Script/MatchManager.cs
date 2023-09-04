@@ -15,7 +15,13 @@ public class MatchManager : MonoBehaviour
     public GameObject P1Buttons;
     public GameObject P2Buttons;
     public GameObject WinState;
+    public GameObject _p1Timer;
+    public GameObject _p2Timer;
     #endregion
+
+    private float currentTime = 60f;
+    public float maxTime = 60f;
+    private bool isTimerRunning = false;
 
     private Enums.EPlayer _Turn; // ???? ???? ????????
     public Vector2Int RequestedPawnCoord; //???? ???? ???? ???? pawn?? ???? ????
@@ -55,6 +61,44 @@ public class MatchManager : MonoBehaviour
         SetTurn(Enums.EPlayer.Player1);
     }
 
+    void Update()
+    {
+        if (isTimerRunning)
+        {
+            currentTime -= Time.deltaTime;
+            UpdateTimer();
+            if (currentTime <= 0)
+            {
+                // Timer has reached its maximum time
+                isTimerRunning = false;
+
+                NextTurn();
+                currentTime = maxTime;
+                isTimerRunning = true;
+            }
+        }
+    }
+
+    private void SwitchTimer()
+    {
+        if(_Turn == Enums.EPlayer.Player1)
+        {
+            _p1Timer.GetComponent<Timer>().ShowTimer();
+            _p2Timer.GetComponent<Timer>().HideTimer();
+        }
+        else
+        {
+            _p2Timer.GetComponent<Timer>().ShowTimer();
+            _p1Timer.GetComponent<Timer>().HideTimer();
+        }
+    }
+    
+    private void UpdateTimer()
+    {
+        _p2Timer.GetComponent<Timer>().SetCurrentTime(currentTime);
+        _p1Timer.GetComponent<Timer>().SetCurrentTime(currentTime);
+    }
+
     private void SetButtonsOwner() // PlayButton???? ?????? ????
     {
         P1Buttons.GetComponent<PlayerButtons>().SetOwner(Enums.EPlayer.Player1);
@@ -78,6 +122,7 @@ public class MatchManager : MonoBehaviour
     private void SetTurn(Enums.EPlayer ePlayer) // ?? ????. ???? ?????? ???? Turn, _placeableVerticalPlanks, _placeableHorizontalPlanks ?? ????????, PlayerButton, WinState ??????/???????? ????
     {
         _gameLogic.Turn = ePlayer;
+        SwitchTimer();
         // set target and other player.
         Enums.EPlayer otherPlayer = (ePlayer == Enums.EPlayer.Player1) ? Enums.EPlayer.Player2 : Enums.EPlayer.Player1;
 
