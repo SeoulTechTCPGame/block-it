@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +9,10 @@ public class ProfileController : MonoBehaviour
     [SerializeField] private Button _backBtn;
     [SerializeField] private Button _changeProfile;
     [SerializeField] private Button _changeImage;
+    [SerializeField] private Button _confirmBtn;
+    [SerializeField] private Button _selectImgBtn;
     [SerializeField] private MoveScene _ms;
+    
     private GameObject _curPanel;
 
     private void Start()
@@ -20,8 +22,22 @@ public class ProfileController : MonoBehaviour
         _backBtn.onClick.AddListener(BackEvent);
         _changeProfile.onClick.AddListener(() => ActivatePanel(_changeIDPanel));
         _changeImage.onClick.AddListener(() => ActivatePanel(_changeImagePanel));
+        _confirmBtn.onClick.AddListener(ConfirmEvent);
+        _selectImgBtn.onClick.AddListener(SelectImage);
     }
 
+    private void SelectImage()
+    {
+
+    }
+
+    private void ConfirmEvent()
+    {
+
+    }
+
+
+    #region 패널 관리
     private void BackEvent()
     {
         if (_curPanel == _myProfilePanel)
@@ -45,4 +61,7 @@ public class ProfileController : MonoBehaviour
         _changeImagePanel.SetActive(panel == _changeImagePanel);
         _curPanel = panel;
     }
+    #endregion
+
+
 }
