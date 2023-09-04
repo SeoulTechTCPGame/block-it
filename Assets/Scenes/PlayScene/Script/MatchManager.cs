@@ -21,7 +21,7 @@ public class MatchManager : MonoBehaviour
 
     private float currentTime = 60f;
     public float maxTime = 60f;
-    private bool isTimerRunning = false;
+    private bool isTimerRunning = true;
 
     private Enums.EPlayer _Turn; // ???? ???? ????????
     public Vector2Int RequestedPawnCoord; //???? ???? ???? ???? pawn?? ???? ????
@@ -73,8 +73,6 @@ public class MatchManager : MonoBehaviour
                 isTimerRunning = false;
 
                 NextTurn();
-                currentTime = maxTime;
-                isTimerRunning = true;
             }
         }
     }
@@ -122,7 +120,6 @@ public class MatchManager : MonoBehaviour
     private void SetTurn(Enums.EPlayer ePlayer) // ?? ????. ???? ?????? ???? Turn, _placeableVerticalPlanks, _placeableHorizontalPlanks ?? ????????, PlayerButton, WinState ??????/???????? ????
     {
         _gameLogic.Turn = ePlayer;
-        SwitchTimer();
         // set target and other player.
         Enums.EPlayer otherPlayer = (ePlayer == Enums.EPlayer.Player1) ? Enums.EPlayer.Player2 : Enums.EPlayer.Player1;
 
@@ -151,6 +148,12 @@ public class MatchManager : MonoBehaviour
         _Turn = ePlayer;
         _isUpdatePawnCoord = false;
         _isUpdatePlank = false;
+
+        // Set Timer
+        SwitchTimer();
+        currentTime = maxTime;
+        isTimerRunning = true;
+
 
         // Set Moveable Coord for pawn on the board
         List<Vector2Int> moveableCoord = _gameLogic.GetMoveablePawnCoords(ePlayer);

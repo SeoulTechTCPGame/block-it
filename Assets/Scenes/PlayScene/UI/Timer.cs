@@ -37,7 +37,16 @@ public class Timer : MonoBehaviour
 
     private void UpdateTimer()
     {
-        _textComponent.text = _currentTime.ToString();
-        _textComponent.color = new Color(0.96f, 0.57f, 0.15f);
+        int mininute = ((int)(_currentTime / 60f));
+        int second = (int)(_currentTime%60f);
+        _textComponent.text = mininute.ToString() + " : " + second.ToString();
+        if(_currentTime <= 30f)
+        {
+            _textComponent.color = new Color(1f, 0.3f, 0.3f);
+        }
+        else
+        { 
+            _textComponent.color = new Color(0f, 0f, 0f);
+        }
     }
 }
