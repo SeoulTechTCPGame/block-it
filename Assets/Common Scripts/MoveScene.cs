@@ -24,4 +24,8 @@ public class MoveScene : MonoBehaviour
     {
         SceneManager.LoadScene("Search");
     }
+    public void ToCredit()
+    {
+        SceneManager.LoadScene("Credit");
+    }
 }
