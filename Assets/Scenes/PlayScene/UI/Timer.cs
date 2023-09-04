@@ -6,8 +6,7 @@ public class Timer : MonoBehaviour
     private float _currentTime;
     private Text _textComponent;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         _textComponent = GetComponent<Text>();
 
