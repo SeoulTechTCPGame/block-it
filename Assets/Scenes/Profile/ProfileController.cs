@@ -22,15 +22,17 @@ public class ProfileController : MonoBehaviour
         _backBtn.onClick.AddListener(BackEvent);
         _changeProfile.onClick.AddListener(() => ActivatePanel(_changeIDPanel));
         _changeImage.onClick.AddListener(() => ActivatePanel(_changeImagePanel));
-        _confirmBtn.onClick.AddListener(ConfirmEvent);
+        _confirmBtn.onClick.AddListener(ConfirmEvent);   
         _selectImgBtn.onClick.AddListener(SelectImage);
     }
 
+    // TODO: SelectImage() should be filled
     private void SelectImage()
     {
 
     }
 
+    // TODO: ConfirmEvent() should be filled
     private void ConfirmEvent()
     {
 
