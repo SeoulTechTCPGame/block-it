@@ -16,8 +16,19 @@ public class MoveScene : MonoBehaviour
     {
         SceneManager.LoadScene("Home");
     }
-    public void ToLocalPlay()
+    public void ToLocalPlayEModeSingle()
     {
+        PlayerPrefs.SetInt("GameMode", ((int)Enums.EMode.Single));
+        SceneManager.LoadScene("LocalPlay");
+    }
+    public void ToLocalPlayEModeAI()
+    {
+        PlayerPrefs.SetInt("GameMode", ((int)Enums.EMode.AI));
+        SceneManager.LoadScene("LocalPlay");
+    }
+    public void ToLocalPlayEModeMultiWifi()
+    {
+        PlayerPrefs.SetInt("GameMode", ((int)Enums.EMode.MultiWifi));
         SceneManager.LoadScene("LocalPlay");
     }
     public void ToWifiLoby()
