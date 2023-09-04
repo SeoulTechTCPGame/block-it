@@ -10,4 +10,10 @@ public static class Enums
         EN,
         KR
     }
+    public enum EMode
+    {
+        Single,
+        AI,
+        MultiWifi
+    }
 }
