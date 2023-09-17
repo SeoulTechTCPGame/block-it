@@ -507,6 +507,7 @@ GameObject:
   - component: {fileID: 7078850234974199346}
   - component: {fileID: 4380500633551173359}
   - component: {fileID: 180333520218345549}
+  - component: {fileID: 1735610289134577323}
   m_Layer: 5
   m_Name: PlankDot
   m_TagString: Untagged
@@ -615,7 +616,32 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4380500633551173359}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1735610289134577323}
+        m_TargetAssemblyTypeName: SoundEffect, Assembly-CSharp
+        m_MethodName: PlayButtonSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1735610289134577323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7214216718757898058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a01c88d61895c824d90b39b64f281fc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mClip: {fileID: 8300000, guid: f518960108a5911478cdc2c7991f528a, type: 3}
 --- !u!1 &7525546534814540692
 GameObject:
   m_ObjectHideFlags: 0
@@ -886,6 +912,7 @@ GameObject:
   - component: {fileID: 3242776835502991991}
   - component: {fileID: 3853202490289646025}
   - component: {fileID: 5336786740614632837}
+  - component: {fileID: 3603786447322925922}
   m_Layer: 5
   m_Name: pawn
   m_TagString: Untagged
@@ -994,7 +1021,32 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3853202490289646025}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3603786447322925922}
+        m_TargetAssemblyTypeName: SoundEffect, Assembly-CSharp
+        m_MethodName: PlayButtonSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &3603786447322925922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8086658350816718345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a01c88d61895c824d90b39b64f281fc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mClip: {fileID: 8300000, guid: 6c62333a9cf1ce742bb3725fa65e7137, type: 3}
 --- !u!1 &8683090931428676827
 GameObject:
   m_ObjectHideFlags: 0

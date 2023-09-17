@@ -2,10 +2,10 @@ using System.Security.Cryptography;
 using System;
 using UnityEngine;
 
-// ÇöÀç ·Î±×ÀÎÇÑ À¯ÀúÀÇ Á¤º¸¸¦ ´ã´Â ½Ì±ÛÅæ Å¬·¡½º
+// í˜„ì¬ ë¡œê·¸ì¸í•œ ìœ ì €ì˜ ì •ë³´ë¥¼ ë‹´ëŠ” ì‹±ê¸€í†¤ í´ë˜ìŠ¤
 public class CurrentLoginSession : MonoBehaviour
 {
-    // ½Ì±ÛÅæ Å¬·¡½º ±¸Çö
+    // ì‹±ê¸€í†¤ í´ë˜ìŠ¤ êµ¬í˜„
     private static CurrentLoginSession _instance;
     public static CurrentLoginSession Instance
     {
@@ -24,9 +24,8 @@ public class CurrentLoginSession : MonoBehaviour
         }
     }
 
-    // »ı¼ºÀÚ
-    private bool _hasLogined = false;  // ·Î±×ÀÎ Çß´ÂÁö È®ÀÎÇÏ´Â º¯¼ö
-    private BlockItUser _user;         // °Ô½ºÆ®°¡ ¾Æ´Ò °æ¿ì À¯Àú Á¤º¸ ÀúÀå
+    private bool _hasLogined = false;  // ê²ŒìŠ¤íŠ¸ì¸ì§€ í™•ì¸í•˜ëŠ” ë³€ìˆ˜
+    private BlockItUser _user;         // ê²ŒìŠ¤íŠ¸ê°€ ì•„ë‹ ê²½ìš° ìœ ì € ì •ë³´ ì €ì¥
 
     public bool HasLogined
     {
@@ -38,31 +37,31 @@ public class CurrentLoginSession : MonoBehaviour
         get { return _user; }
     }
 
-    // ·Î±×ÀÎ ½Ã À¯Àú Á¤º¸ ÀúÀå
+    // ë¡œê·¸ì¸ ì‹œ ìœ ì € ì •ë³´ ì €ì¥
     public void Login(BlockItUser user)
     {
         _user = user;
         _hasLogined = true;
     }
 
-    // ·Î±×¾Æ¿ô ½Ã À¯Àú Á¤º¸ »èÁ¦
+    // ë¡œê·¸ì•„ì›ƒ ì‹œ ìœ ì € ì •ë³´ ì‚­ì œ
     public void Logout()
     {
         _user = null;
         _hasLogined = false;
-        Debug.Log("°ÔÀÓ¿¡¼­ ·Î±×¾Æ¿ô µÊ");
+        Debug.Log("ë¡œê·¸ì•„ì›ƒ ë¨");
     }
 
-    // °Ô½ºÆ® ¸ğµå ½ÃÀÛ
+    // ê²ŒìŠ¤íŠ¸ ëª¨ë“œ ì‹œì‘
     public void StartGuestMode()
     {
         _hasLogined = true;
         _user = new BlockItUser();
-        Debug.Log("°Ô½ºÆ® ¸ğµå ½ÃÀÛ, ´Ğ³×ÀÓ: " + _user.Nickname);
+        Debug.Log("ê²ŒìŠ¤íŠ¸ ëª¨ë“œ ì‹œì‘: " + _user.Nickname);
     }
 
-    // º¹¼öÀÇ CurrentLoginSession Å¬·¡½º¸¦ Component·Î °®´Â GameObject°¡ ¾øµµ·Ï
-    // °æ¿ì¿¡ µû¶ó GameObject Á¦°Å
+    // ë³µìˆ˜ì˜ CurrentLoginSession í´ë˜ìŠ¤ë¥¼ Componentë¡œ ê°–ëŠ” GameObjectê°€ ì—†ë„ë¡
+    // ê²½ìš°ì— ë”°ë¼ GameObject ì œê±°
     private void Awake()
     {
         if (_instance == null)

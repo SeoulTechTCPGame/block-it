@@ -15,7 +15,13 @@ public class MatchManager : MonoBehaviour
     public GameObject P1Buttons;
     public GameObject P2Buttons;
     public GameObject WinState;
+    public GameObject _p1Timer;
+    public GameObject _p2Timer;
     #endregion
+
+    private float currentTime = 60f;
+    public float maxTime = 60f;
+    private bool isTimerRunning = true;
 
     private Enums.EPlayer _Turn; // ???? ???? ????????
     public Vector2Int RequestedPawnCoord; //???? ???? ???? ???? pawn?? ???? ????
@@ -53,6 +59,42 @@ public class MatchManager : MonoBehaviour
     void Start() // ??????, Player 1?? ?????? ????????.
     {
         SetTurn(Enums.EPlayer.Player1);
+    }
+
+    void Update()
+    {
+        if (isTimerRunning)
+        {
+            currentTime -= Time.deltaTime;
+            UpdateTimer();
+            if (currentTime <= 0)
+            {
+                // Timer has reached its maximum time
+                isTimerRunning = false;
+
+                NextTurn();
+            }
+        }
+    }
+
+    private void SwitchTimer()
+    {
+        if(_Turn == Enums.EPlayer.Player1)
+        {
+            _p1Timer.GetComponent<Timer>().ShowTimer();
+            _p2Timer.GetComponent<Timer>().HideTimer();
+        }
+        else
+        {
+            _p2Timer.GetComponent<Timer>().ShowTimer();
+            _p1Timer.GetComponent<Timer>().HideTimer();
+        }
+    }
+    
+    private void UpdateTimer()
+    {
+        _p2Timer.GetComponent<Timer>().SetCurrentTime(currentTime);
+        _p1Timer.GetComponent<Timer>().SetCurrentTime(currentTime);
     }
 
     private void SetButtonsOwner() // PlayButton???? ?????? ????
@@ -106,6 +148,12 @@ public class MatchManager : MonoBehaviour
         _Turn = ePlayer;
         _isUpdatePawnCoord = false;
         _isUpdatePlank = false;
+
+        // Set Timer
+        SwitchTimer();
+        currentTime = maxTime;
+        isTimerRunning = true;
+
 
         // Set Moveable Coord for pawn on the board
         List<Vector2Int> moveableCoord = _gameLogic.GetMoveablePawnCoords(ePlayer);

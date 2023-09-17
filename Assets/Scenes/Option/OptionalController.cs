@@ -2,13 +2,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Singleton;
 
+// 모든 옵션의 효과를 다루는 클래스
 public class OptionalController : MonoBehaviour
 {
     [SerializeField] Slider _bgmSlider;
     [SerializeField] Image _bgmImage;
     [SerializeField] Slider _soundEffectSlider;
     [SerializeField] Image _soundEffectImage;
-    [SerializeField] Sprite[] _soundSprites;
+    [SerializeField] Sprite[] _soundSprites;    // BGM과 Sound Effect의 바꿀 이미지의 스프라이트 모음
     [SerializeField] Toggle _vibrationToggle;
     [SerializeField] Image _vibBackground;
     [SerializeField] RectTransform _vibCheckmark;
@@ -30,10 +31,11 @@ public class OptionalController : MonoBehaviour
         _soundEffectSlider.onValueChanged.AddListener(OnSoundEffectVolumeChanged);
         _vibrationToggle.onValueChanged.AddListener(OnVibrationToggleChanged);
 
-        _englishBtn.onClick.AddListener(() => S.SetLangIndex(0));   //ToDo: 0을 Enum의 English로, 1을 Korean으로 변경
-        _koreanBtn.onClick.AddListener(() =>S.SetLangIndex(1));
+        _englishBtn.onClick.AddListener(() => S.SetLangIndex(((int)Enums.ELanguage.EN)));
+        _koreanBtn.onClick.AddListener(() =>S.SetLangIndex(((int)Enums.ELanguage.KR)));
     }
     #region Sound
+    // 저장된 값 불러오기
     private void LoadSettings()
     {
         // BGM 볼륨 로드
@@ -83,6 +85,7 @@ public class OptionalController : MonoBehaviour
 
         _soundManager.SaveSettings();
     }
+    //  BGM과 Sound Effect의 바꿀 이미지를 지정
     private void UpdateBgmImage(float volume)
     {
         if (volume <= 0.3f)
