@@ -130,7 +130,7 @@ public class AuthManager : MonoBehaviour
             Debug.LogFormat("user signed in successfully: {0} ({1}) ({2})", User.DisplayName, User.Email, User.UserId);
             warningLoginText.text = "";
             confirmLoginText.text = "Logged In";
-            CurrentLoginSession.Instance.user = new BlockItUser(User.UserId);
+            CurrentLoginSession.Instance.Login(new BlockItUser(User.UserId));
             SceneManager.LoadScene("Home");
             yield return User.UserId;
         }

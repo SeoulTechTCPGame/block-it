@@ -2,7 +2,7 @@
 using TMPro;
 using Mirror;
 
-public class GetUserProfile : MonoBehaviour
+public class ProfileScene : MonoBehaviour
 {
     [Header("정보를 표시할 텍스트")]
     [SerializeField] TMP_Text userName;
@@ -11,7 +11,7 @@ public class GetUserProfile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        BlockItUser user = CurrentLoginSession.Instance.user;
+        BlockItUser user = CurrentLoginSession.Instance.User;
         user.getUserData();
 
         userName.text = user.Nickname;
@@ -24,5 +24,10 @@ public class GetUserProfile : MonoBehaviour
         {
             userRecord.text = user.PlayCount + " 게임, 승률: " + user.WinCount * 100 / user.PlayCount + "%";
         }
+    }
+
+    public void OnClickLogoutButton()
+    {
+        CurrentLoginSession.Instance.Logout();
     }
 }

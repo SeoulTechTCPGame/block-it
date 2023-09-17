@@ -1,6 +1,9 @@
 using Mirror;
+using System.Security.Cryptography;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 public class BlockItUser
 {
@@ -11,6 +14,7 @@ public class BlockItUser
     private int _winCount = 0;                          // 승리 횟수
     private string _profilePicturePath = string.Empty;  // 프로필 사진 경로
     private bool _isRecived = false;                    // 정보 수신 성공 Flag
+    private bool _isGuest = false;                      // 게스트인지 확인하는 변수
 
     public string UserId
     { 
@@ -41,10 +45,29 @@ public class BlockItUser
         private set { _profilePicturePath = value; }
     }
 
+    public bool IsGuest
+    {
+        get { return _isGuest; }
+    }
+
     #endregion
 
     #region 생성자
-    // 로그인일 경우 생성자
+    // Firebase GID가 없는 게스트일 경우 닉네임만 랜덤 생성
+    public BlockItUser()
+    {
+        _isGuest = true;
+        using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
+        {
+            byte[] randomNumber = new byte[4];
+            rng.GetBytes(randomNumber);
+
+            string randomHash = BitConverter.ToString(randomNumber).Replace("-", "").Substring(0, 8);
+            _nickname = "Guest#" + randomHash;
+        }
+    }
+
+    // 회원의 로그인일 경우 생성자
     public BlockItUser(string userId)
     {
         _userId = userId;
@@ -75,21 +98,24 @@ public class BlockItUser
     #region 유저 정보 요청과 응답 시 이벤트
     public async void getUserData(CancellationToken token = default)
     {
-        // 정보를 불러오기 위해 Mirror 클라이언트 시작
-        NetworkManager.singleton.StartClient();
-
-        // 서버에서 보낸 정보를 받기 위한 Handler 등록
-        NetworkClient.RegisterHandler<ResponseUserDataMessage>(OnReceiveUserDataResponse);
-
-        // 서버와 연결되면 UID를 보냄
-        await WaitForConnectionAsync(token);
-        SendUserDataRequest(_userId);
-
-        // 정보 불러왔으면 클라이언트 종료
-        if (_isRecived)
+        if (!_isGuest)
         {
-            NetworkManager.singleton.StopClient();
-            _isRecived = false;
+            // 정보를 불러오기 위해 Mirror 클라이언트 시작
+            NetworkManager.singleton.StartClient();
+
+            // 서버에서 보낸 정보를 받기 위한 Handler 등록
+            NetworkClient.RegisterHandler<ResponseUserDataMessage>(OnReceiveUserDataResponse);
+
+            // 서버와 연결되면 UID를 보냄
+            await WaitForConnectionAsync(token);
+            SendUserDataRequest(_userId);
+
+            // 정보 불러왔으면 클라이언트 종료
+            if (_isRecived)
+            {
+                NetworkManager.singleton.StopClient();
+                _isRecived = false;
+            }
         }
     }
 
@@ -113,21 +139,24 @@ public class BlockItUser
     // 유저 정보를 DB에 저장하기 위해 서버에 메세지 전송
     public async void SignUpUserToServer(CancellationToken token = default)
     {
-        // 정보를 불러오기 위해 Mirror 클라이언트 시작
-        NetworkManager.singleton.StartClient();
-
-        // 서버에서 보낸 정보를 받기 위한 Handler 등록
-        NetworkClient.RegisterHandler<ResponseUserSignUpMessage>(OnReceiveUserSignUpResponse);
-
-        // 서버와 연결되면 UID와 사용자 이름을 보냄
-        await WaitForConnectionAsync(token);
-        SendUserSignUpRequest(_userId, _nickname);
-
-        // 정보 불러왔으면 클라이언트 종료
-        if (_isRecived)
+        if (!_isGuest)
         {
-            NetworkManager.singleton.StopClient();
-            _isRecived = false;
+            // 정보를 불러오기 위해 Mirror 클라이언트 시작
+            NetworkManager.singleton.StartClient();
+
+            // 서버에서 보낸 정보를 받기 위한 Handler 등록
+            NetworkClient.RegisterHandler<ResponseUserSignUpMessage>(OnReceiveUserSignUpResponse);
+
+            // 서버와 연결되면 UID와 사용자 이름을 보냄
+            await WaitForConnectionAsync(token);
+            SendUserSignUpRequest(_userId, _nickname);
+
+            // 정보 불러왔으면 클라이언트 종료
+            if (_isRecived)
+            {
+                NetworkManager.singleton.StopClient();
+                _isRecived = false;
+            }
         }
     }
 
