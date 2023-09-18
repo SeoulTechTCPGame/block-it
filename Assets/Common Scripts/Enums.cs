@@ -12,7 +12,7 @@ public static class Enums
     }
     public enum EMode
     {
-        Single,
+        Friend,
         AI,
         MultiWifi
     }

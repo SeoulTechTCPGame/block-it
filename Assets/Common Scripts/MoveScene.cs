@@ -18,7 +18,7 @@ public class MoveScene : MonoBehaviour
     }
     public void ToLocalPlayEModeSingle()
     {
-        PlayerPrefs.SetInt("GameMode", ((int)Enums.EMode.Single));
+        PlayerPrefs.SetInt("GameMode", ((int)Enums.EMode.Friend));
         SceneManager.LoadScene("LocalPlay");
     }
     public void ToLocalPlayEModeAI()
