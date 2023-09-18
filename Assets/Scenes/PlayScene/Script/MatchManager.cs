@@ -12,11 +12,16 @@ using UnityEngine.Events;
 public class MatchManager : MonoBehaviour
 {
     #region GameObjects
-    public GameObject P1Buttons;
-    public GameObject P2Buttons;
+    public GameObject Board;
+    public GameObject LowerButtons;
+    public GameObject UpperButtons;
     public GameObject WinState;
-    public GameObject _p1Timer;
-    public GameObject _p2Timer;
+    public GameObject P1Timer;
+    public GameObject P2Timer;
+    public GameObject MyProfile;
+    public GameObject TheirProfile;
+    public GameObject MyEmotes;
+    public GameObject TheirEmotePanel;
     #endregion
 
     private float currentTime = 60f;
@@ -48,8 +53,7 @@ public class MatchManager : MonoBehaviour
  
     void Start() // ??????, Player 1?? ?????? ????????.
     {
-        InitFriendMode();
-        //InitGameMode(PlayerPrefs.GetGameMode);
+        InitGameMode(Enums.EMode.Friend);
     }
 
     void Update()
@@ -84,29 +88,52 @@ public class MatchManager : MonoBehaviour
         }
 
     }
+
     private void InitFriendMode()
     {
         _user = Enums.EPlayer.Player1;
         SetButtonsOwner();
         SetTurn(Enums.EPlayer.Player1);
+
+        OrientBoard();
+
+        Destroy(MyProfile);
+        Destroy(TheirProfile);
+        Destroy(MyEmotes);
+        Destroy(TheirEmotePanel);
     }
+
     private void InitWifiMode()
     {
         // Set _user
         //_user = getUserTurn();
         _user = Enums.EPlayer.Player1;
 
-
         SetTurn(Enums.EPlayer.Player1);
+
+        OrientBoard();
+
     }
+
     private void InitAiMode()
     {
         // Set _user
         //_user = getUserTurn();
         _user = Enums.EPlayer.Player1;
-
-
         SetTurn(Enums.EPlayer.Player1);
+
+        OrientBoard();
+
+        Destroy(MyProfile);
+        Destroy(TheirProfile);
+    }
+
+    private void OrientBoard()
+    {
+        if(_user == Enums.EPlayer.Player2)
+        {
+            Board.transform.Rotate(0,0,180);
+        }
     }
     private void SetEvents()
     {
@@ -127,26 +154,34 @@ public class MatchManager : MonoBehaviour
     {
         if(_Turn == Enums.EPlayer.Player1)
         {
-            _p1Timer.GetComponent<Timer>().ShowTimer();
-            _p2Timer.GetComponent<Timer>().HideTimer();
+            P1Timer.GetComponent<Timer>().ShowTimer();
+            P2Timer.GetComponent<Timer>().HideTimer();
         }
         else
         {
-            _p2Timer.GetComponent<Timer>().ShowTimer();
-            _p1Timer.GetComponent<Timer>().HideTimer();
+            P2Timer.GetComponent<Timer>().ShowTimer();
+            P1Timer.GetComponent<Timer>().HideTimer();
         }
     }
     
     private void UpdateTimer()
     {
-        _p2Timer.GetComponent<Timer>().SetCurrentTime(currentTime);
-        _p1Timer.GetComponent<Timer>().SetCurrentTime(currentTime);
+        P2Timer.GetComponent<Timer>().SetCurrentTime(currentTime);
+        P1Timer.GetComponent<Timer>().SetCurrentTime(currentTime);
     }
 
     private void SetButtonsOwner() // PlayButton???? ?????? ????
     {
-        P1Buttons.GetComponent<PlayerButtons>().SetOwner(Enums.EPlayer.Player1);
-        P2Buttons.GetComponent<PlayerButtons>().SetOwner(Enums.EPlayer.Player2);
+        LowerButtons.GetComponent<PlayerButtons>().SetOwner(_user);
+
+        if(_user == Enums.EPlayer.Player1)
+        {
+            UpperButtons.GetComponent<PlayerButtons>().SetOwner(Enums.EPlayer.Player2);
+        }
+        else
+        {
+            UpperButtons.GetComponent<PlayerButtons>().SetOwner(Enums.EPlayer.Player1);
+        }
     }
 
     private void NextTurn() // ?????????? ????
@@ -170,8 +205,8 @@ public class MatchManager : MonoBehaviour
         Enums.EPlayer otherPlayer = (ePlayer == Enums.EPlayer.Player1) ? Enums.EPlayer.Player2 : Enums.EPlayer.Player1;
 
         // get Buttons and distinguish which one is ePlayer one and other player one.
-        GameObject theButton = (ePlayer == Enums.EPlayer.Player1) ? P1Buttons : P2Buttons;
-        GameObject otherButton = (ePlayer == Enums.EPlayer.Player1) ? P2Buttons : P1Buttons;
+        GameObject theButton = (ePlayer == _user) ? LowerButtons : UpperButtons;
+        GameObject otherButton = (ePlayer == _user) ? UpperButtons : LowerButtons;
 
         // set Put Button on the board - the target Player's put button will be activated while the other won't be.
         theButton.GetComponent<PlayerButtons>().SetButtons(true);
@@ -229,7 +264,7 @@ public class MatchManager : MonoBehaviour
 
     private void UpdateRequestedPlank(Vector2Int coord) // ???? ???? ???? ???? plank ????????
     {
-        GameObject targetButton = (_Turn == Enums.EPlayer.Player1) ? P1Buttons : P2Buttons;
+        GameObject targetButton = (_Turn == _user) ? LowerButtons : UpperButtons;
 
         EPlankImgState plankState = targetButton.GetComponent<PlayerButtons>().GetPlankState();
 
@@ -263,8 +298,8 @@ public class MatchManager : MonoBehaviour
     {
         if( _gameLogic.Wins(Enums.EPlayer.Player1) || _gameLogic.Wins(Enums.EPlayer.Player2))
         {
-            P1Buttons.GetComponent<PlayerButtons>().DisableButtons();
-            P2Buttons.GetComponent<PlayerButtons>().DisableButtons();
+            LowerButtons.GetComponent<PlayerButtons>().DisableButtons();
+            UpperButtons.GetComponent<PlayerButtons>().DisableButtons();
 
             if (_gameLogic.Wins(Enums.EPlayer.Player1))
             {
@@ -291,13 +326,13 @@ public class MatchManager : MonoBehaviour
 
     private GameObject GetCurrentPlayerButton() // returns ???? ?? ?????? PlayerButton
     {
-        if(_Turn == Enums.EPlayer.Player1)
+        if(_Turn == _user)
         {
-            return P1Buttons;
+            return LowerButtons;
         }
         else
         {
-            return P2Buttons;
+            return UpperButtons;
         }
     }
 }

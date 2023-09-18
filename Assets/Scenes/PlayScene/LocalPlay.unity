@@ -500,7 +500,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1920057130928042747, guid: 254eef40e24450b4f8eb8c980994be20, type: 3}
       propertyPath: m_Name
-      value: Player2Buttons
+      value: UpperButtons
       objectReference: {fileID: 0}
     - target: {fileID: 1923496633302355501, guid: 254eef40e24450b4f8eb8c980994be20, type: 3}
       propertyPath: m_Pivot.x
@@ -1131,7 +1131,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 152.42, y: -390}
+  m_AnchoredPosition: {x: 152.41998, y: -390}
   m_SizeDelta: {x: 160, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1058340534
@@ -2333,11 +2333,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0d9ec92d56cd4144b6fd9a5fcf75a26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  P1Buttons: {fileID: 1816890113}
-  P2Buttons: {fileID: 64624389}
+  Board: {fileID: 1981893499}
+  LowerButtons: {fileID: 1816890113}
+  UpperButtons: {fileID: 64624389}
   WinState: {fileID: 1600761402}
-  _p1Timer: {fileID: 602338223}
-  _p2Timer: {fileID: 1889300909}
+  P1Timer: {fileID: 602338223}
+  P2Timer: {fileID: 1889300909}
+  MyProfile: {fileID: 1191630368}
+  TheirProfile: {fileID: 1058340532}
+  MyEmotes: {fileID: 1999616800002666833}
+  TheirEmotePanel: {fileID: 1999616800002666833}
   maxTime: 60
   RequestedPawnCoord: {x: 0, y: 0}
 --- !u!1 &1889300909 stripped
@@ -2583,6 +2588,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa067bf082350ce4c978fa6341a56569, type: 3}
+--- !u!1 &1981893499 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4101675420334971334, guid: aa067bf082350ce4c978fa6341a56569, type: 3}
+  m_PrefabInstance: {fileID: 1981893498}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2035150160
 GameObject:
   m_ObjectHideFlags: 0
@@ -3000,6 +3010,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b45997853cb3de49a0701b28bbc55a2, type: 3}
+--- !u!1 &1999616800002666833 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4195214736098179192, guid: 1b45997853cb3de49a0701b28bbc55a2, type: 3}
+  m_PrefabInstance: {fileID: 1999616800002666832}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7359328827045294489
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3014,7 +3029,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1920057130928042747, guid: 254eef40e24450b4f8eb8c980994be20, type: 3}
       propertyPath: m_Name
-      value: Player1Buttons
+      value: LowerButtons
       objectReference: {fileID: 0}
     - target: {fileID: 1920057130928042747, guid: 254eef40e24450b4f8eb8c980994be20, type: 3}
       propertyPath: m_IsActive
