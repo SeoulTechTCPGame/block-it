@@ -23,12 +23,15 @@ public class MatchManager : MonoBehaviour
     public float maxTime = 60f;
     private bool isTimerRunning = true;
 
+    private Enums.EMode _gameMode;
     private Enums.EPlayer _Turn; // ???? ???? ????????
     public Vector2Int RequestedPawnCoord; //???? ???? ???? ???? pawn?? ???? ????
     public Plank RequestedPlank = new Plank(); //???? ???? ???? ?????? plank
     private bool _isUpdatePawnCoord = false; // ???? ???? ???? pawn?? ????????????
     private bool _isUpdatePlank = false; // ???? ???? ???? plank?? ??????????
     private GameLogic _gameLogic;
+
+    private Enums.EPlayer _user;
 
     #region Events
     public static UnityEvent ToNextTurn; // ?????????? ??????
@@ -39,26 +42,14 @@ public class MatchManager : MonoBehaviour
 
     void Awake() // ?????? ????, PlayerButton?? ?????? ????, _gameLogic ????
     {
-        ToNextTurn = new UnityEvent();
-        ToNextTurn.AddListener(NextTurn);
-
-        ResetMove= new UnityEvent();
-        ResetMove.AddListener(ResetIsUpdate);
-
-        SetRequestedPawnCoord = new UnityEvent<Vector2Int>();
-        SetRequestedPawnCoord.AddListener(UpdateRequestedPawnCoord);
-
-        SetRequestedPlank = new UnityEvent<Vector2Int>();
-        SetRequestedPlank.AddListener((coord)=>UpdateRequestedPlank(coord));
-
+        SetEvents();
         _gameLogic = FindObjectOfType<GameLogic>();
-
-        SetButtonsOwner();
     }
  
     void Start() // ??????, Player 1?? ?????? ????????.
     {
-        SetTurn(Enums.EPlayer.Player1);
+        InitFriendMode();
+        //InitGameMode(PlayerPrefs.GetGameMode);
     }
 
     void Update()
@@ -75,6 +66,61 @@ public class MatchManager : MonoBehaviour
                 NextTurn();
             }
         }
+    }
+
+    private void InitGameMode(Enums.EMode gameMode)
+    {
+        switch(gameMode)
+        {
+            case Enums.EMode.Friend:
+                InitFriendMode();
+                break;
+            case Enums.EMode.AI:
+                InitAiMode();
+                break;
+            case Enums.EMode.MultiWifi:
+                InitWifiMode();
+                break;
+        }
+
+    }
+    private void InitFriendMode()
+    {
+        _user = Enums.EPlayer.Player1;
+        SetButtonsOwner();
+        SetTurn(Enums.EPlayer.Player1);
+    }
+    private void InitWifiMode()
+    {
+        // Set _user
+        //_user = getUserTurn();
+        _user = Enums.EPlayer.Player1;
+
+
+        SetTurn(Enums.EPlayer.Player1);
+    }
+    private void InitAiMode()
+    {
+        // Set _user
+        //_user = getUserTurn();
+        _user = Enums.EPlayer.Player1;
+
+
+        SetTurn(Enums.EPlayer.Player1);
+    }
+    private void SetEvents()
+    {
+        ToNextTurn = new UnityEvent();
+        ToNextTurn.AddListener(NextTurn);
+
+        ResetMove = new UnityEvent();
+        ResetMove.AddListener(ResetIsUpdate);
+
+        SetRequestedPawnCoord = new UnityEvent<Vector2Int>();
+        SetRequestedPawnCoord.AddListener(UpdateRequestedPawnCoord);
+
+        SetRequestedPlank = new UnityEvent<Vector2Int>();
+        SetRequestedPlank.AddListener((coord) => UpdateRequestedPlank(coord));
     }
 
     private void SwitchTimer()
