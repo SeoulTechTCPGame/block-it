@@ -16,4 +16,10 @@ public static class Enums
         AI,
         MultiWifi
     }
+    public enum EEmotes
+    {
+        Good,
+        Bad,
+        Hurry
+    }
 }
