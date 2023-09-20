@@ -1525,7 +1525,7 @@ MonoBehaviour:
     - Put
     - Rank
     - Profile
-    - Paly with AI
+    - Play with AI
     - Play with Others
     - Play with Players
     - BGM
@@ -1541,6 +1541,11 @@ MonoBehaviour:
     - Refuse
     - Search
     - Searching
+    - Selcet AI Level
+    - Beginner
+    - Intermediate
+    - Advanced
+    - Master
   - lang: "Korean\r"
     langLocalize: "\uD55C\uAD6D\uC778\r"
     value:
@@ -1570,4 +1575,9 @@ MonoBehaviour:
     - "\uC218\uB77D\r"
     - "\uAC70\uBD80\r"
     - "\uAC80\uC0C9\r"
-    - "\uAC80\uC0C9\uC911"
+    - "\uAC80\uC0C9\uC911\r"
+    - "AI \uB09C\uC774\uB3C4 \uC120\uD0DD\uD558\uC2DC\uC624\r"
+    - "\uCD08\uBCF4\uC790\r"
+    - "\uC911\uAE09\uC790\r"
+    - "\uACE0\uAE09\uC790\r"
+    - "\uB9C8\uC2A4\uD130"

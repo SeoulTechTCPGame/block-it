@@ -16,6 +16,13 @@ public static class Enums
         AI,
         MultiWifi
     }
+    public enum ELevel
+    {
+        Beginner,
+        Intermediate,
+        Advanced,
+        Master
+    }
     public enum EEmotes
     {
         Good,
