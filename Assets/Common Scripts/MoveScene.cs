@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// ¾À ÀÌµ¿À» ´ã´çÇÏ´Â Å¬·¡½º
+// ì”¬ ì´ë™ì„ ë‹´ë‹¹í•˜ëŠ” í´ë˜ìŠ¤
 public class MoveScene : MonoBehaviour
 {
     public void ToOption()

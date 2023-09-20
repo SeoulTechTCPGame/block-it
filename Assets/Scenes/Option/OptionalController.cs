@@ -2,14 +2,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Singleton;
 
-// ¸ğµç ¿É¼ÇÀÇ È¿°ú¸¦ ´Ù·ç´Â Å¬·¡½º
+// ëª¨ë“  ì˜µì…˜ì˜ íš¨ê³¼ë¥¼ ë‹¤ë£¨ëŠ” í´ë˜ìŠ¤
 public class OptionalController : MonoBehaviour
 {
     [SerializeField] Slider _bgmSlider;
     [SerializeField] Image _bgmImage;
     [SerializeField] Slider _soundEffectSlider;
     [SerializeField] Image _soundEffectImage;
-    [SerializeField] Sprite[] _soundSprites;    // BGM°ú Sound EffectÀÇ ¹Ù²Ü ÀÌ¹ÌÁöÀÇ ½ºÇÁ¶óÀÌÆ® ¸ğÀ½
+    [SerializeField] Sprite[] _soundSprites;    // BGMê³¼ Sound Effectì˜ ë°”ê¿€ ì´ë¯¸ì§€ì˜ ìŠ¤í”„ë¼ì´íŠ¸ ëª¨ìŒ
     [SerializeField] Toggle _vibrationToggle;
     [SerializeField] Image _vibBackground;
     [SerializeField] RectTransform _vibCheckmark;
@@ -24,7 +24,7 @@ public class OptionalController : MonoBehaviour
     {
         _soundManager = SoundManager.instance;
 
-        // ÀúÀåµÈ ¼³Á¤ °ªÀ» ½½¶óÀÌ´õ¿¡ ¹İ¿µ
+        // ì €ì¥ëœ ì„¤ì • ê°’ì„ ìŠ¬ë¼ì´ë”ì— ë°˜ì˜
         LoadSettings();
 
         _bgmSlider.onValueChanged.AddListener(OnBgmVolumeChanged);
@@ -35,26 +35,26 @@ public class OptionalController : MonoBehaviour
         _koreanBtn.onClick.AddListener(() =>S.SetLangIndex(((int)Enums.ELanguage.KR)));
     }
     #region Sound
-    // ÀúÀåµÈ °ª ºÒ·¯¿À±â
+    // ì €ì¥ëœ ê°’ ë¶ˆëŸ¬ì˜¤ê¸°
     private void LoadSettings()
     {
-        // BGM º¼·ı ·Îµå
+        // BGM ë³¼ë¥¨ ë¡œë“œ
         float bgmVolume = _soundManager.BgmVolume;
         _bgmSlider.value = bgmVolume;
         UpdateBgmImage(bgmVolume);
 
-        // »ç¿îµå ÀÌÆåÆ® º¼·ı ·Îµå
+        // ì‚¬ìš´ë“œ ì´í™íŠ¸ ë³¼ë¥¨ ë¡œë“œ
         float soundEffectVolume = _soundManager.SoundEffectVolume;
         _soundEffectSlider.value = soundEffectVolume;
         UpdateSoundEffectImage(soundEffectVolume);
 
-        // Áøµ¿ ¼³Á¤ ·Îµå
+        // ì§„ë™ ì„¤ì • ë¡œë“œ
         bool vibrationEnabled = _soundManager.IsVibrationEnabled;
         _vibrationToggle.isOn = vibrationEnabled;
     }
     public void OnBgmVolumeChanged(float value)
     {
-        // BGM º¼·ı °ªÀ» º¯°æ
+        // BGM ë³¼ë¥¨ ê°’ì„ ë³€ê²½
         _soundManager.BgmVolume = value;
         _soundManager.BgmAudioSource.volume = value;
 
@@ -63,7 +63,7 @@ public class OptionalController : MonoBehaviour
     }
     public void OnSoundEffectVolumeChanged(float value)
     {
-        // »ç¿îµå ÀÌÆåÆ® º¼·ı °ªÀ» º¯°æ
+        // ì‚¬ìš´ë“œ ì´í™íŠ¸ ë³¼ë¥¨ ê°’ì„ ë³€ê²½
         _soundManager.SoundEffectVolume = value;
         _soundManager.SoundEffectAudioSource.volume = value;
 
@@ -72,20 +72,20 @@ public class OptionalController : MonoBehaviour
     }
     public void OnVibrationToggleChanged(bool value)
     {
-        // Áøµ¿ ¼³Á¤ º¯°æ
+        // ì§„ë™ ì„¤ì • ë³€ê²½
         _soundManager.IsVibrationEnabled = value;
 
-        // À§Ä¡¿¡ µû¶ó ¹è°æ »ö»ó º¯°æ
+        // ìœ„ì¹˜ì— ë”°ë¼ ë°°ê²½ ìƒ‰ìƒ ë³€ê²½
         Color backgroundColor = value ? Color.white : Color.gray;
         _vibBackground.color = backgroundColor;
 
-        // À§Ä¡¿¡ µû¶ó checkmark ÁÂ¿ì·Î ¿òÁ÷ÀÓ
+        // ìœ„ì¹˜ì— ë”°ë¼ checkmark ì¢Œìš°ë¡œ ì›€ì§ì„
         float targetX = value ? _toggleMinX : _toggleMaxX;
         _vibCheckmark.anchoredPosition = new Vector2(targetX, 0f);
 
         _soundManager.SaveSettings();
     }
-    //  BGM°ú Sound EffectÀÇ ¹Ù²Ü ÀÌ¹ÌÁö¸¦ ÁöÁ¤
+    //  BGMê³¼ Sound Effectì˜ ë°”ê¿€ ì´ë¯¸ì§€ë¥¼ ì§€ì •
     private void UpdateBgmImage(float volume)
     {
         if (volume <= 0.3f)

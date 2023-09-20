@@ -2,10 +2,10 @@ using UnityEngine;
 using TMPro;
 using static Singleton;
 
-// ÇÊ¿äÇÑ ¹ø¿ªÀ» ÀÔ·ÂÇÏ¿© ¹ø¿ªÀ» °¡Á®¿À´Â Å¬·¡½º
+// í•„ìš”í•œ ë²ˆì—­ì„ ì…ë ¥í•˜ì—¬ ë²ˆì—­ì„ ê°€ì ¸ì˜¤ëŠ” í´ë˜ìŠ¤
 public class LocalizeScript : MonoBehaviour
 {
-    public string TextKey;  // ¹ø¿ªÇÒ ³»¿ë(¿µ¾î·Î)
+    public string TextKey;  // ë²ˆì—­í•  ë‚´ìš©(ì˜ì–´ë¡œ)
 
     private void Start()
     {
@@ -16,13 +16,13 @@ public class LocalizeScript : MonoBehaviour
     {
         S.LocalizeChanged -= LocalizeChanged;
     }
-    // ¹ø¿ª
+    // ë²ˆì—­
     private string Localize(string key, int langIndex)
     {
         int keyIndex = S.Langs[0].value.FindIndex(x => x.ToLower() == key.ToLower());
         return S.Langs[langIndex].value[keyIndex];
     }
-    // ÅØ½ºÆ® º¯È¯
+    // í…ìŠ¤íŠ¸ ë³€í™˜
     public void LocalizeChanged(int langIndex)
     {
         if (GetComponent<TMP_Text>() != null)

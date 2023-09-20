@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// »ç¿îµå Ãâ·ÂÀÇ ¿¹ÀÌÀÚ ¹öÆ° Å¬¸¯ ½Ã ³ª¿À´Â È¿°úÀ½ Ã³¸®
+// ì‚¬ìš´ë“œ ì¶œë ¥ì˜ ì˜ˆì´ì ë²„íŠ¼ í´ë¦­ ì‹œ ë‚˜ì˜¤ëŠ” íš¨ê³¼ìŒ ì²˜ë¦¬
 public class SoundEffect: MonoBehaviour
 {
     [SerializeField] AudioClip _Clip;

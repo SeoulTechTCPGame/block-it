@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-// °¡Á®¿Â ¾ğ¾î¸¦ ÀúÀåÇÏ´Â Å¬·¡½º
+// ê°€ì ¸ì˜¨ ì–¸ì–´ë¥¼ ì €ì¥í•˜ëŠ” í´ë˜ìŠ¤
 [System.Serializable]
 public class Lang
 {
-    public string lang, langLocalize;   // ÇöÀç ¾ğ¾î ¹öÀü, ÇöÀç ¹ø¿ª
-    public List<string> value = new List<string>(); // ¸ğµç ¹ø¿ªµé
+    public string lang, langLocalize;   // í˜„ì¬ ì–¸ì–´ ë²„ì „, í˜„ì¬ ë²ˆì—­
+    public List<string> value = new List<string>(); // ëª¨ë“  ë²ˆì—­ë“¤
 }
-// ¾ğ¾î ¹öÀü, ¾ğ¾î °¡Á®¿À´Â Å¬·¡½º
+// ì–¸ì–´ ë²„ì „, ì–¸ì–´ ê°€ì ¸ì˜¤ëŠ” í´ë˜ìŠ¤
 public class Singleton : MonoBehaviour
 {
-    const string langURL = "https://docs.google.com/spreadsheets/d/1Dsj19n_rK5MEaxfu_4dn2NMJHAj3pcd4A-eY-7MjJ2M/export?format=tsv"; // ¹ø¿ª ±¸±Û ½ºÇÁ¶óÀÌÆ® ½ÃÆ®¿Í ¿¬°á
-    public event System.Action<int> LocalizeChanged = (index) => { };   // ÇöÀç ¹ø¿ª ¹Ù²Ù±â
-    public event System.Action LocalizeSettingChanged = () => { };  // ¾ğ¾î ¹öÀü ¹Ù²Ù±â
-    public int curLangIndex;    // ÇöÀç ¾ğ¾î ¹öÀü Enums.ELanguage·Î ÆÇ´Ü
-    public List<Lang> Langs;    // ÀúÀå
+    const string langURL = "https://docs.google.com/spreadsheets/d/1Dsj19n_rK5MEaxfu_4dn2NMJHAj3pcd4A-eY-7MjJ2M/export?format=tsv"; // ë²ˆì—­ êµ¬ê¸€ ìŠ¤í”„ë¼ì´íŠ¸ ì‹œíŠ¸ì™€ ì—°ê²°
+    public event System.Action<int> LocalizeChanged = (index) => { };   // í˜„ì¬ ë²ˆì—­ ë°”ê¾¸ê¸°
+    public event System.Action LocalizeSettingChanged = () => { };  // ì–¸ì–´ ë²„ì „ ë°”ê¾¸ê¸°
+    public int curLangIndex;    // í˜„ì¬ ì–¸ì–´ ë²„ì „ Enums.ELanguageë¡œ íŒë‹¨
+    public List<Lang> Langs;    // ì €ì¥
 
-    #region ½Ì±ÛÅæ
+    #region ì‹±ê¸€í†¤
     public static Singleton S;
 
     private void Awake()
@@ -33,7 +33,7 @@ public class Singleton : MonoBehaviour
         InitLang();
     }
     #endregion
-    // ÇöÀç ¼¼ÆÃµÈ ¾ğ¾î·Î ¹ø¿ª °¡Á®¿À±â
+    // í˜„ì¬ ì„¸íŒ…ëœ ì–¸ì–´ë¡œ ë²ˆì—­ ê°€ì ¸ì˜¤ê¸°
     private void InitLang()
     {
         int langIndex = PlayerPrefs.GetInt("LangIndex", -1);
@@ -53,8 +53,8 @@ public class Singleton : MonoBehaviour
         LocalizeChanged(curLangIndex);
         LocalizeSettingChanged();
     }
-    [ContextMenu("¾ğ¾î °¡Á®¿À±â")]
-    // ÇÊ¿äÇÑ ¾ğ¾î ¹ø¿ª °¡Á®¿À±â
+    [ContextMenu("ì–¸ì–´ ê°€ì ¸ì˜¤ê¸°")]
+    // í•„ìš”í•œ ì–¸ì–´ ë²ˆì—­ ê°€ì ¸ì˜¤ê¸°
     private void GetLang()
     {
         StartCoroutine(GetLangCo());
@@ -65,10 +65,10 @@ public class Singleton : MonoBehaviour
         yield return www.SendWebRequest();
         SetLangList(www.downloadHandler.text);
     }
-    // ¸ğµç ¾ğ¾î ¹ø¿ª °¡Á®¿À±â
+    // ëª¨ë“  ì–¸ì–´ ë²ˆì—­ ê°€ì ¸ì˜¤ê¸°
     private void SetLangList(string tsv)
     {
-        // ÀÌÂ÷¿ø ¹è¿­(¼¼·Î, °¡·Î)
+        // ì´ì°¨ì› ë°°ì—´(ì„¸ë¡œ, ê°€ë¡œ)
         string[] row = tsv.Split('\n');
         int rowSize = row.Length;
         int columnSize = row[0].Split('\t').Length;
@@ -80,7 +80,7 @@ public class Singleton : MonoBehaviour
             for (int j = 0; j < columnSize; j++) Sentence[i, j] = column[j];
         }
 
-        // Å¬·¡½º ¸®½ºÆ®
+        // í´ë˜ìŠ¤ ë¦¬ìŠ¤íŠ¸
         Langs = new List<Lang>();
         for (int i = 0; i < columnSize; i++)
         {

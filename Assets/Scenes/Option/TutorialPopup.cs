@@ -3,21 +3,21 @@ using UnityEngine.UI;
 using TMPro;
 using static Singleton;
 
-// ÇÑ ÆäÀÌÁö¿¡ µé¾î°¥ ±¸Á¶ Å¬·¡½º
+// í•œ í˜ì´ì§€ì— ë“¤ì–´ê°ˆ êµ¬ì¡° í´ë˜ìŠ¤
 [System.Serializable]
 public class Step
 {
-    public string ImagePath;    // ÀÌ¹ÌÁö ÁÖ¼Ò
-    public string UpperExplanation; // À­ ¼³¸í
-    public string LowerExplanation; // ¾Æ·§ ¼³¸í
+    public string ImagePath;    // ì´ë¯¸ì§€ ì£¼ì†Œ
+    public string UpperExplanation; // ìœ— ì„¤ëª…
+    public string LowerExplanation; // ì•„ë« ì„¤ëª…
 }
-// Æ©Åä¸®¾ó µ¥ÀÌÅÍ¸¦ ÇÑ ¹ø¿¡ ÀúÀåÇÏ´Â Å¬·¡½º
+// íŠœí† ë¦¬ì–¼ ë°ì´í„°ë¥¼ í•œ ë²ˆì— ì €ì¥í•˜ëŠ” í´ë˜ìŠ¤
 [System.Serializable]
 public class TutorialData
 {
     public Step[] Steps;
 }
-// Æ©Åä¸®¾ó °ü¸® Å¬·¡½º
+// íŠœí† ë¦¬ì–¼ ê´€ë¦¬ í´ë˜ìŠ¤
 public class TutorialPopup : MonoBehaviour
 {
     [Header("Tutorial")]
@@ -44,7 +44,7 @@ public class TutorialPopup : MonoBehaviour
 
         _tutorialPopup.SetActive(false);
     }
-    // Æ©Åä¸®¾ó ¿­±â
+    // íŠœí† ë¦¬ì–¼ ì—´ê¸°
     private void OpenTutorialPopup()
     {
         LoadTutorialData();
@@ -52,23 +52,23 @@ public class TutorialPopup : MonoBehaviour
         _optionPanel.SetActive(false);
         ShowStep(_currentStep);
     }
-    // Æ©Åä¸®¾ó ´İ±â
+    // íŠœí† ë¦¬ì–¼ ë‹«ê¸°
     private void CloseTutorialPopup()
     {
         _tutorialPopup.SetActive(false);
         _optionPanel.SetActive(true);
     }
-    // ÀÌÀü ÆäÀÌÁö
+    // ì´ì „ í˜ì´ì§€
     private void ShowPreviousStep()
     {
         ShowStep(_currentStep - 1);
     }
-    // ´ÙÀ½ ÆäÀÌÁö
+    // ë‹¤ìŒ í˜ì´ì§€
     private void ShowNextStep()
     {
         ShowStep(_currentStep + 1);
     }
-    // ÇöÀç ÆäÀÌÁöÀÇ µ¥ÀÌÅÍ¿¡ ¼³¸í ºÎ¿©
+    // í˜„ì¬ í˜ì´ì§€ì˜ ë°ì´í„°ì— ì„¤ëª… ë¶€ì—¬
     private void ShowStep(int stepIndex)
     {
         _currentStep = Mathf.Clamp(stepIndex, 0, _tutorialData.Steps.Length - 1);
@@ -92,7 +92,7 @@ public class TutorialPopup : MonoBehaviour
         _nextBtn.interactable = _currentStep < _tutorialData.Steps.Length - 1;
         UpdatePageText();
     }
-    // ÇöÀç ÆäÀÌÁö ¾÷µ¥ÀÌÆ®
+    // í˜„ì¬ í˜ì´ì§€ ì—…ë°ì´íŠ¸
     private void UpdatePageText()
     {
         int currentPage = _currentStep + 1;
@@ -100,7 +100,7 @@ public class TutorialPopup : MonoBehaviour
 
         _pageText.text = string.Format("({0}/{1})", currentPage, totalPages);
     }
-    // Æ©Åä¸®¾ó Json ÆÄÀÏ ·Îµå
+    // íŠœí† ë¦¬ì–¼ Json íŒŒì¼ ë¡œë“œ
     private void LoadTutorialData()
     {
         string jsonPath = "Json";

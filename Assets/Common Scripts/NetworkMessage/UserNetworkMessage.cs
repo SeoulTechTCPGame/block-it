@@ -1,7 +1,7 @@
 using Mirror;
 using System;
 
-#region À¯Àú Á¤º¸¸¦ ¿äÃ» ½Ã ¼Û½ÅÇÒ ¸Ş¼¼Áö ¾à¼Ó
+#region ìœ ì € ì •ë³´ë¥¼ ìš”ì²­ ì‹œ ì†¡ì‹ í•  ë©”ì„¸ì§€ ì•½ì†
 [Serializable]
 public struct RequestUserDataMessage : NetworkMessage
 {
@@ -21,7 +21,7 @@ public struct ResponseUserDataMessage : NetworkMessage
 }
 #endregion
 
-#region È¸¿ø °¡ÀÔ ½Ã ¼Û½ÅÇÒ ¸Ş¼¼Áö ¾à¼Ó
+#region íšŒì› ê°€ì… ì‹œ ì†¡ì‹ í•  ë©”ì„¸ì§€ ì•½ì†
 [Serializable]
 public struct RequestUserSignUpMessage : NetworkMessage
 {
