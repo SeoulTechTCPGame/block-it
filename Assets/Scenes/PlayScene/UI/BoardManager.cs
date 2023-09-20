@@ -275,7 +275,7 @@ public class BoardManager : MonoBehaviour
     #region Initializing
     IEnumerator InitializeBoard()
     {
-        CeateBoard();
+        CreateBoard();
           
         yield return null;
 
@@ -289,7 +289,7 @@ public class BoardManager : MonoBehaviour
         _p1RemainPlank.GetComponent<RemainPlank>().CreatePlank(defaultPlankNum);
         _p2RemainPlank.GetComponent<RemainPlank>().CreatePlank(defaultPlankNum);
     }
-    private void CeateBoard()
+    private void CreateBoard()
     {
         for (int row = 0; row < ROW; row++)
         {
