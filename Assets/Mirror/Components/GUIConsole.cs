@@ -1,4 +1,4 @@
-﻿// People should be able to see and report errors to the developer very easily.
+// People should be able to see and report errors to the developer very easily.
 //
 // Unity's Developer Console only works in development builds and it only shows
 // errors. This class provides a console that works in all builds and also shows

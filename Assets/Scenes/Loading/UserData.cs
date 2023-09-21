@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// À¯Àú Á¤º¸
+// ìœ ì € ì •ë³´
 public class UserData : MonoBehaviour
 {
     public static UserData instance;

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-// ÇÃ·¹ÀÌ¾î Áß ÇÏ³ª°¡ ÀÌ±â¸é, Win Massage¸¦ ¶ç¿î´Ù.
+// í”Œë ˆì´ì–´ ì¤‘ í•˜ë‚˜ê°€ ì´ê¸°ë©´, Win Massageë¥¼ ë„ìš´ë‹¤.
 public class WinState : MonoBehaviour
 {
     private Text _textComponent;

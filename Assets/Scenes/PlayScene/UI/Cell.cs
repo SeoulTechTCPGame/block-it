@@ -5,35 +5,35 @@ using System.Collections;
 
 
 /* Cell: 
- *   - CellÀº º¸µåÆÇÀÇ Ä­ ÇÏ³ª¸¦ ÀÇ¹ÌÇÕ´Ï´Ù.
- *   - Pawn, Plank¸¦ Ç¥½ÃÇÏ°í, ³õÀ» ¼ö ÀÖ°Ô °ü¸®ÇÏ´Â Å¬·¡½ºÀÔ´Ï´Ù. 
- *   - 'Cell'ÇÁ¸®ÆÕ¿¡ ºÙ¿©¼­ »ç¿ëµË´Ï´Ù.
+ *   - Cellì€ ë³´ë“œíŒì˜ ì¹¸ í•˜ë‚˜ë¥¼ ì˜ë¯¸í•©ë‹ˆë‹¤.
+ *   - Pawn, Plankë¥¼ í‘œì‹œí•˜ê³ , ë†“ì„ ìˆ˜ ìˆê²Œ ê´€ë¦¬í•˜ëŠ” í´ë˜ìŠ¤ì…ë‹ˆë‹¤. 
+ *   - 'Cell'í”„ë¦¬íŒ¹ì— ë¶™ì—¬ì„œ ì‚¬ìš©ë©ë‹ˆë‹¤.
  * 
- *   - CellÀº Å©°Ô ´ÙÀ½ÀÇ °ÍÀ¸·Î ÀÌ·ç¾îÁ®ÀÖ½À´Ï´Ù: 
- *     - _coordinate: ÇØ´ç CellÀÌ º¸µåÆÇÀÇ ¾î´À À§Ä¡(ÁÂÇ¥)¿¡ ÀÖ´ÂÁö ÀúÀå
- *     - _box: º¸µåÀÇ Ä­ - ¸»(pawn)µéÀÌ À§Ä¡ÇÒ ¼ö ÀÖ´Â ¹Ú½º¸¦ ¸»ÇÕ´Ï´Ù.
- *     - _pawn: pawnÀ» Ç¥½ÃÇÏ°Å³ª, pawnÀÌ ÀÌµ¿ÇÒ ¼ö ÀÖ´Â °÷À» Ç¥½ÃÇÏ°í, ¹öÆ°À» »ı¼ºÇØ À¯Àú°¡ pawnÀÌ ÀÌµ¿ÇÒ À§Ä¡¸¦ °í¸¦ ¼ö ÀÖ°Ô ÇÕ´Ï´Ù.
- *     - _plankDot: _box¿ìÃø ÇÏ´Ü¿¡ Ç¥½ÃµÇ´Â ÀÛÀº ¿ø ¹öÆ°À¸·Î, À¯Àú°¡ plank¸¦ ³õÀ» ¼ö ÀÖ°Ô ÇÕ´Ï´Ù.
- *     - _rightPlank, _bottomPlank, _bottomRightPlank: ÇÃ·©Å©¸¦ Ç¥½ÃÇÕ´Ï´Ù.
+ *   - Cellì€ í¬ê²Œ ë‹¤ìŒì˜ ê²ƒìœ¼ë¡œ ì´ë£¨ì–´ì ¸ìˆìŠµë‹ˆë‹¤: 
+ *     - _coordinate: í•´ë‹¹ Cellì´ ë³´ë“œíŒì˜ ì–´ëŠ ìœ„ì¹˜(ì¢Œí‘œ)ì— ìˆëŠ”ì§€ ì €ì¥
+ *     - _box: ë³´ë“œì˜ ì¹¸ - ë§(pawn)ë“¤ì´ ìœ„ì¹˜í•  ìˆ˜ ìˆëŠ” ë°•ìŠ¤ë¥¼ ë§í•©ë‹ˆë‹¤.
+ *     - _pawn: pawnì„ í‘œì‹œí•˜ê±°ë‚˜, pawnì´ ì´ë™í•  ìˆ˜ ìˆëŠ” ê³³ì„ í‘œì‹œí•˜ê³ , ë²„íŠ¼ì„ ìƒì„±í•´ ìœ ì €ê°€ pawnì´ ì´ë™í•  ìœ„ì¹˜ë¥¼ ê³ ë¥¼ ìˆ˜ ìˆê²Œ í•©ë‹ˆë‹¤.
+ *     - _plankDot: _boxìš°ì¸¡ í•˜ë‹¨ì— í‘œì‹œë˜ëŠ” ì‘ì€ ì› ë²„íŠ¼ìœ¼ë¡œ, ìœ ì €ê°€ plankë¥¼ ë†“ì„ ìˆ˜ ìˆê²Œ í•©ë‹ˆë‹¤.
+ *     - _rightPlank, _bottomPlank, _bottomRightPlank: í”Œë­í¬ë¥¼ í‘œì‹œí•©ë‹ˆë‹¤.
  */
 
 public class Cell : MonoBehaviour
 {
-    private Vector2Int _coordinate = new Vector2Int(); //ÇØ´ç CellÀÌ º¸µåÆÇÀÇ ¾î´À À§Ä¡(ÁÂÇ¥)¿¡ ÀÖ´ÂÁö ÀúÀå
+    private Vector2Int _coordinate = new Vector2Int(); //í•´ë‹¹ Cellì´ ë³´ë“œíŒì˜ ì–´ëŠ ìœ„ì¹˜(ì¢Œí‘œ)ì— ìˆëŠ”ì§€ ì €ì¥
 
-//rightPlank, _bottomPlank, _bottomRightPlank: ÇÃ·©Å©¸¦ Ç¥½ÃÇÕ´Ï´Ù.
+//rightPlank, _bottomPlank, _bottomRightPlank: í”Œë­í¬ë¥¼ í‘œì‹œí•©ë‹ˆë‹¤.
     [SerializeField] GameObject _rightPlank;
     [SerializeField] GameObject _bottomPlank;
     [SerializeField] GameObject _bottomRightPlank;
 
-    [SerializeField] GameObject _plankDot; //_box¿ìÃø ÇÏ´Ü¿¡ Ç¥½ÃµÇ´Â ÀÛÀº ¿ø ¹öÆ°À¸·Î, À¯Àú°¡ plank¸¦ ³õÀ» ¼ö ÀÖ°Ô ÇÕ´Ï´Ù.
-    [SerializeField] GameObject _box; //º¸µåÀÇ Ä­ - ¸»(pawn)µéÀÌ À§Ä¡ÇÒ ¼ö ÀÖ´Â ¹Ú½º¸¦ ¸»ÇÕ´Ï´Ù.
-    [SerializeField] GameObject _pawn; //pawnÀ» Ç¥½ÃÇÏ°Å³ª, pawnÀÌ ÀÌµ¿ÇÒ ¼ö ÀÖ´Â °÷À» Ç¥½ÃÇÏ°í, ¹öÆ°À» »ı¼ºÇØ À¯Àú°¡ pawnÀÌ ÀÌµ¿ÇÒ À§Ä¡¸¦ °í¸¦ ¼ö ÀÖ°Ô ÇÕ´Ï´Ù.
+    [SerializeField] GameObject _plankDot; //_boxìš°ì¸¡ í•˜ë‹¨ì— í‘œì‹œë˜ëŠ” ì‘ì€ ì› ë²„íŠ¼ìœ¼ë¡œ, ìœ ì €ê°€ plankë¥¼ ë†“ì„ ìˆ˜ ìˆê²Œ í•©ë‹ˆë‹¤.
+    [SerializeField] GameObject _box; //ë³´ë“œì˜ ì¹¸ - ë§(pawn)ë“¤ì´ ìœ„ì¹˜í•  ìˆ˜ ìˆëŠ” ë°•ìŠ¤ë¥¼ ë§í•©ë‹ˆë‹¤.
+    [SerializeField] GameObject _pawn; //pawnì„ í‘œì‹œí•˜ê±°ë‚˜, pawnì´ ì´ë™í•  ìˆ˜ ìˆëŠ” ê³³ì„ í‘œì‹œí•˜ê³ , ë²„íŠ¼ì„ ìƒì„±í•´ ìœ ì €ê°€ pawnì´ ì´ë™í•  ìœ„ì¹˜ë¥¼ ê³ ë¥¼ ìˆ˜ ìˆê²Œ í•©ë‹ˆë‹¤.
 
-    private bool _isRightEdge; // ¸Ç ¿À¸¥ÂÊ¿¡ ÀÖ´Â CellÀÎ°¡?
-    private bool _isBottomEdge; // ¸Ç ¾Æ·¡¿¡ ÀÖ´Â CellÀÎ°¡?
+    private bool _isRightEdge; // ë§¨ ì˜¤ë¥¸ìª½ì— ìˆëŠ” Cellì¸ê°€?
+    private bool _isBottomEdge; // ë§¨ ì•„ë˜ì— ìˆëŠ” Cellì¸ê°€?
 
-    // Ç¥½ÃµÇ´Â ÀÌ¹ÌÁöµé
+    // í‘œì‹œë˜ëŠ” ì´ë¯¸ì§€ë“¤
     private Image _rightPlankImage;
     private Image _bottomPlankImage;
     private Image _pawnImage;
@@ -42,7 +42,7 @@ public class Cell : MonoBehaviour
     private Button _plankDotButton;
     private Dictionary<string, Image> _bottomRightDictionary;
 
-    //ÇÊ¿äÇÑ Component¸¦ °¡Á®¿À°í, initializeÇÕ´Ï´Ù. º¸µå ¿À¸¥/¾Æ·¡ ³¡¿¡ ÀÖ´Â ¼¿ÀÏ °æ¿ì, plank/PlankDotÀ» ºñÈ°¼ºÈ­ ½ÃÅµ´Ï´Ù.
+    //í•„ìš”í•œ Componentë¥¼ ê°€ì ¸ì˜¤ê³ , initializeí•©ë‹ˆë‹¤. ë³´ë“œ ì˜¤ë¥¸/ì•„ë˜ ëì— ìˆëŠ” ì…€ì¼ ê²½ìš°, plank/PlankDotì„ ë¹„í™œì„±í™” ì‹œí‚µë‹ˆë‹¤.
     private void Awake()
     {
         _bottomRightDictionary = new Dictionary<string, Image>();
@@ -61,19 +61,19 @@ public class Cell : MonoBehaviour
         OffEdge();
     }
 
-    // ¿À¸¥ÂÊ/¾Æ·¡ ³¡ ¼¿ÀÎÁö ¼¼ÆÃÇÕ´Ï´Ù. (bool°ª)
+    // ì˜¤ë¥¸ìª½/ì•„ë˜ ë ì…€ì¸ì§€ ì„¸íŒ…í•©ë‹ˆë‹¤. (boolê°’)
     public void SetEdge(bool rightEdge, bool bottomEdge)
     {
         _isRightEdge = rightEdge;
         _isBottomEdge = bottomEdge;
     }
-    // ÁÂÇ¥¸¦ ¼³Á¤ÇÕ´Ï´Ù
+    // ì¢Œí‘œë¥¼ ì„¤ì •í•©ë‹ˆë‹¤
     public void SetCoordinate(int col, int row)
     {
         _coordinate.x = col;
         _coordinate.y = row;
     }
-    // ¼¿¿¡ ¾Æ¹«°Íµµ Ç¥½ÃµÇÁö ¾Ê°Ô ÇÕ´Ï´Ù
+    // ì…€ì— ì•„ë¬´ê²ƒë„ í‘œì‹œë˜ì§€ ì•Šê²Œ í•©ë‹ˆë‹¤
     public void ClearCell()
     {
         RemovePawn();
@@ -83,7 +83,7 @@ public class Cell : MonoBehaviour
         SetBottomRightPlank("Horizontal", false, Color.white);
     }
    
-    // plank/PlankDot/Pawn¸¦ Ç¥½Ã¸¦ Á¦¾îÇÕ´Ï´Ù.
+    // plank/PlankDot/Pawnë¥¼ í‘œì‹œë¥¼ ì œì–´í•©ë‹ˆë‹¤.
     public void SetRightPlank(bool visible, Color color)
     {
         _rightPlankImage.enabled = visible;
@@ -124,7 +124,7 @@ public class Cell : MonoBehaviour
         _pawnButton.enabled = false;
     }
 
-    //pawnÇ¥½Ã¸¦ Á¦°ÅÇÕ´Ï´Ù.
+    //pawní‘œì‹œë¥¼ ì œê±°í•©ë‹ˆë‹¤.
     public void RemovePawn()
     {
         _pawnImage.color = Color.white;
@@ -133,7 +133,7 @@ public class Cell : MonoBehaviour
         _pawnImage.enabled = false;
 
     }
-    // 'pawnÀ» ³õÀ» ¼ö ÀÖ´Â ¹öÆ°' Ç¥½Ã¸¦ Á¦¾îÇÕ´Ï´Ù.
+    // 'pawnì„ ë†“ì„ ìˆ˜ ìˆëŠ” ë²„íŠ¼' í‘œì‹œë¥¼ ì œì–´í•©ë‹ˆë‹¤.
     public void SetClickablePawn(bool bClickable, Color color)
     {
         _pawnImage.enabled = bClickable;
@@ -145,8 +145,8 @@ public class Cell : MonoBehaviour
         }
     }
     
-    // ¿À¸¥ÂÊ ¾Æ·¡ ÇÃ·©Å© °ü·Ã ¸Å¼­µåµé ÀÔ´Ï´Ù
-    // ÃÊ±âÈ­ °ü·Ã ¸Å¼­µå
+    // ì˜¤ë¥¸ìª½ ì•„ë˜ í”Œë­í¬ ê´€ë ¨ ë§¤ì„œë“œë“¤ ì…ë‹ˆë‹¤
+    // ì´ˆê¸°í™” ê´€ë ¨ ë§¤ì„œë“œ
     private void InitBottomRightPlanks()
     {
         InitBottomRightDictionary();
@@ -169,7 +169,7 @@ public class Cell : MonoBehaviour
         _bottomRightDictionary.Add("Horizontal", null);
         _bottomRightDictionary.Add("Vertical", null);
     }
-    // ´Ù¸¥ ÀÌ¹ÌÁöµéÀ» ²ü´Ï´Ù. ¿À¸¥ÂÊ ¾Æ·¡ ÇÃ·©Å©ÀÇ ¸ğ¾çÀº ´Ü ÇÏ³ªÀÌ±â ¶§¹®¿¡, key¿Í ´Ù¸¥ ¸ğ¾çÀÇ ÀÌ¹ÌÁöµéÀ» Á¦°ÅÇÒ¶§ ¾²ÀÔ´Ï´Ù.
+    // ë‹¤ë¥¸ ì´ë¯¸ì§€ë“¤ì„ ë•ë‹ˆë‹¤. ì˜¤ë¥¸ìª½ ì•„ë˜ í”Œë­í¬ì˜ ëª¨ì–‘ì€ ë‹¨ í•˜ë‚˜ì´ê¸° ë•Œë¬¸ì—, keyì™€ ë‹¤ë¥¸ ëª¨ì–‘ì˜ ì´ë¯¸ì§€ë“¤ì„ ì œê±°í• ë•Œ ì“°ì…ë‹ˆë‹¤.
     private void OffOtherImages(string key)
     {
         List<string> keysToTurnOff = new List<string>();
@@ -188,7 +188,7 @@ public class Cell : MonoBehaviour
         }
     }
 
-    // CellÀÌ º¸µåÆÇÀÇ (¿À¸¥ÂÊ/¾Æ·¡)³¡¿¡ À§Ä¡ÇØ ÀÖÀ» °æ¿ì, plank/plankdotµîÀ» ºñÈ°¼ºÈ­ ½ÃÅµ´Ï´Ù.
+    // Cellì´ ë³´ë“œíŒì˜ (ì˜¤ë¥¸ìª½/ì•„ë˜)ëì— ìœ„ì¹˜í•´ ìˆì„ ê²½ìš°, plank/plankdotë“±ì„ ë¹„í™œì„±í™” ì‹œí‚µë‹ˆë‹¤.
     private void OffEdge()
     {
         if (_isRightEdge)
@@ -203,14 +203,14 @@ public class Cell : MonoBehaviour
         }
     }
 
-    // PawnButton (pawanÀÌ ÀÌµ¿ÇÒ ¼ö ÀÖ´Â °æ¿ì, Ç¥½ÃµÇ´Â ¹öÆ°)ÀÌ ´­·ÈÀ»¶§ ºÒ¸³´Ï´Ù.
-    // - MatchManager¿¡ pawn ÀÌµ¿ÇÒ ÁÂÇ¥°ªÀ» Àü´ŞÇÕ´Ï´Ù.
+    // PawnButton (pawanì´ ì´ë™í•  ìˆ˜ ìˆëŠ” ê²½ìš°, í‘œì‹œë˜ëŠ” ë²„íŠ¼)ì´ ëˆŒë ¸ì„ë•Œ ë¶ˆë¦½ë‹ˆë‹¤.
+    // - MatchManagerì— pawn ì´ë™í•  ì¢Œí‘œê°’ì„ ì „ë‹¬í•©ë‹ˆë‹¤.
     private void PawnButtonClicked()
     {
         MatchManager.SetRequestedPawnCoord.Invoke(_coordinate);
     }
-    // PlankDotÀÌ ´­¸±°æ¿ì ºÒ¸³´Ï´Ù.
-    // - MatchManager¿¡ ¾î´À À§Ä¡¿¡ Plank¸¦ ³õÀ»Áö ÁÂÇ¥°ªÀ» Àü´ŞÇÕ´Ï´Ù.
+    // PlankDotì´ ëˆŒë¦´ê²½ìš° ë¶ˆë¦½ë‹ˆë‹¤.
+    // - MatchManagerì— ì–´ëŠ ìœ„ì¹˜ì— Plankë¥¼ ë†“ì„ì§€ ì¢Œí‘œê°’ì„ ì „ë‹¬í•©ë‹ˆë‹¤.
     private void PlankDotClicked()
     {
         MatchManager.SetRequestedPlank.Invoke(_coordinate);

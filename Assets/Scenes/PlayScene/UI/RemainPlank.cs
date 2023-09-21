@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-// ³²Àº ÇÃ·©Å©ÀÇ °¹¼ö¸¦ Ç¥½ÃÇØÁÖ´Â Class
+// ë‚¨ì€ í”Œë­í¬ì˜ ê°¯ìˆ˜ë¥¼ í‘œì‹œí•´ì£¼ëŠ” Class
 public class RemainPlank : MonoBehaviour
 {
     [SerializeField] Image _plankImage;
