@@ -53,7 +53,8 @@ public class MatchManager : MonoBehaviour
  
     void Start() // ??????, Player 1?? ?????? ????????.
     {
-        InitGameMode(Enums.EMode.Friend);
+        _gameMode = (Enums.EMode)PlayerPrefs.GetInt("GameMode", (int)Enums.EMode.Friend); ;
+        InitGameMode(_gameMode);
     }
 
     void Update()
