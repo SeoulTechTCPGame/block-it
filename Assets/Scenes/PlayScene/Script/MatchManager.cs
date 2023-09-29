@@ -112,7 +112,8 @@ public class MatchManager : MonoBehaviour
         SetTurn(Enums.EPlayer.Player1);
 
         OrientBoard();
-
+        MyProfile.GetComponent<ProfilePlayscene>().SetPlayerProfile(true);
+        TheirProfile.GetComponent<ProfilePlayscene>().SetPlayerProfile(true);
     }
 
     private void InitAiMode()
@@ -125,7 +126,7 @@ public class MatchManager : MonoBehaviour
         OrientBoard();
 
         Destroy(MyProfile);
-        Destroy(TheirProfile);
+        TheirProfile.GetComponent<ProfilePlayscene>().SetAiProfile();
     }
 
     private void OrientBoard()
