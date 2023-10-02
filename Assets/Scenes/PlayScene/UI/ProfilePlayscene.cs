@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+// 인게임에 뜨는 프로필 사진을 설정한다.
 public class ProfilePlayscene : MonoBehaviour
 {
     private Sprite _profilePicture;

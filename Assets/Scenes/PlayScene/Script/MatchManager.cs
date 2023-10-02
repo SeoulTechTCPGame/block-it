@@ -12,16 +12,16 @@ using UnityEngine.Events;
 public class MatchManager : MonoBehaviour
 {
     #region GameObjects
-    public GameObject Board;
-    public GameObject LowerButtons;
-    public GameObject UpperButtons;
-    public GameObject WinState;
-    public GameObject P1Timer;
-    public GameObject P2Timer;
-    public GameObject MyProfile;
-    public GameObject TheirProfile;
-    public GameObject MyEmotes;
-    public GameObject TheirEmotePanel;
+    public GameObject Board; // 보드판
+    public GameObject LowerButtons; // 보드판 밑의 pawn, Plank, Put 버튼들
+    public GameObject UpperButtons; // 보드판 위의 pawn, Plank, Put 버튼들
+    public GameObject WinState; // 승리 혹은 패배시 뜨는 화면
+    public GameObject LowerTimer; // 보드판 밑의 Timer
+    public GameObject UpperTimer; // 보드판 아래의 Timer
+    public GameObject MyProfile; // 플레이어(유저)의 Profile
+    public GameObject TheirProfile; // 상대 플레이어의 Profile
+    public GameObject MyEmotes; // 플레이어의 감정표현 버튼 밑 패널
+    public GameObject TheirEmotePanel; // 상대 플레이어의 감정표현 버튼 밑 패널
     #endregion
 
     private float _currentTime = 60f;
@@ -59,7 +59,7 @@ public class MatchManager : MonoBehaviour
 
     void Update()
     {
-        if (isTimerRunning)
+        if (_isTimerRunning)
         {
             _currentTime -= Time.deltaTime;
             UpdateTimer();
@@ -73,6 +73,7 @@ public class MatchManager : MonoBehaviour
         }
     }
 
+    #region InitGameModes
     private void InitGameMode(Enums.EMode gameMode)
     {
         switch(gameMode)
@@ -129,8 +130,8 @@ public class MatchManager : MonoBehaviour
         Destroy(MyProfile);
         TheirProfile.GetComponent<ProfilePlayscene>().SetAiProfile();
     }
-
-    private void OrientBoard()
+    #endregion
+    private void OrientBoard() // 유저가 Player2인경우 보드판을 뒤집는다.
     {
         if(_user == Enums.EPlayer.Player2)
         {
@@ -152,24 +153,24 @@ public class MatchManager : MonoBehaviour
         SetRequestedPlank.AddListener((coord) => UpdateRequestedPlank(coord));
     }
 
-    private void SwitchTimer()
+    private void SwitchTimer() // 현재 턴 플레이어의 타이머가 켜진다. (현재 턴이 아닌 플레이어의 타이머가 꺼진다)
     {
         if(_turn == Enums.EPlayer.Player1)
         {
-            P1Timer.GetComponent<Timer>().ShowTimer();
-            P2Timer.GetComponent<Timer>().HideTimer();
+            LowerTimer.GetComponent<Timer>().ShowTimer();
+            UpperTimer.GetComponent<Timer>().HideTimer();
         }
         else
         {
-            P2Timer.GetComponent<Timer>().ShowTimer();
-            P1Timer.GetComponent<Timer>().HideTimer();
+            UpperTimer.GetComponent<Timer>().ShowTimer();
+            LowerTimer.GetComponent<Timer>().HideTimer();
         }
     }
     
-    private void UpdateTimer()
+    private void UpdateTimer() // 타이머를 업데이트한다.
     {
-        P2Timer.GetComponent<Timer>().SetCurrentTime(_currentTime);
-        P1Timer.GetComponent<Timer>().SetCurrentTime(_currentTime);
+        UpperTimer.GetComponent<Timer>().SetCurrentTime(_currentTime);
+        LowerTimer.GetComponent<Timer>().SetCurrentTime(_currentTime);
     }
 
     private void SetButtonsOwner() // PlayButton들의 사용자 할당
