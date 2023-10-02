@@ -73,7 +73,8 @@ public class MatchManager : MonoBehaviour
         }
     }
 
-    #region InitGameModes
+    // 게임 모드에 따라 Init
+    #region InitGameModes 
     private void InitGameMode(Enums.EMode gameMode)
     {
         switch(gameMode)
@@ -105,20 +106,22 @@ public class MatchManager : MonoBehaviour
         Destroy(TheirEmotePanel);
     }
 
-    private void InitWifiMode()
+    private void InitWifiMode() // 유저가 Player1인지 Player2인지 설정 필요
     {
         // Set _user
         //_user = getUserTurn();
         _user = Enums.EPlayer.Player1;
-
         SetTurn(Enums.EPlayer.Player1);
 
         OrientBoard();
+
         MyProfile.GetComponent<ProfilePlayscene>().SetPlayerProfile(true);
         TheirProfile.GetComponent<ProfilePlayscene>().SetPlayerProfile(true);
+
+        UpperTimer.GetComponent<Timer>().RotateTimer();
     }
 
-    private void InitAiMode()
+    private void InitAiMode() // 유저가 Player1인지 Player2인지 설정 필요
     {
         // Set _user
         //_user = getUserTurn();
@@ -128,9 +131,16 @@ public class MatchManager : MonoBehaviour
         OrientBoard();
 
         Destroy(MyProfile);
+        Destroy(MyEmotes);
+        Destroy(TheirEmotePanel);
+        Destroy(UpperButtons);
         TheirProfile.GetComponent<ProfilePlayscene>().SetAiProfile();
+
+        UpperTimer.GetComponent<Timer>().RotateTimer();
+
     }
     #endregion
+
     private void OrientBoard() // 유저가 Player2인경우 보드판을 뒤집는다.
     {
         if(_user == Enums.EPlayer.Player2)
@@ -212,8 +222,8 @@ public class MatchManager : MonoBehaviour
         GameObject otherButton = (ePlayer == _user) ? UpperButtons : LowerButtons;
 
         // set Put Button on the board - the target Player's put button will be activated while the other won't be.
-        theButton.GetComponent<PlayerButtons>().SetButtons(true);
-        otherButton.GetComponent<PlayerButtons>().SetButtons(false);
+        if(theButton != null) theButton.GetComponent<PlayerButtons>().SetButtons(true);
+        if (otherButton != null) otherButton.GetComponent<PlayerButtons>().SetButtons(false);
 
         // if the last Turn has certain changes, apply on GameLogic.
         if (_isUpdatePawnCoord == true)

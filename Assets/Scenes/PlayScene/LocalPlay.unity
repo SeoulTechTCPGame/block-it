@@ -1085,11 +1085,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2102716516766879198, guid: 29ff208b44585d54991ebd2c4188b2bf, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 555.2
+      value: 390
       objectReference: {fileID: 0}
     - target: {fileID: 2102716516766879198, guid: 29ff208b44585d54991ebd2c4188b2bf, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 113.3463
+      value: 113.3
       objectReference: {fileID: 0}
     - target: {fileID: 2102716516766879198, guid: 29ff208b44585d54991ebd2c4188b2bf, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1121,7 +1121,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2102716516766879198, guid: 29ff208b44585d54991ebd2c4188b2bf, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -392.4
+      value: -475
       objectReference: {fileID: 0}
     - target: {fileID: 2102716516766879198, guid: 29ff208b44585d54991ebd2c4188b2bf, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1141,11 +1141,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3116111926957306360, guid: 29ff208b44585d54991ebd2c4188b2bf, type: 3}
       propertyPath: m_FontData.m_Alignment
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5636066711253767707, guid: 29ff208b44585d54991ebd2c4188b2bf, type: 3}
       propertyPath: m_Name
-      value: Player2Timer
+      value: UpperTimer
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1864,7 +1864,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5636066711253767707, guid: 29ff208b44585d54991ebd2c4188b2bf, type: 3}
       propertyPath: m_Name
-      value: Player1Timer
+      value: LowerTimer
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2335,8 +2335,8 @@ MonoBehaviour:
   LowerButtons: {fileID: 1816890113}
   UpperButtons: {fileID: 64624389}
   WinState: {fileID: 1600761402}
-  P1Timer: {fileID: 602338223}
-  P2Timer: {fileID: 1889300909}
+  LowerTimer: {fileID: 602338223}
+  UpperTimer: {fileID: 1889300909}
   MyProfile: {fileID: 524145416}
   TheirProfile: {fileID: 1058340532}
   MyEmotes: {fileID: 1999616800002666833}
