@@ -1,13 +1,13 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 /*
  * MatchManager: 
- *   - GameLogic?? UI?? ??????????. UI?? ?????? GameLogic?? ????????, GameLogic?? ?????? UI?? ????????.
- *     - ?????????? 1. ??(Move) ???? 2. ?? ?????? ????.
- *   - PlayerButtons, Winstate ????
+ *   - GameLogic과 UI의 인터페이스. UI의 인풋을 GameLogic에 적용하고, GameLogic의 변화를 UI에 적용한다.
+ *     - 로직적으로 1. 수(Move) 놓기 2. 턴 세팅을 한다.
+ *   - PlayerButtons, Winstate 제어
  */
 public class MatchManager : MonoBehaviour
 {
@@ -24,34 +24,34 @@ public class MatchManager : MonoBehaviour
     public GameObject TheirEmotePanel;
     #endregion
 
-    private float currentTime = 60f;
+    private float _currentTime = 60f;
     public float maxTime = 60f;
-    private bool isTimerRunning = true;
+    private bool _isTimerRunning = true;
 
     private Enums.EMode _gameMode;
-    private Enums.EPlayer _Turn; // ???? ???? ????????
-    public Vector2Int RequestedPawnCoord; //???? ???? ???? ???? pawn?? ???? ????
-    public Plank RequestedPlank = new Plank(); //???? ???? ???? ?????? plank
-    private bool _isUpdatePawnCoord = false; // ???? ???? ???? pawn?? ????????????
-    private bool _isUpdatePlank = false; // ???? ???? ???? plank?? ??????????
+    private Enums.EPlayer _turn;// 현재 턴인 플레이어
+    public Vector2Int RequestedPawnCoord;  //이번 턴의 수로 놓을 pawn의 이동 좌표
+    public Plank RequestedPlank = new Plank(); //이번 턴의 수로 설치할 plank
+    private bool _isUpdatePawnCoord = false;// 이번 턴의 수로 pawn을 이동시켰는가
+    private bool _isUpdatePlank = false; // 이번 턴의 수로 plank를 설치했는가
     private GameLogic _gameLogic;
 
     private Enums.EPlayer _user;
 
     #region Events
-    public static UnityEvent ToNextTurn; // ?????????? ??????
-    public static UnityEvent ResetMove; // ???? ???? ???? ????????.
-    public static UnityEvent<Vector2Int> SetRequestedPawnCoord = new UnityEvent<Vector2Int>(); // ???? ???? ???? ???? pawn ???? ???? ????????
-    public static UnityEvent<Vector2Int> SetRequestedPlank= new UnityEvent<Vector2Int>(); // ???? ???? ???? ???? plank ???? ????????
+    public static UnityEvent ToNextTurn; // 다음턴으로 넘긴다
+    public static UnityEvent ResetMove; // 이번 턴의 수를 리셋한다.
+    public static UnityEvent<Vector2Int> SetRequestedPawnCoord = new UnityEvent<Vector2Int>(); // 이번 턴의 수로 놓을 pawn 이동 위치 업데이트
+    public static UnityEvent<Vector2Int> SetRequestedPlank = new UnityEvent<Vector2Int>(); // 이번 턴의 수로 놓을 plank 위치 업데이트
     #endregion
 
-    void Awake() // ?????? ????, PlayerButton?? ?????? ????, _gameLogic ????
+    void Awake() // 이벤트 할당, PlayerButton의 사용자 할당, _gameLogic 받기
     {
         SetEvents();
         _gameLogic = FindObjectOfType<GameLogic>();
     }
- 
-    void Start() // ??????, Player 1?? ?????? ????????.
+
+    void Start() // 시작시, Player 1의 턴으로 세팅한다.
     {
         _gameMode = (Enums.EMode)PlayerPrefs.GetInt("GameMode", (int)Enums.EMode.Friend); ;
         InitGameMode(_gameMode);
@@ -61,12 +61,12 @@ public class MatchManager : MonoBehaviour
     {
         if (isTimerRunning)
         {
-            currentTime -= Time.deltaTime;
+            _currentTime -= Time.deltaTime;
             UpdateTimer();
-            if (currentTime <= 0)
+            if (_currentTime <= 0)
             {
                 // Timer has reached its maximum time
-                isTimerRunning = false;
+                _isTimerRunning = false;
 
                 NextTurn();
             }
@@ -154,7 +154,7 @@ public class MatchManager : MonoBehaviour
 
     private void SwitchTimer()
     {
-        if(_Turn == Enums.EPlayer.Player1)
+        if(_turn == Enums.EPlayer.Player1)
         {
             P1Timer.GetComponent<Timer>().ShowTimer();
             P2Timer.GetComponent<Timer>().HideTimer();
@@ -168,11 +168,11 @@ public class MatchManager : MonoBehaviour
     
     private void UpdateTimer()
     {
-        P2Timer.GetComponent<Timer>().SetCurrentTime(currentTime);
-        P1Timer.GetComponent<Timer>().SetCurrentTime(currentTime);
+        P2Timer.GetComponent<Timer>().SetCurrentTime(_currentTime);
+        P1Timer.GetComponent<Timer>().SetCurrentTime(_currentTime);
     }
 
-    private void SetButtonsOwner() // PlayButton???? ?????? ????
+    private void SetButtonsOwner() // PlayButton들의 사용자 할당
     {
         LowerButtons.GetComponent<PlayerButtons>().SetOwner(_user);
 
@@ -186,9 +186,9 @@ public class MatchManager : MonoBehaviour
         }
     }
 
-    private void NextTurn() // ?????????? ????
+    private void NextTurn() // 다음턴으로 넘김
     {
-        if (_Turn == Enums.EPlayer.Player1)
+        if (_turn == Enums.EPlayer.Player1)
         {
             SetTurn(Enums.EPlayer.Player2);
         }
@@ -200,7 +200,7 @@ public class MatchManager : MonoBehaviour
 
     }
 
-    private void SetTurn(Enums.EPlayer ePlayer) // ?? ????. ???? ?????? ???? Turn, _placeableVerticalPlanks, _placeableHorizontalPlanks ?? ????????, PlayerButton, WinState ??????/???????? ????
+    private void SetTurn(Enums.EPlayer ePlayer) // 턴 세팅. 턴이 바뀜에 따라 turn, _placeableVerticalPlanks, _placeableHorizontalPlanks 값 업데이트, PlayerButton, WinState 활성화/비활성화 제어
     {
         _gameLogic.Turn = ePlayer;
         // set target and other player.
@@ -228,14 +228,14 @@ public class MatchManager : MonoBehaviour
         }
 
         // change Turn and reset the value
-        _Turn = ePlayer;
+        _turn = ePlayer;
         _isUpdatePawnCoord = false;
         _isUpdatePlank = false;
 
         // Set Timer
         SwitchTimer();
-        currentTime = maxTime;
-        isTimerRunning = true;
+        _currentTime = maxTime;
+        _isTimerRunning = true;
 
 
         // Set Moveable Coord for pawn on the board
@@ -246,27 +246,27 @@ public class MatchManager : MonoBehaviour
         CheckWinAndDisplay();
     }
 
-    private void EnablePlayerPut(bool bOn) // PlayerButtons?? put???? ??????, ????????
+    private void EnablePlayerPut(bool bOn) // PlayerButtons의 put버튼 활성화, 비활성화
     {
         GameObject targetButton = GetCurrentPlayerButton();
         targetButton.GetComponent<PlayerButtons>().SetPutButtonInteractable(bOn);
     }
 
-    private void UpdateRequestedPawnCoord(Vector2Int coord) // ???? ???? ???? ???? pawn ???? ???? ????????
+    private void UpdateRequestedPawnCoord(Vector2Int coord) // 이번 턴의 수로 놓을 pawn 이동 위치 업데이트
     {
         RequestedPawnCoord = coord;
         _isUpdatePawnCoord = true;
         _isUpdatePlank = false;
 
         BoardManager.RemovePreviewPlank.Invoke();
-        BoardManager.UpdateClickedPawn.Invoke(_Turn, coord);
+        BoardManager.UpdateClickedPawn.Invoke(_turn, coord);
 
         EnablePlayerPut(true);
     }
 
-    private void UpdateRequestedPlank(Vector2Int coord) // ???? ???? ???? ???? plank ????????
+    private void UpdateRequestedPlank(Vector2Int coord) // 이번 턴의 수로 놓을 plank 업데이트
     {
-        GameObject targetButton = (_Turn == _user) ? LowerButtons : UpperButtons;
+        GameObject targetButton = (_turn == _user) ? LowerButtons : UpperButtons;
 
         EPlankImgState plankState = targetButton.GetComponent<PlayerButtons>().GetPlankState();
 
@@ -279,7 +279,7 @@ public class MatchManager : MonoBehaviour
         EDirection eDirection = (plankState == EPlankImgState.Horizontal) ? EDirection.Horizontal : EDirection.Vertical;
 
         RequestedPlank.SetPlank(coord, eDirection);
-        BoardManager.PlacePreviewPlank.Invoke(coord, eDirection, _Turn);
+        BoardManager.PlacePreviewPlank.Invoke(coord, eDirection, _turn);
 
         _isUpdatePawnCoord = false;
         _isUpdatePlank = true;
@@ -296,7 +296,7 @@ public class MatchManager : MonoBehaviour
         EnablePlayerPut(false);
     }
 
-    private void CheckWinAndDisplay() // ???????? ??????, ?????????? ??????. ???????? ?????????? WinState???? ??, ???????? ??????/????????
+    private void CheckWinAndDisplay() // 플레이어 승리시, 승리화면을 띄운다. 참가하는 플레이어의 WinState확인 후, 승리화면 활성화/비활성화
     {
         if( _gameLogic.Wins(Enums.EPlayer.Player1) || _gameLogic.Wins(Enums.EPlayer.Player2))
         {
@@ -314,7 +314,7 @@ public class MatchManager : MonoBehaviour
         }        
     }
 
-    private bool IsNextTurnAvaible() // return ?????????? ???? ?? ?? ??????
+    private bool IsNextTurnAvaible() // return 다음턴으로 넘어 갈 수 있는지
     { 
         if(_isUpdatePawnCoord || _isUpdatePlank)
         {
@@ -326,9 +326,9 @@ public class MatchManager : MonoBehaviour
         }
     }
 
-    private GameObject GetCurrentPlayerButton() // returns ???? ?? ?????? PlayerButton
+    private GameObject GetCurrentPlayerButton() // returns 현재 턴 유저의 PlayerButton
     {
-        if(_Turn == _user)
+        if(_turn == _user)
         {
             return LowerButtons;
         }
