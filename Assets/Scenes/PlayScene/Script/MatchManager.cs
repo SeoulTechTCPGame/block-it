@@ -45,19 +45,19 @@ public class MatchManager : MonoBehaviour
     public static UnityEvent<Vector2Int> SetRequestedPlank = new UnityEvent<Vector2Int>(); // 이번 턴의 수로 놓을 plank 위치 업데이트
     #endregion
 
-    void Awake() // 이벤트 할당, PlayerButton의 사용자 할당, _gameLogic 받기
+   private void Awake() // 이벤트 할당, PlayerButton의 사용자 할당, _gameLogic 받기
     {
         SetEvents();
         _gameLogic = FindObjectOfType<GameLogic>();
     }
 
-    void Start() // 시작시, Player 1의 턴으로 세팅한다.
+   private void Start() // 시작시, Player 1의 턴으로 세팅한다.
     {
         _gameMode = (Enums.EMode)PlayerPrefs.GetInt("GameMode", (int)Enums.EMode.Friend); ;
         InitGameMode(_gameMode);
     }
 
-    void Update()
+   private void Update()
     {
         if (_isTimerRunning)
         {
