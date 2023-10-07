@@ -7,26 +7,26 @@ using Mirror;
 
 public class SearchController : MonoBehaviour
 {
-    [SerializeField] private GameObject _searchPanel;   // »ó´ë¹æ Ã£´Â È­¸é
-    [SerializeField] private GameObject _matchPanel;    // ´ëÀü ¼ö¶ô È­¸é
-    [SerializeField] private Button _back;  // µÚ·Î°¡±â ¹öÆ°
-    [SerializeField] private Button _search;    // »ó´ë¹æ Ã£±â ¹öÆ°
-    [SerializeField] private Button _accept;    // ´ëÀü ¼ö¶ô ¹öÆ°
-    [SerializeField] private Button _refuse;    // ´ëÀü °ÅºÎ ¹öÆ°
-    [SerializeField] private Image _image;    // »ó´ë¹æ ÀÌ¹ÌÁö
-    [SerializeField] private Transform _grid;   // »ó´ë¹æ ³ª¿­ ±×¸®µå
-    [SerializeField] private GameObject _playerButtonPrefab;    // ÇÃ·¹ÀÌ¾î ÇÁ¸®ÆÕ
-    [SerializeField] private GameObject _loading; // ·Îµù ÀÌ¹ÌÁö
-    [SerializeField] private TMP_Text _warningText; // °æ°í ¹®±¸
+    [SerializeField] private GameObject _searchPanel;   // ìƒëŒ€ë°© ì°¾ëŠ” í™”ë©´
+    [SerializeField] private GameObject _matchPanel;    // ëŒ€ì „ ìˆ˜ë½ í™”ë©´
+    [SerializeField] private Button _back;  // ë’¤ë¡œê°€ê¸° ë²„íŠ¼
+    [SerializeField] private Button _search;    // ìƒëŒ€ë°© ì°¾ê¸° ë²„íŠ¼
+    [SerializeField] private Button _accept;    // ëŒ€ì „ ìˆ˜ë½ ë²„íŠ¼
+    [SerializeField] private Button _refuse;    // ëŒ€ì „ ê±°ë¶€ ë²„íŠ¼
+    [SerializeField] private Image _image;    // ìƒëŒ€ë°© ì´ë¯¸ì§€
+    [SerializeField] private Transform _grid;   // ìƒëŒ€ë°© ë‚˜ì—´ ê·¸ë¦¬ë“œ
+    [SerializeField] private GameObject _playerButtonPrefab;    // í”Œë ˆì´ì–´ í”„ë¦¬íŒ¹
+    [SerializeField] private GameObject _loading; // ë¡œë”© ì´ë¯¸ì§€
+    [SerializeField] private TMP_Text _warningText; // ê²½ê³  ë¬¸êµ¬
     [SerializeField] private MoveScene _ms;
 
-    private bool _isSearching;  // »ó´ë¹æ °Ë»ö ÁßÀÎÁö ¿©ºÎ
-    private Coroutine searchCoroutine; // °Ë»ö ÄÚ·çÆ¾ ÂüÁ¶¸¦ ÀúÀåÇÏ±â À§ÇÑ º¯¼ö
-    private bool _doIAccpet; // ³»°¡ ¼ö¶ô ¿©ºÎ
-    private bool _doYouAccpet;  // »ó´ë°¡ ¼ö¶ô ¿©ºÎ
-    private GameObject _currentPanel;    // ÇöÀç È°¼ºÈ­µÈ ÆĞ³Î
-    private List<NetworkConnection> connectedClients = new List<NetworkConnection>();   // Ã£Àº »ó´ëµé
-    private NetworkConnection _opponent;    // ´ëÀü »ó´ë
+    private bool _isSearching;  // ìƒëŒ€ë°© ê²€ìƒ‰ ì¤‘ì¸ì§€ ì—¬ë¶€
+    private Coroutine searchCoroutine; // ê²€ìƒ‰ ì½”ë£¨í‹´ ì°¸ì¡°ë¥¼ ì €ì¥í•˜ê¸° ìœ„í•œ ë³€ìˆ˜
+    private bool _doIAccpet; // ë‚´ê°€ ìˆ˜ë½ ì—¬ë¶€
+    private bool _doYouAccpet;  // ìƒëŒ€ê°€ ìˆ˜ë½ ì—¬ë¶€
+    private GameObject _currentPanel;    // í˜„ì¬ í™œì„±í™”ëœ íŒ¨ë„
+    private List<NetworkConnection> connectedClients = new List<NetworkConnection>();   // ì°¾ì€ ìƒëŒ€ë“¤
+    private NetworkConnection _opponent;    // ëŒ€ì „ ìƒëŒ€
     private LocalizeScript _searchLocalize;
 
     private void Start()
@@ -44,8 +44,8 @@ public class SearchController : MonoBehaviour
         _refuse.onClick.AddListener(OnRefuseButtonClicked);
         _back.onClick.AddListener(OnBackButtonClicked);
     }
-    #region ¼­Ä¡ ÆĞ³Î
-    // »ó´ë¹æ °Ë»ö ¹öÆ°À» Å¬¸¯ÇßÀ» ¶§
+    #region ì„œì¹˜ íŒ¨ë„
+    // ìƒëŒ€ë°© ê²€ìƒ‰ ë²„íŠ¼ì„ í´ë¦­í–ˆì„ ë•Œ
     private void OnSearchButtonClicked()
     {
         if (!_isSearching)
@@ -56,13 +56,13 @@ public class SearchController : MonoBehaviour
             OpponentGridData();
         }
     }
-    // »ó´ë¹æ Ã£±â
+    // ìƒëŒ€ë°© ì°¾ê¸°
     private IEnumerator FindConnectedClients()
     {
         _loading.SetActive(true);
         while (searchCoroutine != null)
         {
-            foreach (var client in connectedClients)    //ToDo: »ó´ë¹æ Ã£±â
+            foreach (var client in connectedClients)    //ToDo: ìƒëŒ€ë°© ì°¾ê¸°
             {
                 _loading.transform.Rotate(Vector3.back, Time.deltaTime * 100);
                 if (client.isReady)
@@ -74,10 +74,10 @@ public class SearchController : MonoBehaviour
         }
         _loading.SetActive(false);
     }
-    // °¡»óÀÇ »ó´ë¹æ µ¥ÀÌÅÍ·Î ±×¸®µå¸¦ Ã¤¿ì´Â ¸Ş¼­µå
+    // ê°€ìƒì˜ ìƒëŒ€ë°© ë°ì´í„°ë¡œ ê·¸ë¦¬ë“œë¥¼ ì±„ìš°ëŠ” ë©”ì„œë“œ
     private void OpponentGridData()
     {
-        string[] opponentNames = { "Opponent1", "Opponent2", "Opponent3" }; // ToDo: Ã£Àº »ó´ë¹æ µ¥ÀÌÅÍ °¡Á®¿À±â
+        string[] opponentNames = { "Opponent1", "Opponent2", "Opponent3" }; // ToDo: ì°¾ì€ ìƒëŒ€ë°© ë°ì´í„° ê°€ì ¸ì˜¤ê¸°
 
         foreach (string opponentName in opponentNames)
         {
@@ -89,7 +89,7 @@ public class SearchController : MonoBehaviour
             button.onClick.AddListener(() => OnOpponentButtonClicked(opponentName));
         }
     }
-    // »ó´ë¹æ ¹öÆ°À» Å¬¸¯ÇßÀ» ¶§ È£ÃâµÇ´Â ¸Ş¼­µå
+    // ìƒëŒ€ë°© ë²„íŠ¼ì„ í´ë¦­í–ˆì„ ë•Œ í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ
     private void OnOpponentButtonClicked(string opponentName)
     {
         MovePanel();
@@ -98,25 +98,25 @@ public class SearchController : MonoBehaviour
         opponentNameText.text = opponentName;
     }
     #endregion
-    #region ¸ÅÄ¡ ÆĞ³Î
-    // ¼ö¶ô ¹öÆ°À» Å¬¸¯ÇßÀ» ¶§ È£ÃâµÇ´Â ¸Ş¼­µå
+    #region ë§¤ì¹˜ íŒ¨ë„
+    // ìˆ˜ë½ ë²„íŠ¼ì„ í´ë¦­í–ˆì„ ë•Œ í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ
     private void OnAcceptButtonClicked()
     {
-        // ToDo: µÎ ÇÃ·¹ÀÌ¾î°¡ ¼ö¶ôÇß´Â Áö È®ÀÎ ÈÄ ´ëÀü ¾ÀÀ» ·Îµå _ms.To()
+        // ToDo: ë‘ í”Œë ˆì´ì–´ê°€ ìˆ˜ë½í–ˆëŠ” ì§€ í™•ì¸ í›„ ëŒ€ì „ ì”¬ì„ ë¡œë“œ _ms.To()
     }
     private void OnRefuseButtonClicked()
     {
-        // ToDo: °ÅºÎ
+        // ToDo: ê±°ë¶€
         MovePanel();
     }
     #endregion
-    #region °øÅë
-    // ÆĞ³Î ÀÌµ¿ÇÒ ¶§¸¶´Ù È£ÃâµÇ´Â ¸Ş¼­µå
+    #region ê³µí†µ
+    // íŒ¨ë„ ì´ë™í•  ë•Œë§ˆë‹¤ í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ
     private void MovePanel()
     {
         if (_currentPanel == _matchPanel)
         {
-            // ToDo: °ÅÀı
+            // ToDo: ê±°ì ˆ
             _matchPanel.SetActive(false);
             _searchPanel.SetActive(true);
             _currentPanel = _searchPanel;
@@ -135,10 +135,10 @@ public class SearchController : MonoBehaviour
             _searchPanel.SetActive(false);
             _currentPanel = _matchPanel;
 
-            //_image.sprite = Ã£Àº »ó´ë¹æÀÇ ´Ğ³×ÀÓ°ú ÀÌ¹ÌÁö
+            //_image.sprite = ì°¾ì€ ìƒëŒ€ë°©ì˜ ë‹‰ë„¤ì„ê³¼ ì´ë¯¸ì§€
         }
     }
-    // µÚ·Î °¡±â ¹öÆ°À» Å¬¸¯ÇßÀ» ¶§ È£ÃâµÇ´Â ¸Ş¼­µå
+    // ë’¤ë¡œ ê°€ê¸° ë²„íŠ¼ì„ í´ë¦­í–ˆì„ ë•Œ í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ
     private void OnBackButtonClicked()
     {
         if (_currentPanel == _matchPanel)

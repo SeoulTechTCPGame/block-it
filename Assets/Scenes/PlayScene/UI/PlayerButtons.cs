@@ -10,7 +10,7 @@ public enum EPlankImgState
 }
 
 /*
- * 'PlayerButtons'´Â pawnÀÌµ¿½ÃÅ°±â, plank ³õ±â, Put (¼ö °áÁ¤ÇÏ±â) ¹öÆ° °ü¸® ¹× Ç¥½ÃÇÏ´Â Å¬·¡½ºÀÌ´Ù.
+ * 'PlayerButtons'ëŠ” pawnì´ë™ì‹œí‚¤ê¸°, plank ë†“ê¸°, Put (ìˆ˜ ê²°ì •í•˜ê¸°) ë²„íŠ¼ ê´€ë¦¬ ë° í‘œì‹œí•˜ëŠ” í´ë˜ìŠ¤ì´ë‹¤.
  */
 public class PlayerButtons : MonoBehaviour
 {
@@ -21,9 +21,9 @@ public class PlayerButtons : MonoBehaviour
     public GameObject PlankImage;
     #endregion
 
-    private Enums.EPlayer _owner; // playerButtonÀÇ ÁÖÀÎ
-    private bool _isPlankValid = true; // plank¸¦ ³õÀ» ¼ö ÀÖ´Â°¡? (³²Àº plank°¡ ¾øÀ¸¸é false)
-    private EPlankImgState _plankImgState = EPlankImgState.Normal; // plank imageÀÇ state
+    private Enums.EPlayer _owner; // playerButtonì˜ ì£¼ì¸
+    private bool _isPlankValid = true; // plankë¥¼ ë†“ì„ ìˆ˜ ìˆëŠ”ê°€? (ë‚¨ì€ plankê°€ ì—†ìœ¼ë©´ false)
+    private EPlankImgState _plankImgState = EPlankImgState.Normal; // plank imageì˜ state
 
     #region Image, Color, PlankRotations
     private Image _pawnPanelImage;
@@ -39,7 +39,7 @@ public class PlayerButtons : MonoBehaviour
     private Vector3 _horizontalRotation = new Vector3(0f, 0f, -45f);
     #endregion
 
-    void Awake() // ÀÌ¹ÌÁö ¹Ş±â, ¹öÆ° Å¬¸¯ ÀÌº¥Æ® ÇÒ´ç
+    void Awake() // ì´ë¯¸ì§€ ë°›ê¸°, ë²„íŠ¼ í´ë¦­ ì´ë²¤íŠ¸ í• ë‹¹
     {
         _pawnPanelImage = PawnButton.GetComponent<Image>();
         _plankPanelImage = PlankButton.GetComponent<Image>();
@@ -55,7 +55,7 @@ public class PlayerButtons : MonoBehaviour
         return _plankImgState;
     }
 
-    public void SetButtons(bool bTurn) // ÀüÃ¼ ¹öÆ° È°¼ºÈ­/ºñÈ°¼ºÈ­
+    public void SetButtons(bool bTurn) // ì „ì²´ ë²„íŠ¼ í™œì„±í™”/ë¹„í™œì„±í™”
     {
         ResetPlankState();
 
@@ -86,7 +86,7 @@ public class PlayerButtons : MonoBehaviour
 
     }
 
-    public void OnPutButtonClicked() // put ¹öÆ°ÀÌ ´­¸®¸é ´ÙÀ½ ÅÏÀ¸·Î
+    public void OnPutButtonClicked() // put ë²„íŠ¼ì´ ëˆŒë¦¬ë©´ ë‹¤ìŒ í„´ìœ¼ë¡œ
     {
         MatchManager.ToNextTurn.Invoke();
     }
@@ -96,19 +96,19 @@ public class PlayerButtons : MonoBehaviour
         _owner = own;
     }
 
-   public void SetPutButtonInteractable(bool bInteractable) // put ¹öÆ° È°¼ºÈ­/ºñÈ°¼ºÈ­
+   public void SetPutButtonInteractable(bool bInteractable) // put ë²„íŠ¼ í™œì„±í™”/ë¹„í™œì„±í™”
     {
         PutButton.interactable = bInteractable;
     }
 
-    public void DisableButtons() // ÀüÃ¼ ¹öÆ° ºñÈ°¼ºÈ­
+    public void DisableButtons() // ì „ì²´ ë²„íŠ¼ ë¹„í™œì„±í™”
     {
         PawnButton.gameObject.SetActive(false);
         PlankButton.gameObject.SetActive(false);
         PutButton.gameObject.SetActive(false);
     }
 
-    private void OnPawnButtonClicked() // pawnÀÌµ¿ ¹öÆ° Å¬¸¯½Ã, º¸µå¿¡ ÀÌµ¿°¡´ÉÇÑ À§Ä¡ Ç¥½Ã µî º¸µå ¿äÃ»
+    private void OnPawnButtonClicked() // pawnì´ë™ ë²„íŠ¼ í´ë¦­ì‹œ, ë³´ë“œì— ì´ë™ê°€ëŠ¥í•œ ìœ„ì¹˜ í‘œì‹œ ë“± ë³´ë“œ ìš”ì²­
     {
         MatchManager.ResetMove.Invoke();
         //set color of the buttons
@@ -124,7 +124,7 @@ public class PlayerButtons : MonoBehaviour
         PawnButton.Select();
     }
 
-    private void OnPlankButtonClicked() // plank ³õ±â ¹öÆ° Å¬¸¯½Ã, º¸µå¿¡ ¼³Ä¡ °¡´É À§Ä¡ Ç¥½Ã µî º¸µå ¿äÃ»
+    private void OnPlankButtonClicked() // plank ë†“ê¸° ë²„íŠ¼ í´ë¦­ì‹œ, ë³´ë“œì— ì„¤ì¹˜ ê°€ëŠ¥ ìœ„ì¹˜ í‘œì‹œ ë“± ë³´ë“œ ìš”ì²­
     {
         MatchManager.ResetMove.Invoke();
 
@@ -155,14 +155,14 @@ public class PlayerButtons : MonoBehaviour
         BoardManager.RemoveMoveablePawns.Invoke();
     }
 
-    private void SetPlankButtonDisable() // plank ³õ±â ¹öÆ° ºñÈ°¼ºÈ­
+    private void SetPlankButtonDisable() // plank ë†“ê¸° ë²„íŠ¼ ë¹„í™œì„±í™”
     {
         _isPlankValid = false;
         PlankButton.interactable = false;
         _plankPanelImage.color = _disabledColor;
     }
 
-    private void ActivatePutButton(bool bOn) // put¹öÆ° È°¼ºÈ­/ºñÈ°¼ºÈ­
+    private void ActivatePutButton(bool bOn) // putë²„íŠ¼ í™œì„±í™”/ë¹„í™œì„±í™”
     {
         PutButton.gameObject.SetActive(bOn);
         PutButton.interactable = false;

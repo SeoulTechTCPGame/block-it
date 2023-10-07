@@ -15,9 +15,13 @@ public class Timer : MonoBehaviour
             Debug.LogError("No Text component found on this GameObject!");
             return;
         }
-
     }
 
+    public void RotateTimer()
+    {
+        gameObject.transform.localScale = new Vector3(-1, -1, 1);
+        if (_textComponent != null) _textComponent.alignment = TextAnchor.MiddleLeft;
+    }
     public void ShowTimer()
     {
         _textComponent.enabled = true;

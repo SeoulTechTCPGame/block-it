@@ -434,7 +434,7 @@ GameObject:
   - component: {fileID: 195249017}
   - component: {fileID: 195249016}
   m_Layer: 5
-  m_Name: credit
+  m_Name: Credit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2627,7 +2627,7 @@ GameObject:
   - component: {fileID: 1877341008}
   - component: {fileID: 1877341010}
   m_Layer: 5
-  m_Name: Scene
+  m_Name: SceneName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

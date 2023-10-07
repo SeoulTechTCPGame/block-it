@@ -1,19 +1,19 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// »ç¿îµå ¹× Áøµ¿ °ü·ÃÇÑ °ÍÀ» °ü¸®ÇÏ´Â Å¬·¡½º
+// ì‚¬ìš´ë“œ ë° ì§„ë™ ê´€ë ¨í•œ ê²ƒì„ ê´€ë¦¬í•˜ëŠ” í´ë˜ìŠ¤
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance;
-    // º¼·ı °ª º¯¼öµé
-    public float BgmVolume { get; set; } = 1.0f; // BGM º¼·ı
-    public float SoundEffectVolume { get; set; } = 1.0f; // »ç¿îµå ÀÌÆåÆ® º¼·ı
-    public bool IsVibrationEnabled { get; set; } = true;    // Áøµ¿ Åä±Û ¿Â¿ÀÇÁ °ÔÀÓ
-    public AudioClip[] Bgm; // ¸ğµç BGM Å¬¸³
-    public AudioSource BgmAudioSource; // BGMÀ» Àç»ıÇÒ ¿Àµğ¿À ¼Ò½º
-    public AudioSource SoundEffectAudioSource; // »ç¿îµå ÀÌÆåÆ®¸¦ Àç»ıÇÒ ¿Àµğ¿À ¼Ò½º
+    // ë³¼ë¥¨ ê°’ ë³€ìˆ˜ë“¤
+    public float BgmVolume { get; set; } = 1.0f; // BGM ë³¼ë¥¨
+    public float SoundEffectVolume { get; set; } = 1.0f; // ì‚¬ìš´ë“œ ì´í™íŠ¸ ë³¼ë¥¨
+    public bool IsVibrationEnabled { get; set; } = true;    // ì§„ë™ í† ê¸€ ì˜¨ì˜¤í”„ ê²Œì„
+    public AudioClip[] Bgm; // ëª¨ë“  BGM í´ë¦½
+    public AudioSource BgmAudioSource; // BGMì„ ì¬ìƒí•  ì˜¤ë””ì˜¤ ì†ŒìŠ¤
+    public AudioSource SoundEffectAudioSource; // ì‚¬ìš´ë“œ ì´í™íŠ¸ë¥¼ ì¬ìƒí•  ì˜¤ë””ì˜¤ ì†ŒìŠ¤
 
-    private string _currentScene; // ÇöÀç ¾ÀÀÇ ÀÌ¸§À» ÀúÀåÇÒ º¯¼ö
+    private string _currentScene; // í˜„ì¬ ì”¬ì˜ ì´ë¦„ì„ ì €ì¥í•  ë³€ìˆ˜
 
     private void Awake()
     {
@@ -40,42 +40,42 @@ public class SoundManager : MonoBehaviour
 
         PlayBgm(_currentScene);
     }
-    #region ÀúÀå
+    #region ì €ì¥
     private void LoadSettings()
     {
-        // BGM º¼·ı ·Îµå
+        // BGM ë³¼ë¥¨ ë¡œë“œ
         BgmVolume = PlayerPrefs.GetFloat("SoundManager_BgmVolume", 1.0f);
 
-        // »ç¿îµå ÀÌÆåÆ® º¼·ı ·Îµå
+        // ì‚¬ìš´ë“œ ì´í™íŠ¸ ë³¼ë¥¨ ë¡œë“œ
         SoundEffectVolume = PlayerPrefs.GetFloat("SoundManager_SoundEffectVolume", 1.0f);
 
-        // ÀüÃ¼ È­¸é Åä±Û ·Îµå
+        // ì „ì²´ í™”ë©´ í† ê¸€ ë¡œë“œ
         IsVibrationEnabled = PlayerPrefs.GetInt("SoundManager_IsVibrationEnabled", 0) == 1;
     }
     public void SaveSettings()
     {
-        // BGM º¼·ı ÀúÀå
+        // BGM ë³¼ë¥¨ ì €ì¥
         PlayerPrefs.SetFloat("SoundManager_BgmVolume", BgmVolume);
 
-        // »ç¿îµå ÀÌÆåÆ® º¼·ı ÀúÀå
+        // ì‚¬ìš´ë“œ ì´í™íŠ¸ ë³¼ë¥¨ ì €ì¥
         PlayerPrefs.SetFloat("SoundManager_SoundEffectVolume", SoundEffectVolume);
 
-        // Áøµ¿ Åä±Û ÀúÀå
+        // ì§„ë™ í† ê¸€ ì €ì¥
         PlayerPrefs.SetInt("SoundManager_IsVibrationEnabled", IsVibrationEnabled ? 1 : 0);
 
-        // PlayerPrefs µ¥ÀÌÅÍ¸¦ µğ½ºÅ©¿¡ ÀúÀå
+        // PlayerPrefs ë°ì´í„°ë¥¼ ë””ìŠ¤í¬ì— ì €ì¥
         PlayerPrefs.Save();
     }
     #endregion
-    #region ¿É¼Ç ±â´É
-    // BGM Àç»ı
+    #region ì˜µì…˜ ê¸°ëŠ¥
+    // BGM ì¬ìƒ
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name != _currentScene)
         {
             if (scene.name == "InGame")
             {
-                // ÀÌÀü ¾À°ú ´Ù¸¥ BGMÀÎ °æ¿ì »õ·Î¿î BGM Àç»ı
+                // ì´ì „ ì”¬ê³¼ ë‹¤ë¥¸ BGMì¸ ê²½ìš° ìƒˆë¡œìš´ BGM ì¬ìƒ
                 StopBgm();
                 PlayBgm(scene.name);
             }
@@ -86,19 +86,19 @@ public class SoundManager : MonoBehaviour
             }
             else
             {
-                // ÀÌÀü ¾À°ú µ¿ÀÏÇÑ BGMÀÎ °æ¿ì ÀÌ¾î¼­ Àç»ı
+                // ì´ì „ ì”¬ê³¼ ë™ì¼í•œ BGMì¸ ê²½ìš° ì´ì–´ì„œ ì¬ìƒ
             }
         }
     }
-    // »óÈ²¿¡ ¸Â´Â BGM ¼±Á¤
+    // ìƒí™©ì— ë§ëŠ” BGM ì„ ì •
     private void PlayBgm(string sceneName)
     {
         if (BgmAudioSource == null)
         {
-            Debug.LogError("AudioSource ÄÄÆ÷³ÍÆ®°¡ ¾ø½À´Ï´Ù!");
+            Debug.LogError("AudioSource ì»´í¬ë„ŒíŠ¸ê°€ ì—†ìŠµë‹ˆë‹¤!");
             return;
         }
-        // ToDo: Enums BGM ÀÎµ¦½º, ¾À ¸ÅÇÎ
+        // ToDo: Enums BGM ì¸ë±ìŠ¤, ì”¬ ë§¤í•‘
         AudioClip bgmClip;
         if (sceneName == "Loading")
         {
@@ -110,7 +110,7 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            // °ÔÀÓ µµÁß
+            // ê²Œì„ ë„ì¤‘
             bgmClip = Bgm[2];
         }
 
@@ -122,12 +122,12 @@ public class SoundManager : MonoBehaviour
     {
         BgmAudioSource.Stop();
     }
-    // »ç¿îµå ÀÌÆåÆ® Àç»ı
+    // ì‚¬ìš´ë“œ ì´í™íŠ¸ ì¬ìƒ
     public void PlaySoundEffect(AudioClip soundEffectClip)
     {
         SoundEffectAudioSource.PlayOneShot(soundEffectClip, SoundEffectVolume);
     }
-    // Áøµ¿ ½ÇÇà
+    // ì§„ë™ ì‹¤í–‰
     public void Vibrate()
     {
         if (IsVibrationEnabled)

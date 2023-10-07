@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static Enums;
 
-// æ¿ ¿Ãµø¿ª ¥„¥Á«œ¥¬ ≈¨∑°Ω∫
+// Ïî¨ Ïù¥ÎèôÏùÑ Îã¥ÎãπÌïòÎäî ÌÅ¥ÎûòÏä§
 public class MoveScene : MonoBehaviour
 {
     public void ToOption()
@@ -16,21 +17,6 @@ public class MoveScene : MonoBehaviour
     {
         SceneManager.LoadScene("Home");
     }
-    public void ToLocalPlayEModeSingle()
-    {
-        PlayerPrefs.SetInt("GameMode", ((int)Enums.EMode.Single));
-        SceneManager.LoadScene("LocalPlay");
-    }
-    public void ToLocalPlayEModeAI()
-    {
-        PlayerPrefs.SetInt("GameMode", ((int)Enums.EMode.AI));
-        SceneManager.LoadScene("LocalPlay");
-    }
-    public void ToLocalPlayEModeMultiWifi()
-    {
-        PlayerPrefs.SetInt("GameMode", ((int)Enums.EMode.MultiWifi));
-        SceneManager.LoadScene("LocalPlay");
-    }
     public void ToWifiLoby()
     {
         SceneManager.LoadScene("Search");
@@ -38,5 +24,43 @@ public class MoveScene : MonoBehaviour
     public void ToCredit()
     {
         SceneManager.LoadScene("Credit");
+    }
+    public void ToLevelSelect()
+    {
+        SceneManager.LoadScene("LevelSelect");
+    }
+    public void ToLocalPlayFriend()
+    {
+        PlayerPrefs.SetInt("GameMode", ((int)EMode.Friend));
+        SceneManager.LoadScene("LocalPlay");
+    }
+    public void ToLocalPlayAIBeginner()
+    {
+        PlayerPrefs.SetInt("GameMode", ((int)EMode.AI));
+        PlayerPrefs.SetInt("AILevel", ((int)ELevel.Beginner));
+        SceneManager.LoadScene("LocalPlay");
+    }
+    public void ToLocalPlayAIIntermediate()
+    {
+        PlayerPrefs.SetInt("GameMode", ((int)EMode.AI));
+        PlayerPrefs.SetInt("AILevel", ((int)ELevel.Intermediate));
+        SceneManager.LoadScene("LocalPlay");
+    }
+    public void ToLocalPlayAIAdvanced()
+    {
+        PlayerPrefs.SetInt("GameMode", ((int)EMode.AI));
+        PlayerPrefs.SetInt("AILevel", ((int)ELevel.Advanced));
+        SceneManager.LoadScene("LocalPlay");
+    }
+    public void ToLocalPlayAIMaster()
+    {
+        PlayerPrefs.SetInt("GameMode", ((int)EMode.AI));
+        PlayerPrefs.SetInt("AILevel", ((int)ELevel.Master));
+        SceneManager.LoadScene("LocalPlay");
+    }
+    public void ToLocalPlayMultiWifi()
+    {
+        PlayerPrefs.SetInt("GameMode", ((int)EMode.MultiWifi));
+        SceneManager.LoadScene("LocalPlay");
     }
 }

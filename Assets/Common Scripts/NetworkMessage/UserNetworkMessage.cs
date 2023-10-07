@@ -1,7 +1,7 @@
 using Mirror;
 using System;
 
-#region À¯Àú Á¤º¸¸¦ ¿äÃ» ½Ã ¼Û¼ö½ÅÇÒ ¸Ş¼¼Áö Á¤ÀÇ
+#region ìœ ì € ì •ë³´ë¥¼ ìš”ì²­ ì‹œ ì†¡ì‹ í•  ë©”ì„¸ì§€ ì•½ì†
 [Serializable]
 public struct RequestUserDataMessage : NetworkMessage
 {
@@ -21,7 +21,7 @@ public struct ResponseUserDataMessage : NetworkMessage
 }
 #endregion
 
-#region È¸¿ø °¡ÀÔ ½Ã ¼Û¼ö½ÅÇÒ ¸Ş¼¼Áö Á¤ÀÇ
+#region íšŒì› ê°€ì… ì‹œ ì†¡ì‹ í•  ë©”ì„¸ì§€ ì•½ì†
 [Serializable]
 public struct RequestUserSignUpMessage : NetworkMessage
 {
@@ -36,7 +36,7 @@ public struct ResponseUserSignUpMessage : NetworkMessage
 }
 #endregion
 
-#region ÀÌ¹ÌÁö ¾÷·Îµå ½Ã ¼Û¼ö½ÅÇÒ ¸Ş¼¼Áö Á¤ÀÇ
+#region ì´ë¯¸ì§€ ì—…ë¡œë“œ ì‹œ ì†¡ìˆ˜ì‹ í•  ë©”ì„¸ì§€ ì •ì˜
 [Serializable]
 public struct RequestProfileImageUploadMessage : NetworkMessage
 {
@@ -44,13 +44,13 @@ public struct RequestProfileImageUploadMessage : NetworkMessage
     public byte[] image;
 }
 
-public struct ResponseProfileImageUploadMessage: NetworkMessage
+public struct ResponseProfileImageUploadMessage : NetworkMessage
 {
     public bool success;
 }
 #endregion
 
-#region ´Ğ³×ÀÓ º¯°æ ½Ã ¼Û¼ö½ÅÇÒ ¸Ş¼¼Áö Á¤ÀÇ
+#region ë‹‰ë„¤ì„ ë³€ê²½ ì‹œ ì†¡ìˆ˜ì‹ í•  ë©”ì„¸ì§€ ì •ì˜
 public struct RequestChangeUserNameMessage: NetworkMessage
 {
     public string userId;

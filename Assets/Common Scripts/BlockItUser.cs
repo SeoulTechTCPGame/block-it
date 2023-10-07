@@ -7,14 +7,14 @@ using System.Diagnostics;
 
 public class BlockItUser
 {
-    #region À¯ÀúÀÇ Á¤º¸¸¦ ´ãÀ» Data Field¿Í Getter & Setter
-    private string _userId;                             // Firebase UID (°íÀ¯ ID)
-    private string _nickname;                           // À¯ÀúÀÇ ´Ğ³×ÀÓ
-    private int _playCount = 0;                         // ÇÃ·¹ÀÌ È½¼ö
-    private int _winCount = 0;                          // ½Â¸® È½¼ö
-    private byte[] _profileImage = null;                // ÇÁ·ÎÇÊ »çÁø
-    private bool _isRecived = false;                    // Á¤º¸ ¼ö½Å ¼º°ø Flag
-    private bool _isGuest = false;                      // °Ô½ºÆ®ÀÎÁö È®ÀÎÇÏ´Â º¯¼ö
+    #region ìœ ì €ì˜ ì •ë³´ë¥¼ ë‹´ì„ Data Fieldì™€ Getter & Setter
+    private string _userId;                             // Firebase UID (ï¿½ï¿½ï¿½ï¿½ ID)
+    private string _nickname;                           // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ğ³ï¿½ï¿½ï¿½
+    private int _playCount = 0;                         // ï¿½Ã·ï¿½ï¿½ï¿½ È½ï¿½ï¿½
+    private int _winCount = 0;                          // ï¿½Â¸ï¿½ È½ï¿½ï¿½
+    private byte[] _profileImage = null;                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    private bool _isRecived = false;                    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Flag
+    private bool _isGuest = false;                      // ï¿½Ô½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     public string UserId
     { 
@@ -52,8 +52,8 @@ public class BlockItUser
 
     #endregion
 
-    #region »ı¼ºÀÚ
-    // Firebase GID°¡ ¾ø´Â °Ô½ºÆ®ÀÏ °æ¿ì ´Ğ³×ÀÓ¸¸ ·£´ı »ı¼º
+    #region ìƒì„±ì
+    // Firebase GID ì—†ì„ ê²½ìš° ê²ŒìŠ¤íŠ¸ë¡œ íŒë‹¨ í›„ ìœ ì €ë„¤ì„ ëœë¤ ìƒì„±
     public BlockItUser()
     {
         _isGuest = true;
@@ -67,13 +67,13 @@ public class BlockItUser
         }
     }
 
-    // È¸¿øÀÇ ·Î±×ÀÎÀÏ °æ¿ì »ı¼ºÀÚ
+    // ë¡œê·¸ì¸ì¼ ê²½ìš° ìƒì„±ì
     public BlockItUser(string userId)
     {
         _userId = userId;
     }
 
-    // È¸¿ø °¡ÀÔÀÏ °æ¿ì »ı¼ºÀÚ (´Ğ³×ÀÓÀ» ÀúÀåÇØ¾ßÇÏ¹Ç·Î)
+    // íšŒì› ê°€ì…ì¼ ê²½ìš° ìƒì„±ì (ë‹‰ë„¤ì„ì„ ì €ì¥í•´ì•¼í•˜ë¯€ë¡œ)
     public BlockItUser(string userId, string nickname)
     {
         _userId = userId;
@@ -81,41 +81,38 @@ public class BlockItUser
     }
     #endregion
 
-    // ¼­¹ö¿Í ¿¬°áµÉ ¶§±îÁö ´ë±â ½ÃÅ°´Â ºñµ¿±â ÇÔ¼ö
+    // ì„œë²„ì™€ ì—°ê²°ë  ë•Œê¹Œì§€ ëŒ€ê¸° ì‹œí‚¤ëŠ” ë¹„ë™ê¸° í•¨ìˆ˜
     private async Task WaitForConnectionAsync(CancellationToken token)
     {
         while (!NetworkClient.isConnected)
         {
             if (token.IsCancellationRequested)
             {
-                // Ãë¼Ò ¿äÃ»ÀÌ ÀÖÀ» °æ¿ì, ÀÛ¾÷À» ÁßÁö
+                // ì·¨ì†Œ ìš”ì²­ì´ ìˆì„ ê²½ìš°, ì‘ì—…ì„ ì¤‘ì§€
                 throw new TaskCanceledException();
             }
-            await Task.Delay(100); // 100ms ´ë±â (°ªÀº ÇÊ¿ä¿¡ µû¶ó Á¶Àı °¡´É)
+            await Task.Delay(100); // 100ms ëŒ€ê¸° (ê°’ì€ í•„ìš”ì— ë”°ë¼ ì¡°ì ˆ ê°€ëŠ¥)
         }
     }
 
-    #region À¯Àú Á¤º¸ ¿äÃ»°ú ÀÀ´ä ½Ã ÀÌº¥Æ®
+    #region ìœ ì € ì •ë³´ ìš”ì²­ê³¼ ì‘ë‹µ ì‹œ ì´ë²¤íŠ¸
     public async void getUserData(CancellationToken token = default)
     {
-        if (!_isGuest)
+        // ì •ë³´ë¥¼ ë¶ˆëŸ¬ì˜¤ê¸° ìœ„í•´ Mirror í´ë¼ì´ì–¸íŠ¸ ì‹œì‘
+        NetworkManager.singleton.StartClient();
+
+        // ì„œë²„ì—ì„œ ë³´ë‚¸ ì •ë³´ë¥¼ ë°›ê¸° ìœ„í•œ Handler ë“±ë¡
+        NetworkClient.RegisterHandler<ResponseUserDataMessage>(OnReceiveUserDataResponse);
+
+        // ì„œë²„ì™€ ì—°ê²°ë˜ë©´ UIDë¥¼ ë³´ëƒ„
+        await WaitForConnectionAsync(token);
+        SendUserDataRequest(_userId);
+
+        // ì •ë³´ ë¶ˆëŸ¬ì™”ìœ¼ë©´ í´ë¼ì´ì–¸íŠ¸ ì¢…ë£Œ
+        if (_isRecived)
         {
-            // Á¤º¸¸¦ ºÒ·¯¿À±â À§ÇØ Mirror Å¬¶óÀÌ¾ğÆ® ½ÃÀÛ
-            NetworkManager.singleton.StartClient();
-
-            // ¼­¹ö¿¡¼­ º¸³½ Á¤º¸¸¦ ¹Ş±â À§ÇÑ Handler µî·Ï
-            NetworkClient.RegisterHandler<ResponseUserDataMessage>(OnReceiveUserDataResponse);
-
-            // ¼­¹ö¿Í ¿¬°áµÇ¸é UID¸¦ º¸³¿
-            await WaitForConnectionAsync(token);
-            SendUserDataRequest(_userId);
-
-            // Á¤º¸ ºÒ·¯¿ÔÀ¸¸é Å¬¶óÀÌ¾ğÆ® Á¾·á
-            if (_isRecived)
-            {
-                NetworkManager.singleton.StopClient();
-                _isRecived = false;
-            }
+            NetworkManager.singleton.StopClient();
+            _isRecived = false;
         }
     }
 
@@ -135,28 +132,27 @@ public class BlockItUser
     }
     #endregion
 
-    #region È¸¿ø °¡ÀÔ ¿äÃ»°ú ÀÀ´ä ½Ã ÀÌº¥Æ®
-    // À¯Àú Á¤º¸¸¦ DB¿¡ ÀúÀåÇÏ±â À§ÇØ ¼­¹ö¿¡ ¸Ş¼¼Áö Àü¼Û
+    #region íšŒì› ê°€ì… ìš”ì²­ê³¼ ì‘ë‹µ ì‹œ ì´ë²¤íŠ¸
+    // ìœ ì € ì •ë³´ë¥¼ DBì— ì €ì¥í•˜ê¸° ìœ„í•´ ì„œë²„ì— ë©”ì„¸ì§€ ì „ì†¡
     public async void SignUpUserToServer(CancellationToken token = default)
     {
         if (!_isGuest)
         {
-            // Á¤º¸¸¦ ºÒ·¯¿À±â À§ÇØ Mirror Å¬¶óÀÌ¾ğÆ® ½ÃÀÛ
+            // ì •ë³´ë¥¼ ë¶ˆëŸ¬ì˜¤ê¸° ìœ„í•´ Mirror í´ë¼ì´ì–¸íŠ¸ ì‹œì‘
             NetworkManager.singleton.StartClient();
 
-            // ¼­¹ö¿¡¼­ º¸³½ Á¤º¸¸¦ ¹Ş±â À§ÇÑ Handler µî·Ï
-            NetworkClient.RegisterHandler<ResponseUserSignUpMessage>(OnReceiveUserSignUpResponse);
+        // ì„œë²„ì—ì„œ ë³´ë‚¸ ì •ë³´ë¥¼ ë°›ê¸° ìœ„í•œ Handler ë“±ë¡
+        NetworkClient.RegisterHandler<ResponseUserSignUpMessage>(OnReceiveUserSignUpResponse);
 
-            // ¼­¹ö¿Í ¿¬°áµÇ¸é UID¿Í »ç¿ëÀÚ ÀÌ¸§À» º¸³¿
-            await WaitForConnectionAsync(token);
-            SendUserSignUpRequest(_userId, _nickname);
+        // ì„œë²„ì™€ ì—°ê²°ë˜ë©´ UIDì™€ ì‚¬ìš©ì ì´ë¦„ì„ ë³´ëƒ„
+        await WaitForConnectionAsync(token);
+        SendUserSignUpRequest(_userId, _nickname);
 
-            // Á¤º¸ ºÒ·¯¿ÔÀ¸¸é Å¬¶óÀÌ¾ğÆ® Á¾·á
-            if (_isRecived)
-            {
-                NetworkManager.singleton.StopClient();
-                _isRecived = false;
-            }
+        // ì •ë³´ ë¶ˆëŸ¬ì™”ìœ¼ë©´ í´ë¼ì´ì–¸íŠ¸ ì¢…ë£Œ
+        if (_isRecived)
+        {
+            NetworkManager.singleton.StopClient();
+            _isRecived = false;
         }
     }
 
@@ -172,26 +168,26 @@ public class BlockItUser
     }
     #endregion
 
-    #region ÇÁ·ÎÇÊ »çÁø ¾÷·Îµå ½Ã ÀÌº¥Æ®
-    // À¯Àú Á¤º¸¸¦ DB¿¡ ÀúÀåÇÏ±â À§ÇØ ¼­¹ö¿¡ ¸Ş¼¼Áö Àü¼Û
+    #region ì´ë¯¸ì§€ ì—…ë¡œë“œ ìš”ì²­
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ş¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public async void UploadProfileImageToServer(byte[] profileImage, CancellationToken token = default)
     {
         if (!_isGuest)
         {
-            // ·ÎÄÃ¿¡ ÇÁ·ÎÇÊ ÀÌ¹ÌÁö ÀúÀå
+            // ï¿½ï¿½ï¿½Ã¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             _profileImage = profileImage;
 
-            // Á¤º¸¸¦ ºÒ·¯¿À±â À§ÇØ Mirror Å¬¶óÀÌ¾ğÆ® ½ÃÀÛ
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Mirror Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
             NetworkManager.singleton.StartClient();
 
-            // ¼­¹ö¿¡¼­ º¸³½ Á¤º¸¸¦ ¹Ş±â À§ÇÑ Handler µî·Ï
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ş±ï¿½ ï¿½ï¿½ï¿½ï¿½ Handler ï¿½ï¿½ï¿½
             NetworkClient.RegisterHandler<ResponseProfileImageUploadMessage>(OnReceiveProfileImageUploadResponse);
 
-            // ¼­¹ö¿Í ¿¬°áµÇ¸é UID¿Í »ç¿ëÀÚ ÀÌ¸§À» º¸³¿
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç¸ï¿½ UIDï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             await WaitForConnectionAsync(token);
             UploadUserProfileImage(_userId, _profileImage);
 
-            // Á¤º¸ ºÒ·¯¿ÔÀ¸¸é Å¬¶óÀÌ¾ğÆ® Á¾·á
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
             if (_isRecived)
             {
                 NetworkManager.singleton.StopClient();

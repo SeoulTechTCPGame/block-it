@@ -2,17 +2,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-// ·Î±×ÀÎ ¿©ºÎ ÆÇ´ÜÇÏ¿©, ½ÃÀÛ ¾ÀÀÇ UI¸¦ º¸¿©ÁÖ´Â Å¬·¡½º
+// ë¡œê·¸ì¸ ì—¬ë¶€ íŒë‹¨í•˜ì—¬, ì‹œì‘ ì”¬ì˜ UIë¥¼ ë³´ì—¬ì£¼ëŠ” í´ë˜ìŠ¤
 public class StartGame : MonoBehaviour
 {
-    [SerializeField] float _TouchTimeout = 1f;  // ´ë±â ½Ã°£
+    [SerializeField] float _TouchTimeout = 1f;  // ëŒ€ê¸° ì‹œê°„
     [SerializeField] GameObject Canvas;
 
-    private float _timer;   // ½Ã°£ Áö³µ´Â Áö ¿©ºÎ
-    private bool _loggedIn = false; //·Î±×ÀÎ ¿©ºÎ
-    private GameObject _signUpButton;   //·Î±×ÀÎ ¹öÆ°
-    private GameObject _guestButton;    //°Ô½ºÆ® ¸ğµå ¹öÆ°
-    private GameObject _developButton;  //°³¹ßÀÚ ¸ğµå ¹öÆ°À¸·Î ToDo: »èÁ¦ ¿¹Á¤
+    private float _timer;   // ì‹œê°„ ì§€ë‚¬ëŠ” ì§€ ì—¬ë¶€
+    private bool _loggedIn = false; //ë¡œê·¸ì¸ ì—¬ë¶€
+    private GameObject _signUpButton;   //ë¡œê·¸ì¸ ë²„íŠ¼
+    private GameObject _guestButton;    //ê²ŒìŠ¤íŠ¸ ëª¨ë“œ ë²„íŠ¼
+    private GameObject _developButton;  //ê°œë°œì ëª¨ë“œ ë²„íŠ¼ìœ¼ë¡œ ToDo: ì‚­ì œ ì˜ˆì •
 
     private void Start()
     {
@@ -29,8 +29,8 @@ public class StartGame : MonoBehaviour
         _signUpButton = Canvas.transform.Find("Sign In").gameObject;
         _guestButton = Canvas.transform.Find("Guest").gameObject;
 
-        ButtonsVisibility();    // ¹öÆ° º¸ÀÌ´Â Áö ¿©ºÎ ÆÇ´Ü
-        _developButton.GetComponent<Button>().onClick.AddListener(MoveHomeScene);   // °³¹ßÀÚ¿ëÀ¸·Î ToDo: »èÁ¦ ¿¹Á¤
+        ButtonsVisibility();    // ë²„íŠ¼ ë³´ì´ëŠ” ì§€ ì—¬ë¶€ íŒë‹¨
+        _developButton.GetComponent<Button>().onClick.AddListener(MoveHomeScene);   // ê°œë°œììš©ìœ¼ë¡œ ToDo: ì‚­ì œ ì˜ˆì •
     }
 
     private void Update()
@@ -38,7 +38,7 @@ public class StartGame : MonoBehaviour
         /*
         _timer += Time.deltaTime;
         if (_loggedIn && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) || _timer >= _TouchTimeout))
-            // ·Î±×ÀÎÀÌ µÇ¾î ÀÖÀ¸¸é¼­ È­¸éÀ» ÅÍÄ¡Çß°Å³ª ½Ã°£ÀÌ Áö³ª¸é ÀÚµ¿À¸·Î È­¸é ÀüÈ¯
+            // ë¡œê·¸ì¸ì´ ë˜ì–´ ìˆìœ¼ë©´ì„œ í™”ë©´ì„ í„°ì¹˜í–ˆê±°ë‚˜ ì‹œê°„ì´ ì§€ë‚˜ë©´ ìë™ìœ¼ë¡œ í™”ë©´ ì „í™˜
         {
             MoveHomeScene();
         }

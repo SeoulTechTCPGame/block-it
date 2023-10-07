@@ -12,8 +12,21 @@ public static class Enums
     }
     public enum EMode
     {
-        Single,
+        Friend,
         AI,
         MultiWifi
+    }
+    public enum ELevel
+    {
+        Beginner,
+        Intermediate,
+        Advanced,
+        Master
+    }
+    public enum EEmotes
+    {
+        Good,
+        Bad,
+        Hurry
     }
 }
