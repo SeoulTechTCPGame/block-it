@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using Mirror;
 
@@ -8,14 +9,19 @@ public class ProfileScene : MonoBehaviour
     [SerializeField] TMP_Text userName;
     [SerializeField] TMP_Text userRecord;
 
+    [SerializeField] Image targetImage; // UI Image의 경우
+
     // Start is called before the first frame update
     void Start()
     {
         BlockItUser user = CurrentLoginSession.Instance.User;
-        user.getUserData();
+        Texture2D texture = new Texture2D(2, 2);
 
-        userName.text = user.Nickname;
+        user.getUserData(); // 유저 정보 가져오기
+        userName.text = user.Nickname; // 닉네임 표시
+        texture.LoadImage(user.ProfileImage);
 
+        // 플레이어 정보 로딩
         if (user.PlayCount == 0)
         {
             user.getUserData();
@@ -24,15 +30,18 @@ public class ProfileScene : MonoBehaviour
 
             if (user.PlayCount == 0)
             {
-                userRecord.text = "플레이 기록이 없습니다.";
+                userRecord.text = "플레이 기록이 없습니다."; ;
             }
             else
             {
                 userRecord.text = user.PlayCount + " 게임, 승률: " + user.WinCount * 100 / user.PlayCount + "%";
             }
-        } else
+        }
+
+        // 이미지 로딩
+        if (targetImage != null)
         {
-            CurrentLoginSession.Instance.IsGuest = true;
+            targetImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
         }
     }
 

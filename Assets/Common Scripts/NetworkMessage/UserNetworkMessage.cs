@@ -1,7 +1,7 @@
 using Mirror;
 using System;
 
-#region 유저 정보를 요청 시 송신할 메세지 약속
+#region 유저 정보를 요청 시 송수신할 메세지 정의
 [Serializable]
 public struct RequestUserDataMessage : NetworkMessage
 {
@@ -16,12 +16,12 @@ public struct ResponseUserDataMessage : NetworkMessage
     public int userRank;
     public int playCount;
     public int winCount;
-    public string profilePicturePath;
+    public byte[] profileImage;
     public bool success;
 }
 #endregion
 
-#region 회원 가입 시 송신할 메세지 약속
+#region 회원 가입 시 송수신할 메세지 정의
 [Serializable]
 public struct RequestUserSignUpMessage : NetworkMessage
 {
@@ -31,6 +31,33 @@ public struct RequestUserSignUpMessage : NetworkMessage
 
 [Serializable]
 public struct ResponseUserSignUpMessage : NetworkMessage
+{
+    public bool success;
+}
+#endregion
+
+#region 이미지 업로드 시 송수신할 메세지 정의
+[Serializable]
+public struct RequestProfileImageUploadMessage : NetworkMessage
+{
+    public string userId;
+    public byte[] image;
+}
+
+public struct ResponseProfileImageUploadMessage: NetworkMessage
+{
+    public bool success;
+}
+#endregion
+
+#region 닉네임 변경 시 송수신할 메세지 정의
+public struct RequestChangeUserNameMessage: NetworkMessage
+{
+    public string userId;
+    public string nickname;
+}
+
+public struct ResponseChangeUserNameMessage : NetworkMessage
 {
     public bool success;
 }

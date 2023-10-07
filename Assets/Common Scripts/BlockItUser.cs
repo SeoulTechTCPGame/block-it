@@ -12,7 +12,7 @@ public class BlockItUser
     private string _nickname;                           // 유저의 닉네임
     private int _playCount = 0;                         // 플레이 횟수
     private int _winCount = 0;                          // 승리 횟수
-    private string _profilePicturePath = string.Empty;  // 프로필 사진 경로
+    private byte[] _profileImage = null;                // 프로필 사진
     private bool _isRecived = false;                    // 정보 수신 성공 Flag
     private bool _isGuest = false;                      // 게스트인지 확인하는 변수
 
@@ -39,10 +39,10 @@ public class BlockItUser
         private set { _winCount = value; }
     }
 
-    public string ProfilePicturePath
+    public byte[] ProfileImage
     {
-        get { return _profilePicturePath; }
-        private set { _profilePicturePath = value; }
+        get { return _profileImage; }
+        private set { _profileImage = value; }
     }
 
     public bool IsGuest
@@ -130,7 +130,7 @@ public class BlockItUser
         _nickname = msg.nickname;
         _playCount = msg.playCount;
         _winCount = msg.winCount;
-        _profilePicturePath = msg.profilePicturePath;
+        _profileImage = msg.profileImage;
         _isRecived = msg.success;
     }
     #endregion
@@ -167,6 +167,47 @@ public class BlockItUser
     }
 
     private void OnReceiveUserSignUpResponse(ResponseUserSignUpMessage msg)
+    {
+        _isRecived = msg.success;
+    }
+    #endregion
+
+    #region 프로필 사진 업로드 시 이벤트
+    // 유저 정보를 DB에 저장하기 위해 서버에 메세지 전송
+    public async void UploadProfileImageToServer(byte[] profileImage, CancellationToken token = default)
+    {
+        if (!_isGuest)
+        {
+            // 로컬에 프로필 이미지 저장
+            _profileImage = profileImage;
+
+            // 정보를 불러오기 위해 Mirror 클라이언트 시작
+            NetworkManager.singleton.StartClient();
+
+            // 서버에서 보낸 정보를 받기 위한 Handler 등록
+            NetworkClient.RegisterHandler<ResponseProfileImageUploadMessage>(OnReceiveProfileImageUploadResponse);
+
+            // 서버와 연결되면 UID와 사용자 이름을 보냄
+            await WaitForConnectionAsync(token);
+            UploadUserProfileImage(_userId, _profileImage);
+
+            // 정보 불러왔으면 클라이언트 종료
+            if (_isRecived)
+            {
+                NetworkManager.singleton.StopClient();
+                _isRecived = false;
+            }
+        }
+    }
+
+    private void UploadUserProfileImage(string userId, byte[] profileImage)
+    {
+        RequestProfileImageUploadMessage requestData = new RequestProfileImageUploadMessage 
+        { userId = userId, image = profileImage };
+        NetworkClient.Send(requestData);
+    }
+
+    private void OnReceiveProfileImageUploadResponse(ResponseProfileImageUploadMessage msg)
     {
         _isRecived = msg.success;
     }

@@ -3001,7 +3001,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a01c88d61895c824d90b39b64f281fc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mClip: {fileID: 8300000, guid: 6c62333a9cf1ce742bb3725fa65e7137, type: 3}
+  _Clip: {fileID: 0}
 --- !u!1 &983353807
 GameObject:
   m_ObjectHideFlags: 0
@@ -3504,7 +3504,7 @@ MonoBehaviour:
   serverMaxReceivesPerTick: 10000
   serverSendQueueLimitPerConnection: 10000
   serverReceiveQueueLimitPerConnection: 10000
-  clientMaxMessageSize: 16384
+  clientMaxMessageSize: 65535
   clientMaxReceivesPerTick: 1000
   clientSendQueueLimit: 10000
   clientReceiveQueueLimit: 10000
