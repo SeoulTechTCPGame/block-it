@@ -60,5 +60,6 @@ public struct RequestChangeUserNameMessage: NetworkMessage
 public struct ResponseChangeUserNameMessage : NetworkMessage
 {
     public bool success;
+    public bool isDupcliate;
 }
 #endregion

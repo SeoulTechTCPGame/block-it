@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using TMPro;
 using Mirror;
+using Mirror.Discovery;
 
 public class SearchController : MonoBehaviour
 {
@@ -44,6 +45,7 @@ public class SearchController : MonoBehaviour
         _refuse.onClick.AddListener(OnRefuseButtonClicked);
         _back.onClick.AddListener(OnBackButtonClicked);
     }
+
     #region 서치 패널
     // 상대방 검색 버튼을 클릭했을 때
     private void OnSearchButtonClicked()
@@ -56,24 +58,29 @@ public class SearchController : MonoBehaviour
             OpponentGridData();
         }
     }
+
     // 상대방 찾기
     private IEnumerator FindConnectedClients()
     {
         _loading.SetActive(true);
         while (searchCoroutine != null)
         {
-            foreach (var client in connectedClients)    //ToDo: 상대방 찾기
+            foreach (var client in connectedClients)    // ToDo: 상대방 찾기
             {
+                // 검색하는 동안 로딩바 보여줌
                 _loading.transform.Rotate(Vector3.back, Time.deltaTime * 100);
+
+                // 상대방이 확인된다면 로그 출력
                 if (client.isReady)
                 {
-                    //Debug.Log("Connected client: " + client.address);
+                    // Debug.Log("Connected client: " + client.address);
                 }
                 yield return null;
             }
         }
         _loading.SetActive(false);
     }
+
     // 가상의 상대방 데이터로 그리드를 채우는 메서드
     private void OpponentGridData()
     {
@@ -89,6 +96,7 @@ public class SearchController : MonoBehaviour
             button.onClick.AddListener(() => OnOpponentButtonClicked(opponentName));
         }
     }
+
     // 상대방 버튼을 클릭했을 때 호출되는 메서드
     private void OnOpponentButtonClicked(string opponentName)
     {
@@ -98,6 +106,7 @@ public class SearchController : MonoBehaviour
         opponentNameText.text = opponentName;
     }
     #endregion
+
     #region 매치 패널
     // 수락 버튼을 클릭했을 때 호출되는 메서드
     private void OnAcceptButtonClicked()
@@ -110,6 +119,7 @@ public class SearchController : MonoBehaviour
         MovePanel();
     }
     #endregion
+
     #region 공통
     // 패널 이동할 때마다 호출되는 메서드
     private void MovePanel()
@@ -138,6 +148,7 @@ public class SearchController : MonoBehaviour
             //_image.sprite = 찾은 상대방의 닉네임과 이미지
         }
     }
+
     // 뒤로 가기 버튼을 클릭했을 때 호출되는 메서드
     private void OnBackButtonClicked()
     {

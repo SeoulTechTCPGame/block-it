@@ -42,6 +42,7 @@ public class CurrentLoginSession : MonoBehaviour
     {
         _user = user;
         _hasLogined = true;
+        user.getUserData();
     }
 
     // 로그아웃 시 유저 정보 삭제

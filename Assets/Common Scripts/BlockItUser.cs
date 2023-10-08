@@ -3,18 +3,20 @@ using System.Security.Cryptography;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Diagnostics;
 
 public class BlockItUser
 {
     #region 유저의 정보를 담을 Data Field와 Getter & Setter
-    private string _userId;                             // Firebase UID (���� ID)
-    private string _nickname;                           // ������ �г���
-    private int _playCount = 0;                         // �÷��� Ƚ��
-    private int _winCount = 0;                          // �¸� Ƚ��
-    private byte[] _profileImage = null;                // ������ ����
-    private bool _isRecived = false;                    // ���� ���� ���� Flag
-    private bool _isGuest = false;                      // �Խ�Ʈ���� Ȯ���ϴ� ����
+    private string _userId;                             // Firebase UID (유저 ID)
+    private string _nickname;                           // 유저 네임
+    private int _playCount = 0;                         // 플레이 횟수
+    private int _winCount = 0;                          // 승리 횟수
+    private byte[] _profileImage = null;                // 프로필 사진
+
+    private bool _isGuest = false;                      // 게스트 확인 플래그
+
+    private bool _isRecived = false;                    // 전송 확인 플래그
+    private bool _isDupcliateName = false;              // 닉네임 중복 확인 플래그
 
     public string UserId
     { 
@@ -48,6 +50,11 @@ public class BlockItUser
     public bool IsGuest
     {
         get { return _isGuest; }
+    }
+
+    public bool IsDupcliateName
+    {
+        get { return _isDupcliateName; }
     }
 
     #endregion
@@ -141,18 +148,19 @@ public class BlockItUser
             // 정보를 불러오기 위해 Mirror 클라이언트 시작
             NetworkManager.singleton.StartClient();
 
-        // 서버에서 보낸 정보를 받기 위한 Handler 등록
-        NetworkClient.RegisterHandler<ResponseUserSignUpMessage>(OnReceiveUserSignUpResponse);
+            // 서버에서 보낸 정보를 받기 위한 Handler 등록
+            NetworkClient.RegisterHandler<ResponseUserSignUpMessage>(OnReceiveUserSignUpResponse);
 
-        // 서버와 연결되면 UID와 사용자 이름을 보냄
-        await WaitForConnectionAsync(token);
-        SendUserSignUpRequest(_userId, _nickname);
+            // 서버와 연결되면 UID와 사용자 이름을 보냄
+            await WaitForConnectionAsync(token);
+            SendUserSignUpRequest(_userId, _nickname);
 
-        // 정보 불러왔으면 클라이언트 종료
-        if (_isRecived)
-        {
-            NetworkManager.singleton.StopClient();
-            _isRecived = false;
+            // 정보 불러왔으면 클라이언트 종료
+            if (_isRecived)
+            {
+                NetworkManager.singleton.StopClient();
+                _isRecived = false;
+            }
         }
     }
 
@@ -168,26 +176,18 @@ public class BlockItUser
     }
     #endregion
 
-    #region 이미지 업로드 요청
-    // ���� ������ DB�� �����ϱ� ���� ������ �޼��� ����
+    #region 이미지 업로드와 응답 시 이벤트
     public async void UploadProfileImageToServer(byte[] profileImage, CancellationToken token = default)
     {
         if (!_isGuest)
         {
-            // ���ÿ� ������ �̹��� ����
             _profileImage = profileImage;
-
-            // ������ �ҷ����� ���� Mirror Ŭ���̾�Ʈ ����
             NetworkManager.singleton.StartClient();
-
-            // �������� ���� ������ �ޱ� ���� Handler ���
             NetworkClient.RegisterHandler<ResponseProfileImageUploadMessage>(OnReceiveProfileImageUploadResponse);
 
-            // ������ ����Ǹ� UID�� ����� �̸��� ����
             await WaitForConnectionAsync(token);
             UploadUserProfileImage(_userId, _profileImage);
 
-            // ���� �ҷ������� Ŭ���̾�Ʈ ����
             if (_isRecived)
             {
                 NetworkManager.singleton.StopClient();
@@ -206,6 +206,43 @@ public class BlockItUser
     private void OnReceiveProfileImageUploadResponse(ResponseProfileImageUploadMessage msg)
     {
         _isRecived = msg.success;
+    }
+    #endregion
+
+    #region 닉네임 변경 요청과 응답 시 이벤트
+    public async void ChangeUserNameToServer(string newName, CancellationToken token = default)
+    {
+        if (!_isGuest)
+        {
+            NetworkManager.singleton.StartClient();
+            NetworkClient.RegisterHandler<ResponseChangeUserNameMessage>(OnReceiveChangeUserNameResponse);
+
+            await WaitForConnectionAsync(token);
+            RequestChangeUserName(_userId, newName);
+
+            if (_isRecived)
+            {
+                NetworkManager.singleton.StopClient();
+                _isRecived = false;
+                if (!_isDupcliateName)
+                {
+                    _nickname = newName;
+                }
+            }
+        }
+    }
+
+    private void RequestChangeUserName(string userId, string username)
+    {
+        RequestChangeUserNameMessage requestData = new RequestChangeUserNameMessage
+        { userId = userId, nickname = username };
+        NetworkClient.Send(requestData);
+    }
+
+    private void OnReceiveChangeUserNameResponse(ResponseChangeUserNameMessage msg)
+    {
+        _isRecived = msg.success;
+        _isDupcliateName = msg.isDupcliate;
     }
     #endregion
 }

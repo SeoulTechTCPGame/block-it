@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using TMPro;
 using Mirror;
+using UnityEngine.SceneManagement;
 
 public class ProfileScene : MonoBehaviour
 {
@@ -24,8 +25,6 @@ public class ProfileScene : MonoBehaviour
         // 플레이어 정보 로딩
         if (user.PlayCount == 0)
         {
-            user.getUserData();
-
             userName.text = user.Nickname;
 
             if (user.PlayCount == 0)
@@ -38,15 +37,6 @@ public class ProfileScene : MonoBehaviour
             }
         }
 
-        // 이미지 로딩
-        if (targetImage != null)
-        {
-            targetImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-        }
-    }
-
-    public void OnClickLogoutButton()
-    {
-        CurrentLoginSession.Instance.Logout();
+        targetImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
     }
 }

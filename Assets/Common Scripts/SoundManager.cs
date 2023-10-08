@@ -118,15 +118,18 @@ public class SoundManager : MonoBehaviour
         BgmAudioSource.volume = BgmVolume;
         BgmAudioSource.Play();
     }
+
     private void StopBgm()
     {
         BgmAudioSource.Stop();
     }
+
     // 사운드 이펙트 재생
     public void PlaySoundEffect(AudioClip soundEffectClip)
     {
         SoundEffectAudioSource.PlayOneShot(soundEffectClip, SoundEffectVolume);
     }
+
     // 진동 실행
     public void Vibrate()
     {
