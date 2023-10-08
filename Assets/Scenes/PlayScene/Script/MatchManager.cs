@@ -54,6 +54,7 @@ public class MatchManager : MonoBehaviour
    private void Start() // 시작시, Player 1의 턴으로 세팅한다.
     {
         _gameMode = (Enums.EMode)PlayerPrefs.GetInt("GameMode", (int)Enums.EMode.Friend); ;
+        _gameLogic.AddMoveRecord();
         InitGameMode(_gameMode);
     }
 
@@ -207,6 +208,7 @@ public class MatchManager : MonoBehaviour
         {
             SetTurn(Enums.EPlayer.Player1);
         }
+        _gameLogic.AddMoveRecord();
         BoardManager.UpdateBoard.Invoke();
 
     }
