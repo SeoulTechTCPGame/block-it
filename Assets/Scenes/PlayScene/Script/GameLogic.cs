@@ -405,3 +405,14 @@ private bool IsThereAtLeastOneWay(Enums.EPlayer player)  // Player 의 사방이
 }
 
 }
+public struct MoveRecord
+{
+    public Vector2Int P1Coordinate;
+    public int P1PlankNum;
+
+    public Vector2Int P2Coordinate;
+    public int P2PlankNum;
+
+    public List<Plank> Planks;
+
+}
