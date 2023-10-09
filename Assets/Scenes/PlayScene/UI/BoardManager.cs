@@ -24,6 +24,7 @@ public class BoardManager : MonoBehaviour
     [SerializeField] GameObject _cellPrefab;
     [SerializeField] GameObject _p1RemainPlank;
     [SerializeField] GameObject _p2RemainPlank;
+    [SerializeField] GameObject _unclickablePanel; // panel to make board unclickable during Replay
     #endregion
 
     private GameLogic _gameLogic;
@@ -65,17 +66,18 @@ public class BoardManager : MonoBehaviour
 
     public static UnityEvent UpdateBoard = new UnityEvent(); // 보드에 필요한 info를 업데이트하고 보드에 표시
     public static UnityEvent ResetState = new UnityEvent(); // 보드에 필요한 state(_isPreviewPlank) 리셋
+    public static UnityEvent <int> ShowReplay = new UnityEvent<int>();
     #endregion
 
-    void Awake() // 이벤트 세팅, GameLogic 받기
+    private void Awake() // 이벤트 세팅, GameLogic 받기
     {
         InitEvents();
         _gameLogic = FindObjectOfType<GameLogic>();
     }
 
-    // Start is called before the first frame update
-    void Start() // 보드 만들기
+    private void Start() // 보드 만들기
     {
+        _unclickablePanel.SetActive(false);
         StartCoroutine(InitializeBoard());
     }
 
@@ -108,6 +110,9 @@ public class BoardManager : MonoBehaviour
 
         ResetState = new UnityEvent();
         ResetState.AddListener(ResetStates);
+
+        ShowReplay = new UnityEvent<int>();
+        ShowReplay.AddListener((nthMove) => ShowRecord(nthMove));
     }
 
     public Cell GetCell(int col, int row)//해당 좌표의 cell 가져오기
@@ -335,6 +340,36 @@ public class BoardManager : MonoBehaviour
         Color clickedColor = GetClickedColor(ePlayer);
         clickedCell.SetClickablePawn(true, clickedColor);
 
+    }
+
+    private void ShowRecord(int nthMove)
+    {
+        ClearBoard();
+        _unclickablePanel.SetActive(true);
+
+        MoveRecord states = _gameLogic.Moves[nthMove];
+
+        //Sets Pawns Coordinate
+        _p1Coordinate = states.P1Coordinate; 
+        _p2Coordinate = states.P2Coordinate;
+
+        PlacePawn(Enums.EPlayer.Player1, _p1Coordinate);
+        PlacePawn(Enums.EPlayer.Player2, _p2Coordinate);
+
+        //Set Plank
+        _planks = states.Planks;
+
+        foreach (Plank targetPlank in _planks)
+        {
+            PlacePlank(targetPlank.GetCoordinate(), targetPlank.GetDirection(), true, Color.black);
+        }
+
+        // Set Remain Plank Num
+        int p1PlankNum = states.P1PlankNum;
+        int p2PlankNum = states.P2PlankNum;
+
+        _p1RemainPlank.GetComponent<RemainPlank>().DisplayRemainPlank(p1PlankNum);
+        _p2RemainPlank.GetComponent<RemainPlank>().DisplayRemainPlank(p2PlankNum);
     }
 
     #region Updates Infos and Board

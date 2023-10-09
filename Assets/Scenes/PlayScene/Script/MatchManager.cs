@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UIElements;
 
 /*
  * MatchManager: 
@@ -22,11 +23,13 @@ public class MatchManager : MonoBehaviour
     public GameObject TheirProfile; // 상대 플레이어의 Profile
     public GameObject MyEmotes; // 플레이어의 감정표현 버튼 밑 패널
     public GameObject TheirEmotePanel; // 상대 플레이어의 감정표현 버튼 밑 패널
+    public GameObject ReplayButton; // 복기시, 필요한 버튼
     #endregion
 
     private float _currentTime = 60f;
     public float maxTime = 60f;
     private bool _isTimerRunning = true;
+    private bool _isGameEnd = false;
 
     private Enums.EMode _gameMode;
     private Enums.EPlayer _turn;// 현재 턴인 플레이어
@@ -43,6 +46,7 @@ public class MatchManager : MonoBehaviour
     public static UnityEvent ResetMove; // 이번 턴의 수를 리셋한다.
     public static UnityEvent<Vector2Int> SetRequestedPawnCoord = new UnityEvent<Vector2Int>(); // 이번 턴의 수로 놓을 pawn 이동 위치 업데이트
     public static UnityEvent<Vector2Int> SetRequestedPlank = new UnityEvent<Vector2Int>(); // 이번 턴의 수로 놓을 plank 위치 업데이트
+    public static UnityEvent<int> ShowRecord = new UnityEvent<int>(); // 이번 턴의 수로 놓을 plank 위치 업데이트
     #endregion
 
    private void Awake() // 이벤트 할당, PlayerButton의 사용자 할당, _gameLogic 받기
@@ -54,7 +58,9 @@ public class MatchManager : MonoBehaviour
    private void Start() // 시작시, Player 1의 턴으로 세팅한다.
     {
         _gameMode = (Enums.EMode)PlayerPrefs.GetInt("GameMode", (int)Enums.EMode.Friend); ;
+        _gameLogic.AddMoveRecord();
         InitGameMode(_gameMode);
+        ReplayButton.gameObject.SetActive(false);
     }
 
    private void Update()
@@ -70,6 +76,11 @@ public class MatchManager : MonoBehaviour
 
                 NextTurn();
             }
+        }
+        else
+        { 
+            LowerTimer.SetActive(false);
+            UpperTimer.SetActive(false);
         }
     }
 
@@ -161,6 +172,9 @@ public class MatchManager : MonoBehaviour
 
         SetRequestedPlank = new UnityEvent<Vector2Int>();
         SetRequestedPlank.AddListener((coord) => UpdateRequestedPlank(coord));
+
+        ShowRecord = new UnityEvent<int>();
+        ShowRecord.AddListener((nthMove) => ShowReplay(nthMove) );
     }
 
     private void SwitchTimer() // 현재 턴 플레이어의 타이머가 켜진다. (현재 턴이 아닌 플레이어의 타이머가 꺼진다)
@@ -207,6 +221,7 @@ public class MatchManager : MonoBehaviour
         {
             SetTurn(Enums.EPlayer.Player1);
         }
+        _gameLogic.AddMoveRecord();
         BoardManager.UpdateBoard.Invoke();
 
     }
@@ -322,7 +337,15 @@ public class MatchManager : MonoBehaviour
             {
                 WinState.GetComponent<WinState>().DisplayWin(Enums.EPlayer.Player2);
             }
-        }        
+
+            _isGameEnd = true;
+            _isTimerRunning = false;
+
+            ReplayButton.gameObject.SetActive(true);
+            ReplayButton.GetComponent<ReplayButton>().SetMaxIndex(_gameLogic.Moves.Count);
+            ReplayButton.GetComponent<ReplayButton>().SetButton( false, 0);
+            
+        }
     }
 
     private bool IsNextTurnAvaible() // return 다음턴으로 넘어 갈 수 있는지
@@ -347,5 +370,16 @@ public class MatchManager : MonoBehaviour
         {
             return UpperButtons;
         }
+    }
+
+    private void ShowReplay(int nthMove)
+    {
+        if(nthMove < 0 || _gameLogic.Moves.Count <= nthMove)
+        {
+            Debug.LogError("MatchManager - ShowReplay: Invalid nthMove = "+ nthMove);
+            return;
+        }
+
+        BoardManager.ShowReplay.Invoke(nthMove);
     }
 }

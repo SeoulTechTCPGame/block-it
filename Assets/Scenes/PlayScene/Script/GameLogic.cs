@@ -10,11 +10,13 @@ public class GameLogic : MonoBehaviour
 
     public List<Plank> Planks = new List<Plank>();  // 생성된 Plank 인스턴스를 담은 리스트  
 
-    public static GameLogic s_instance;
-    private void Awake()
-    {
-        s_instance = this;
-    }
+public List<MoveRecord> Moves = new List<MoveRecord>(); // 경기 기록
+
+public static GameLogic s_instance;
+private void Awake()
+{
+    s_instance = this;
+}
 
     private void Start()
     {
@@ -29,6 +31,24 @@ public class GameLogic : MonoBehaviour
 
         Turn = Enums.EPlayer.Player1; // 게임이 시작되었을 때 첫 번째 턴은 Player1 이 가져간다 
     }
+public void AddMoveRecord()
+{
+    Vector2Int p1Coord = _p1.GetCoordinate();
+    Vector2Int p2Coord = _p2.GetCoordinate();
+    int p1PlankNum = _p1.GetPlankNum();
+    int p2PlankNum = _p2.GetPlankNum();
+
+    List<Plank> planks= new List<Plank>(Planks);
+
+    MoveRecord moveRecord = new MoveRecord(); 
+    moveRecord.P1Coordinate = p1Coord;
+    moveRecord.P2Coordinate = p2Coord;
+    moveRecord.P1PlankNum = p1PlankNum;
+    moveRecord.P2PlankNum = p2PlankNum;
+    moveRecord.Planks = planks;    
+
+    Moves.Add(moveRecord);
+}
 
     public Vector2Int GetPawnCoordinate(Enums.EPlayer ePlayer)  // 해당 Player 의 보드판에서의 좌표를 리턴한다 
     {
@@ -404,4 +424,14 @@ public class GameLogic : MonoBehaviour
         return false;
     }
 
+}
+public struct MoveRecord
+{
+    public Vector2Int P1Coordinate;
+    public int P1PlankNum;
+
+    public Vector2Int P2Coordinate;
+    public int P2PlankNum;
+
+    public List<Plank> Planks;
 }
