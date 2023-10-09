@@ -76,7 +76,7 @@ public class ProfileController : MonoBehaviour
     private void OnClickLogoutButton()
     {
         CurrentLoginSession.Instance.Logout();
-        _ms.ToLobby();
+        _ms.ToLoading();
     }
 
 

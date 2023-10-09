@@ -1,20 +1,20 @@
 using UnityEngine;
 using UnityEngine.UI;
-using static Singleton;
+using static LanguageVersion;
 
 // 모든 옵션의 효과를 다루는 클래스
 public class OptionalController : MonoBehaviour
 {
-    [SerializeField] Slider _bgmSlider;
-    [SerializeField] Image _bgmImage;
-    [SerializeField] Slider _soundEffectSlider;
-    [SerializeField] Image _soundEffectImage;
-    [SerializeField] Sprite[] _soundSprites;    // BGM과 Sound Effect의 바꿀 이미지의 스프라이트 모음
-    [SerializeField] Toggle _vibrationToggle;
-    [SerializeField] Image _vibBackground;
-    [SerializeField] RectTransform _vibCheckmark;
-    [SerializeField] Button _englishBtn;
-    [SerializeField] Button _koreanBtn;
+    [SerializeField] private Slider _bgmSlider;
+    [SerializeField] private Image _bgmImage;
+    [SerializeField] private Slider _soundEffectSlider;
+    [SerializeField] private Image _soundEffectImage;
+    [SerializeField] private Sprite[] _soundSprites;    // BGM과 Sound Effect의 바꿀 이미지의 스프라이트 모음
+    [SerializeField] private Toggle _vibrationToggle;
+    [SerializeField] private Image _vibBackground;
+    [SerializeField] private RectTransform _vibCheckmark;
+    [SerializeField] private Button _englishBtn;
+    [SerializeField] private Button _koreanBtn;
 
     private SoundManager _soundManager;
     private float _toggleMinX = -8.5f;
@@ -31,9 +31,10 @@ public class OptionalController : MonoBehaviour
         _soundEffectSlider.onValueChanged.AddListener(OnSoundEffectVolumeChanged);
         _vibrationToggle.onValueChanged.AddListener(OnVibrationToggleChanged);
 
-        _englishBtn.onClick.AddListener(() => S.SetLangIndex(((int)Enums.ELanguage.EN)));
-        _koreanBtn.onClick.AddListener(() =>S.SetLangIndex(((int)Enums.ELanguage.KR)));
+        _englishBtn.onClick.AddListener(() => V.SetLangIndex(((int)Enums.ELanguage.EN)));
+        _koreanBtn.onClick.AddListener(() => V.SetLangIndex(((int)Enums.ELanguage.KR)));
     }
+
     #region Sound
     // 저장된 값 불러오기
     private void LoadSettings()
@@ -52,6 +53,7 @@ public class OptionalController : MonoBehaviour
         bool vibrationEnabled = _soundManager.IsVibrationEnabled;
         _vibrationToggle.isOn = vibrationEnabled;
     }
+
     public void OnBgmVolumeChanged(float value)
     {
         // BGM 볼륨 값을 변경
@@ -61,6 +63,7 @@ public class OptionalController : MonoBehaviour
         _soundManager.SaveSettings();
         UpdateBgmImage(value);
     }
+
     public void OnSoundEffectVolumeChanged(float value)
     {
         // 사운드 이펙트 볼륨 값을 변경
@@ -70,6 +73,7 @@ public class OptionalController : MonoBehaviour
         _soundManager.SaveSettings();
         UpdateSoundEffectImage(value);
     }
+
     public void OnVibrationToggleChanged(bool value)
     {
         // 진동 설정 변경
@@ -85,6 +89,7 @@ public class OptionalController : MonoBehaviour
 
         _soundManager.SaveSettings();
     }
+
     //  BGM과 Sound Effect의 바꿀 이미지를 지정
     private void UpdateBgmImage(float volume)
     {
@@ -101,6 +106,7 @@ public class OptionalController : MonoBehaviour
             _bgmImage.sprite = _soundSprites[1];
         }
     }
+
     private void UpdateSoundEffectImage(float volume)
     {
         if (volume <= 0.3f)

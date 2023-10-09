@@ -1,4 +1,4 @@
-public static class Enums
+public static class Enums   // Enum °ü¸®
 {
     public enum EPlayer
     {
@@ -14,7 +14,7 @@ public static class Enums
 
     public enum EMode
     {
-        Friend,
+        Local,
         AI,
         MultiWifi
     }

@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 // 로그인 여부 판단하여, 시작 씬의 UI를 보여주는 클래스
 public class StartGame : MonoBehaviour
 {
-    [SerializeField] float _TouchTimeout = 1f;  // 대기 시간
-    [SerializeField] GameObject Canvas;
+    [SerializeField] private float _TouchTimeout = 1f;  // 대기 시간
+    [SerializeField] private GameObject Canvas;
 
     private float _timer;   // 시간 지났는 지 여부
     private bool _loggedIn = false; //로그인 여부
