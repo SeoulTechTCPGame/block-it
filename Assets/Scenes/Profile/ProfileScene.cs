@@ -12,8 +12,7 @@ public class ProfileScene : MonoBehaviour
 
     [SerializeField] Image targetImage; // UI Image의 경우
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         BlockItUser user = CurrentLoginSession.Instance.User;
         Texture2D texture = new Texture2D(2, 2);
