@@ -222,12 +222,12 @@ public class BlockItUser
 
             if (_isRecived)
             {
-                NetworkManager.singleton.StopClient();
-                _isRecived = false;
                 if (!_isDupcliateName)
                 {
                     _nickname = newName;
                 }
+                NetworkManager.singleton.StopClient();
+                _isRecived = false;
             }
         }
     }

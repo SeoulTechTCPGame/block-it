@@ -16,7 +16,7 @@ public class StartGame : MonoBehaviour
 
     private void Start()
     {
-        UserData.instance.LoadUserInfo();
+        // UserData.instance.LoadUserInfo();
 
         /*
         if (PlayerPrefs.GetString("User_Display_Name") != null)

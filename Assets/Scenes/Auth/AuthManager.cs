@@ -35,7 +35,7 @@ public class AuthManager : MonoBehaviour
 
     private void Start()
     {
-        UserData.instance.LoadUserInfo();
+        // UserData.instance.LoadUserInfo();
     }
 
     private void Awake()
