@@ -33,6 +33,7 @@ public class Singleton : MonoBehaviour
         InitLang();
     }
     #endregion
+
     // 현재 세팅된 언어로 번역 가져오기
     private void InitLang()
     {

@@ -1854,7 +1854,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TextKey: Paly with AI
+  TextKey: Play with AI
 --- !u!1 &2071271799
 GameObject:
   m_ObjectHideFlags: 0
