@@ -24,6 +24,8 @@ public class MatchManager : MonoBehaviour
     public GameObject MyEmotes; // 플레이어의 감정표현 버튼 밑 패널
     public GameObject TheirEmotePanel; // 상대 플레이어의 감정표현 버튼 밑 패널
     public GameObject ReplayButton; // 복기시, 필요한 버튼
+    public GameObject ReStartButton; // 다시 시작
+    public GameObject ToHomeButton; // 홈으로 버튼 (게임 끝난 후 나타나는 버튼)
     #endregion
 
     private float _currentTime = 60f;
@@ -61,6 +63,8 @@ public class MatchManager : MonoBehaviour
         _gameLogic.AddMoveRecord();
         InitGameMode(_gameMode);
         ReplayButton.gameObject.SetActive(false);
+        ReStartButton.gameObject.SetActive(false);
+        ToHomeButton.gameObject.SetActive(false);
     }
 
    private void Update()
@@ -341,11 +345,8 @@ public class MatchManager : MonoBehaviour
                 case Enums.EMode.Friend:
                     //Print Win Lose Message
                     WinState.GetComponent<WinState>().DisplayWin(winningPlayer);
-
-                    // Pops up a RePlay Button and Restart and Exit buttons
-                    ReplayButton.gameObject.SetActive(true);
-                    ReplayButton.GetComponent<ReplayButton>().SetMaxIndex(_gameLogic.Moves.Count);
-                    ReplayButton.GetComponent<ReplayButton>().SetButton(false, 0);
+                    // Pops Up ReStart Button
+                    ReStartButton.gameObject.SetActive(true);
                     break;
                 case Enums.EMode.AI:
                     // Display Win/Lose message based on the winning player
@@ -354,9 +355,13 @@ public class MatchManager : MonoBehaviour
                 case Enums.EMode.MultiWifi:
                     // Display Win/Lose message based on the winning player
                     WinState.GetComponent<WinState>().DisplayWinLose(userWins);
+                    // Pops Up RePlay Button
+                    ReplayButton.gameObject.SetActive(false);
+                    ReplayButton.GetComponent<ReplayButton>().SetMaxIndex(_gameLogic.Moves.Count);
+                    ReplayButton.GetComponent<ReplayButton>().SetButton(false, 0);
                     break;
             }
-
+            ToHomeButton.gameObject.SetActive(true);
         }
     }
 
@@ -393,5 +398,16 @@ public class MatchManager : MonoBehaviour
         }
 
         BoardManager.ShowReplay.Invoke(nthMove);
+    }
+    public void Restart()
+    {
+        _gameLogic.Reset();
+        _gameMode = (Enums.EMode)PlayerPrefs.GetInt("GameMode", (int)Enums.EMode.Friend); ;
+        _gameLogic.AddMoveRecord();
+        InitGameMode(_gameMode);
+        ReplayButton.gameObject.SetActive(false);
+        ReStartButton.gameObject.SetActive(false);
+        ToHomeButton.gameObject.SetActive(false);
+
     }
 }
