@@ -5,17 +5,20 @@ public static class Enums
         Player1,
         Player2
     }
+
     public enum ELanguage
     {
         EN,
         KR
     }
+
     public enum EMode
     {
         Friend,
         AI,
         MultiWifi
     }
+
     public enum ELevel
     {
         Beginner,
@@ -23,10 +26,17 @@ public static class Enums
         Advanced,
         Master
     }
+
     public enum EEmotes
     {
         Good,
         Bad,
         Hurry
+    }
+
+    public enum EDirection
+    {
+        Vertical,
+        Horizontal
     }
 }
