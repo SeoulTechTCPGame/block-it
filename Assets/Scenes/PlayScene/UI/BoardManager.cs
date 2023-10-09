@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.Events;
 using System.Collections.Generic;
+using static Enums;
 
 /*
  'BoardManager'는 보드를 생성하고, 보드에 필요한 View&Control를 관리하는 클래스입니다.
@@ -55,13 +56,13 @@ public class BoardManager : MonoBehaviour
     #endregion
 
     #region Evenets
-    public static UnityEvent<Enums.EPlayer> ShowMoveablePawns = new UnityEvent<Enums.EPlayer>(); // 보드에 pawn을 이동 시킬 수 있는 Cell의 ClickablePawn을 활성화시켜 표시
+    public static UnityEvent<EPlayer> ShowMoveablePawns = new UnityEvent<EPlayer>(); // 보드에 pawn을 이동 시킬 수 있는 Cell의 ClickablePawn을 활성화시켜 표시
     public static UnityEvent RemoveMoveablePawns = new UnityEvent(); // 보드에 pawn을 이동 시킬 수 있는 Cell의 ClickablePawn을 비활성화시켜 숨김 (유저가 눌러 결정한 pawn의 위치도 지워짐)
-    public static UnityEvent<Enums.EPlayer, Vector2Int> UpdateClickedPawn = new UnityEvent<Enums.EPlayer, Vector2Int>(); // 유저가 눌러 결정한 pawn의 위치를 표시
+    public static UnityEvent<EPlayer, Vector2Int> UpdateClickedPawn = new UnityEvent<EPlayer, Vector2Int>(); // 유저가 눌러 결정한 pawn의 위치를 표시
 
-    public static UnityEvent<EDirection, Enums.EPlayer> ShowPlaceablePlanks = new UnityEvent<EDirection, Enums.EPlayer>(); // 보드에 plank를 놓을 수 있는 Cell의 PlankDot을 활성화시켜 표시
+    public static UnityEvent<EDirection,EPlayer> ShowPlaceablePlanks = new UnityEvent<EDirection, EPlayer>(); // 보드에 plank를 놓을 수 있는 Cell의 PlankDot을 활성화시켜 표시
     public static UnityEvent RemovePlaceablePlanks = new UnityEvent();// 보드에 plank를 놓을 수 있는 Cell의 PlankDot을 비활성화시켜 숨김
-    public static UnityEvent<Vector2Int, EDirection, Enums.EPlayer> PlacePreviewPlank = new UnityEvent<Vector2Int, EDirection, Enums.EPlayer>();// 유저가 눌러 결정한 plank의 위치를 표시
+    public static UnityEvent<Vector2Int, EDirection, EPlayer> PlacePreviewPlank = new UnityEvent<Vector2Int, EDirection, Enums.EPlayer>();// 유저가 눌러 결정한 plank의 위치를 표시
     public static UnityEvent RemovePreviewPlank = new UnityEvent(); // 유저가 눌러 결정했던 plank를 지움
 
     public static UnityEvent UpdateBoard = new UnityEvent(); // 보드에 필요한 info를 업데이트하고 보드에 표시
@@ -86,20 +87,20 @@ public class BoardManager : MonoBehaviour
         RemoveMoveablePawns = new UnityEvent();
         RemoveMoveablePawns.AddListener(UnmarkMoveablePawn);
 
-        ShowMoveablePawns = new UnityEvent<Enums.EPlayer>();
+        ShowMoveablePawns = new UnityEvent<EPlayer>();
         ShowMoveablePawns.AddListener((ePlayer) => MarkMoveablePawn(ePlayer));
 
-        UpdateClickedPawn = new UnityEvent<Enums.EPlayer, Vector2Int>();
+        UpdateClickedPawn = new UnityEvent<EPlayer, Vector2Int>();
         UpdateClickedPawn.AddListener((turn, coordination) => MarkClickedPawn(turn, coordination));
 
-        ShowPlaceablePlanks = new UnityEvent<EDirection, Enums.EPlayer>();
+        ShowPlaceablePlanks = new UnityEvent<EDirection, EPlayer>();
         ShowPlaceablePlanks.AddListener((eDirection, ePlayer) => MarkPlaceablePlankDot(eDirection, ePlayer));
 
         RemovePlaceablePlanks = new UnityEvent();
         RemovePlaceablePlanks.AddListener(UnmarkPlaceablePlankDot);
 
         // Plank
-        PlacePreviewPlank = new UnityEvent<Vector2Int, EDirection, Enums.EPlayer>();
+        PlacePreviewPlank = new UnityEvent<Vector2Int, EDirection, EPlayer>();
         PlacePreviewPlank.AddListener((coord, direction, player) => MarkPreviewPlank(coord, direction, player));
 
         RemovePreviewPlank = new UnityEvent();
@@ -137,7 +138,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    private void MarkMoveablePawn(Enums.EPlayer ePlayer) // 보드에 pawn을 이동 시킬 수 있는 Cell의 ClickablePawn을 활성화시켜 표시
+    private void MarkMoveablePawn(EPlayer ePlayer) // 보드에 pawn을 이동 시킬 수 있는 Cell의 ClickablePawn을 활성화시켜 표시
     {
         Color previewColor = GetPreviewColor(ePlayer);
 
@@ -148,7 +149,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    private void MarkPlaceablePlankDot(EDirection eDirection, Enums.EPlayer ePlayer) // 보드에 plank를 놓을 수 있는 Cell의 PlankDot을 활성화시켜 표시
+    private void MarkPlaceablePlankDot(EDirection eDirection, EPlayer ePlayer) // 보드에 plank를 놓을 수 있는 Cell의 PlankDot을 활성화시켜 표시
     {
         UnmarkPlaceablePlankDot();
         List<Vector2Int> targetCoords = GetPlaceablePlankDots(eDirection);
@@ -181,22 +182,22 @@ public class BoardManager : MonoBehaviour
         return eDirection == EDirection.Horizontal ? _placeableHorizontalPlanks : _placeableVerticalPlanks;
     }
 
-    private Color GetPreviewColor(Enums.EPlayer ePlayer)
+    private Color GetPreviewColor(EPlayer ePlayer)
     {
-        return ePlayer == Enums.EPlayer.Player1 ? P1_PREVIEW_COLOR : P2_PREVIEW_COLOR;
+        return ePlayer == EPlayer.Player1 ? P1_PREVIEW_COLOR : P2_PREVIEW_COLOR;
     }
 
-    private Color GetClickedColor(Enums.EPlayer ePlayer)
+    private Color GetClickedColor(EPlayer ePlayer)
     {
-        return ePlayer == Enums.EPlayer.Player1 ? P1_SELECTED_PREVIEW_COLOR : P2_SELECTED_PREVIEW_COLOR;
+        return ePlayer == EPlayer.Player1 ? P1_SELECTED_PREVIEW_COLOR : P2_SELECTED_PREVIEW_COLOR;
     }
 
-    private void PlacePawn(Enums.EPlayer ePlayer, Vector2Int coordinate) // pawn 표시
+    private void PlacePawn(EPlayer ePlayer, Vector2Int coordinate) // pawn 표시
     {
         Vector2Int previousCoordinate = Vector2Int.zero;
         Color pawnColor = Color.white;
 
-        if (ePlayer == Enums.EPlayer.Player1)
+        if (ePlayer == EPlayer.Player1)
         {
             previousCoordinate = _p1Coordinate;
             _p1Coordinate = coordinate;
@@ -250,7 +251,7 @@ public class BoardManager : MonoBehaviour
         cell1.SetBottomRightPlank(targetMiddle, visible, color);
     }
 
-    private void MarkPreviewPlank(Vector2Int coordinate, EDirection eDirection, Enums.EPlayer ePlayer)  // 유저가 눌러 결정한 plank의 위치를 표시
+    private void MarkPreviewPlank(Vector2Int coordinate, EDirection eDirection, EPlayer ePlayer)  // 유저가 눌러 결정한 plank의 위치를 표시
     {
         UnmarkPreviewPlank();
         _previewPlank.SetPlank(coordinate, eDirection);
@@ -325,7 +326,7 @@ public class BoardManager : MonoBehaviour
     } 
     #endregion
 
-    private void MarkClickedPawn(Enums.EPlayer ePlayer, Vector2Int clickedCellCoord) // 유저가 눌러 결정한 pawn의 위치를 표시
+    private void MarkClickedPawn(EPlayer ePlayer, Vector2Int clickedCellCoord) // 유저가 눌러 결정한 pawn의 위치를 표시
     {
         Color previewColor = GetPreviewColor(ePlayer);
         for (int i = 0; i < _possiblePawnList.Count; i++)
@@ -353,8 +354,8 @@ public class BoardManager : MonoBehaviour
         _p1Coordinate = states.P1Coordinate; 
         _p2Coordinate = states.P2Coordinate;
 
-        PlacePawn(Enums.EPlayer.Player1, _p1Coordinate);
-        PlacePawn(Enums.EPlayer.Player2, _p2Coordinate);
+        PlacePawn(EPlayer.Player1, _p1Coordinate);
+        PlacePawn(EPlayer.Player2, _p2Coordinate);
 
         //Set Plank
         _planks = states.Planks;

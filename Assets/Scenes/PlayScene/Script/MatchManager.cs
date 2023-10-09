@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UIElements;
+using static Enums;
 
 /*
  * MatchManager: 
@@ -31,15 +30,15 @@ public class MatchManager : MonoBehaviour
     private bool _isTimerRunning = true;
     private bool _isGameEnd = false;
 
-    private Enums.EMode _gameMode;
-    private Enums.EPlayer _turn;// 현재 턴인 플레이어
+    private EMode _gameMode;
+    private EPlayer _turn;// 현재 턴인 플레이어
     public Vector2Int RequestedPawnCoord;  //이번 턴의 수로 놓을 pawn의 이동 좌표
     public Plank RequestedPlank = new Plank(); //이번 턴의 수로 설치할 plank
     private bool _isUpdatePawnCoord = false;// 이번 턴의 수로 pawn을 이동시켰는가
     private bool _isUpdatePlank = false; // 이번 턴의 수로 plank를 설치했는가
     private GameLogic _gameLogic;
 
-    private Enums.EPlayer _user;
+    private EPlayer _user;
 
     #region Events
     public static UnityEvent ToNextTurn; // 다음턴으로 넘긴다
@@ -57,7 +56,7 @@ public class MatchManager : MonoBehaviour
 
    private void Start() // 시작시, Player 1의 턴으로 세팅한다.
     {
-        _gameMode = (Enums.EMode)PlayerPrefs.GetInt("GameMode", (int)Enums.EMode.Friend); ;
+        _gameMode = (EMode)PlayerPrefs.GetInt("GameMode", (int)EMode.Friend); ;
         _gameLogic.AddMoveRecord();
         InitGameMode(_gameMode);
         ReplayButton.gameObject.SetActive(false);
@@ -154,7 +153,7 @@ public class MatchManager : MonoBehaviour
 
     private void OrientBoard() // 유저가 Player2인경우 보드판을 뒤집는다.
     {
-        if(_user == Enums.EPlayer.Player2)
+        if(_user == EPlayer.Player2)
         {
             Board.transform.Rotate(0,0,180);
         }
@@ -179,7 +178,7 @@ public class MatchManager : MonoBehaviour
 
     private void SwitchTimer() // 현재 턴 플레이어의 타이머가 켜진다. (현재 턴이 아닌 플레이어의 타이머가 꺼진다)
     {
-        if(_turn == Enums.EPlayer.Player1)
+        if(_turn == EPlayer.Player1)
         {
             LowerTimer.GetComponent<Timer>().ShowTimer();
             UpperTimer.GetComponent<Timer>().HideTimer();
@@ -201,36 +200,36 @@ public class MatchManager : MonoBehaviour
     {
         LowerButtons.GetComponent<PlayerButtons>().SetOwner(_user);
 
-        if(_user == Enums.EPlayer.Player1)
+        if(_user == EPlayer.Player1)
         {
-            UpperButtons.GetComponent<PlayerButtons>().SetOwner(Enums.EPlayer.Player2);
+            UpperButtons.GetComponent<PlayerButtons>().SetOwner(EPlayer.Player2);
         }
         else
         {
-            UpperButtons.GetComponent<PlayerButtons>().SetOwner(Enums.EPlayer.Player1);
+            UpperButtons.GetComponent<PlayerButtons>().SetOwner(EPlayer.Player1);
         }
     }
 
     private void NextTurn() // 다음턴으로 넘김
     {
-        if (_turn == Enums.EPlayer.Player1)
+        if (_turn == EPlayer.Player1)
         {
-            SetTurn(Enums.EPlayer.Player2);
+            SetTurn(EPlayer.Player2);
         }
         else
         {
-            SetTurn(Enums.EPlayer.Player1);
+            SetTurn(EPlayer.Player1);
         }
         _gameLogic.AddMoveRecord();
         BoardManager.UpdateBoard.Invoke();
 
     }
 
-    private void SetTurn(Enums.EPlayer ePlayer) // 턴 세팅. 턴이 바뀜에 따라 turn, _placeableVerticalPlanks, _placeableHorizontalPlanks 값 업데이트, PlayerButton, WinState 활성화/비활성화 제어
+    private void SetTurn(EPlayer ePlayer) // 턴 세팅. 턴이 바뀜에 따라 turn, _placeableVerticalPlanks, _placeableHorizontalPlanks 값 업데이트, PlayerButton, WinState 활성화/비활성화 제어
     {
         _gameLogic.Turn = ePlayer;
         // set target and other player.
-        Enums.EPlayer otherPlayer = (ePlayer == Enums.EPlayer.Player1) ? Enums.EPlayer.Player2 : Enums.EPlayer.Player1;
+        EPlayer otherPlayer = (ePlayer == EPlayer.Player1) ? EPlayer.Player2 : EPlayer.Player1;
 
         // get Buttons and distinguish which one is ePlayer one and other player one.
         GameObject theButton = (ePlayer == _user) ? LowerButtons : UpperButtons;
@@ -324,18 +323,18 @@ public class MatchManager : MonoBehaviour
 
     private void CheckWinAndDisplay() // 플레이어 승리시, 승리화면을 띄운다. 참가하는 플레이어의 WinState확인 후, 승리화면 활성화/비활성화
     {
-        if( _gameLogic.Wins(Enums.EPlayer.Player1) || _gameLogic.Wins(Enums.EPlayer.Player2))
+        if( _gameLogic.Wins(EPlayer.Player1) || _gameLogic.Wins(EPlayer.Player2))
         {
             LowerButtons.GetComponent<PlayerButtons>().DisableButtons();
             UpperButtons.GetComponent<PlayerButtons>().DisableButtons();
 
-            if (_gameLogic.Wins(Enums.EPlayer.Player1))
+            if (_gameLogic.Wins(EPlayer.Player1))
             {
-                WinState.GetComponent<WinState>().DisplayWin(Enums.EPlayer.Player1);
+                WinState.GetComponent<WinState>().DisplayWin(EPlayer.Player1);
             }
             else
             {
-                WinState.GetComponent<WinState>().DisplayWin(Enums.EPlayer.Player2);
+                WinState.GetComponent<WinState>().DisplayWin(EPlayer.Player2);
             }
 
             _isGameEnd = true;
