@@ -8,11 +8,15 @@ public class GameLogic : MonoBehaviour
 
     public Enums.EPlayer Turn;
 
+    public Enums.EPlayer Winner = Enums.EPlayer.NoOne;// 어떤 플레이어가 이겼는지
+    public bool IsGameOver = false; // 게임이 끝났는지
+    public bool IsExpeled = false; // 추방되었는지
+
     public List<Plank> Planks = new List<Plank>();  // 생성된 Plank 인스턴스를 담은 리스트  
 
-public List<MoveRecord> Moves = new List<MoveRecord>(); // 경기 기록
+    public List<MoveRecord> Moves = new List<MoveRecord>(); // 경기 기록
 
-public static GameLogic s_instance;
+    public static GameLogic s_instance;
 private void Awake()
 {
     s_instance = this;
@@ -302,10 +306,38 @@ public void AddMoveRecord()
         _p2 = new Pawn();
         Moves.Clear();
         Planks.Clear();
+        Winner = Enums.EPlayer.NoOne;
+        IsGameOver = false;
+        IsExpeled = false;
         SetGame();
     }
     public bool Wins(Enums.EPlayer ePlayer)  // 해당 Player 가 이겼는지를 판단한다
     {
+        // 이미 게임이 끝났을 시 (승자가 있을시)
+        if(IsGameOver)
+        {
+            if (ePlayer == Winner) return true; 
+            else return false;
+        }
+
+        // 승자가 정해지지 않았을 시
+        if(_p1.GetCoordinate().y == 0)
+        {
+            Winner = Enums.EPlayer.Player1;
+            IsGameOver = true;
+            IsExpeled = false;
+            return ePlayer == Winner;
+        }
+        if(_p2.GetCoordinate().y == 8) 
+        {
+            Winner = Enums.EPlayer.Player2;
+            IsGameOver = true;
+            IsExpeled = false;
+            return ePlayer == Winner;
+        }
+
+        return false;
+/*
         Pawn targetPawn = GetTargetPawn(ePlayer);
         int targetY;
 
@@ -323,6 +355,7 @@ public void AddMoveRecord()
             return true;
         }
         return false;
+ */
     }
 
     public bool IsOutOfBoundary(int row, int col)  // 해당 좌표가 보드판의 경계를 넘는지를 판단한다  
