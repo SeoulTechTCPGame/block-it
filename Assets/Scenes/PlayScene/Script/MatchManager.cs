@@ -29,6 +29,7 @@ public class MatchManager : MonoBehaviour
     private float _currentTime = 60f;
     public float maxTime = 60f;
     private bool _isTimerRunning = true;
+    private bool _isGameEnd = false;
 
     private Enums.EMode _gameMode;
     private Enums.EPlayer _turn;// 현재 턴인 플레이어
@@ -75,6 +76,11 @@ public class MatchManager : MonoBehaviour
 
                 NextTurn();
             }
+        }
+        else
+        { 
+            LowerTimer.SetActive(false);
+            UpperTimer.SetActive(false);
         }
     }
 
@@ -331,6 +337,10 @@ public class MatchManager : MonoBehaviour
             {
                 WinState.GetComponent<WinState>().DisplayWin(Enums.EPlayer.Player2);
             }
+
+            _isGameEnd = true;
+            _isTimerRunning = false;
+
             ReplayButton.gameObject.SetActive(true);
             ReplayButton.GetComponent<ReplayButton>().SetMaxIndex(_gameLogic.Moves.Count);
             ReplayButton.GetComponent<ReplayButton>().SetButton( false, 0);
