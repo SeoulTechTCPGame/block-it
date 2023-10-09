@@ -69,14 +69,13 @@ public class BoardManager : MonoBehaviour
     public static UnityEvent <int> ShowReplay = new UnityEvent<int>();
     #endregion
 
-    void Awake() // 이벤트 세팅, GameLogic 받기
+    private void Awake() // 이벤트 세팅, GameLogic 받기
     {
         InitEvents();
         _gameLogic = FindObjectOfType<GameLogic>();
     }
 
-    // Start is called before the first frame update
-    void Start() // 보드 만들기
+    private void Start() // 보드 만들기
     {
         _unclickablePanel.SetActive(false);
         StartCoroutine(InitializeBoard());
