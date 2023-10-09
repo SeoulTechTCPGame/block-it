@@ -329,22 +329,34 @@ public class MatchManager : MonoBehaviour
             LowerButtons.GetComponent<PlayerButtons>().DisableButtons();
             UpperButtons.GetComponent<PlayerButtons>().DisableButtons();
 
-            if (_gameLogic.Wins(Enums.EPlayer.Player1))
-            {
-                WinState.GetComponent<WinState>().DisplayWin(Enums.EPlayer.Player1);
-            }
-            else
-            {
-                WinState.GetComponent<WinState>().DisplayWin(Enums.EPlayer.Player2);
-            }
-
             _isGameEnd = true;
             _isTimerRunning = false;
 
-            ReplayButton.gameObject.SetActive(true);
-            ReplayButton.GetComponent<ReplayButton>().SetMaxIndex(_gameLogic.Moves.Count);
-            ReplayButton.GetComponent<ReplayButton>().SetButton( false, 0);
-            
+            // Determine the winning player
+            Enums.EPlayer winningPlayer = _gameLogic.Wins(Enums.EPlayer.Player1) ? Enums.EPlayer.Player1 : Enums.EPlayer.Player2;
+            bool userWins = _gameLogic.Wins(_user);
+
+            switch (_gameMode)
+            {
+                case Enums.EMode.Friend:
+                    //Print Win Lose Message
+                    WinState.GetComponent<WinState>().DisplayWin(winningPlayer);
+
+                    // Pops up a RePlay Button and Restart and Exit buttons
+                    ReplayButton.gameObject.SetActive(true);
+                    ReplayButton.GetComponent<ReplayButton>().SetMaxIndex(_gameLogic.Moves.Count);
+                    ReplayButton.GetComponent<ReplayButton>().SetButton(false, 0);
+                    break;
+                case Enums.EMode.AI:
+                    // Display Win/Lose message based on the winning player
+                    WinState.GetComponent<WinState>().DisplayWinLose(userWins);
+                    break;
+                case Enums.EMode.MultiWifi:
+                    // Display Win/Lose message based on the winning player
+                    WinState.GetComponent<WinState>().DisplayWinLose(userWins);
+                    break;
+            }
+
         }
     }
 
