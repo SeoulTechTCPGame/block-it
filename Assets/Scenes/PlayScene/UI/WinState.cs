@@ -40,4 +40,20 @@ public class WinState : MonoBehaviour
             _textComponent.color = new Color(0.45f, 0.76f, 0.96f);
         }
     }
+    public void DisplayWinLose(bool bWin)
+    {
+        _textComponent.enabled = true;
+        // Change text content
+        if(bWin) 
+        {
+            _textComponent.text = "You Win!";
+        }
+        else
+        {
+            _textComponent.text = "You Lose";
+        }
+        // Change text color
+        _textComponent.color = new Color(0f, 0f, 0f);
+
+    }
 }

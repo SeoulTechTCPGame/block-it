@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 public class GameLogic : MonoBehaviour
-    {
+{
     private Pawn _p1 = new Pawn();  // Player1 인스턴스 생성 
     private Pawn _p2 = new Pawn();  // Player2 인스턴스 생성  
 
@@ -296,7 +296,14 @@ public void AddMoveRecord()
         }
 
     }
-
+    public void Reset() // 모든 정보를 리셋시킨다.
+    {
+        _p1 = new Pawn();
+        _p2 = new Pawn();
+        Moves.Clear();
+        Planks.Clear();
+        SetGame();
+    }
     public bool Wins(Enums.EPlayer ePlayer)  // 해당 Player 가 이겼는지를 판단한다
     {
         Pawn targetPawn = GetTargetPawn(ePlayer);
