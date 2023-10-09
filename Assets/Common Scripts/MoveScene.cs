@@ -5,6 +5,10 @@ using static Enums;
 // 씬 이동을 담당하는 클래스
 public class MoveScene : MonoBehaviour
 {
+    public void ToLobby()
+    {
+        SceneManager.LoadScene("Loading");
+    }
     public void ToOption()
     {
         SceneManager.LoadScene("Option");
