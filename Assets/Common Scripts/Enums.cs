@@ -1,4 +1,4 @@
-public static class Enums   // Enum °ü¸®
+public static class Enums   // Enum ê´€ë¦¬
 {
     public enum EPlayer
     {

@@ -1,4 +1,4 @@
-public class Constants  // »ó¼ö °ü¸®
+public class Constants  // ìƒìˆ˜ ê´€ë¦¬
 {
-    public const float TURN_TIME = 60 * 3;  // ÇÑ À¯Àú¿¡°Ô ÁÖ¾îÁø ÇÑ ÅÏÀÇ ½Ã°£
+    public const float TURN_TIME = 60 * 3;  // í•œ ìœ ì €ì—ê²Œ ì£¼ì–´ì§„ í•œ í„´ì˜ ì‹œê°„
 }
