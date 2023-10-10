@@ -1,21 +1,24 @@
-public static class Enums
+public static class Enums   // Enum 관리
 {
     public enum EPlayer
     {
         Player1,
         Player2
     }
+
     public enum ELanguage
     {
         EN,
         KR
     }
+
     public enum EMode
     {
-        Friend,
+        Local,
         AI,
         MultiWifi
     }
+
     public enum ELevel
     {
         Beginner,
@@ -23,10 +26,17 @@ public static class Enums
         Advanced,
         Master
     }
+
     public enum EEmotes
     {
         Good,
         Bad,
         Hurry
+    }
+
+    public enum EDirection
+    {
+        Vertical,
+        Horizontal
     }
 }

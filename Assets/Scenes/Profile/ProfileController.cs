@@ -1,11 +1,10 @@
-using Mirror;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ProfileController : MonoBehaviour
 {
-    [Header ("패널")]
+    [Header("패널")]
     [SerializeField] private GameObject _myProfilePanel;
     [SerializeField] private GameObject _changeIDPanel;
     [SerializeField] private GameObject _changeImagePanel;
@@ -77,7 +76,7 @@ public class ProfileController : MonoBehaviour
     private void OnClickLogoutButton()
     {
         CurrentLoginSession.Instance.Logout();
-        _ms.ToLobby();
+        _ms.ToLoading();
     }
 
 

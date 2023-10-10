@@ -52,6 +52,7 @@ public class SoundManager : MonoBehaviour
         // 전체 화면 토글 로드
         IsVibrationEnabled = PlayerPrefs.GetInt("SoundManager_IsVibrationEnabled", 0) == 1;
     }
+
     public void SaveSettings()
     {
         // BGM 볼륨 저장
@@ -67,6 +68,7 @@ public class SoundManager : MonoBehaviour
         PlayerPrefs.Save();
     }
     #endregion
+
     #region 옵션 기능
     // BGM 재생
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -90,6 +92,7 @@ public class SoundManager : MonoBehaviour
             }
         }
     }
+
     // 상황에 맞는 BGM 선정
     private void PlayBgm(string sceneName)
     {

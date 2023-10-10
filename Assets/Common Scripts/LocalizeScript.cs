@@ -1,6 +1,6 @@
 using UnityEngine;
 using TMPro;
-using static Singleton;
+using static LanguageVersion;
 
 // 필요한 번역을 입력하여 번역을 가져오는 클래스
 public class LocalizeScript : MonoBehaviour
@@ -9,19 +9,22 @@ public class LocalizeScript : MonoBehaviour
 
     private void Start()
     {
-        LocalizeChanged(S.curLangIndex);
-        S.LocalizeChanged += LocalizeChanged;
+        LocalizeChanged(V.CurLangIndex);
+        V.LocalizeChanged += LocalizeChanged;
     }
+
     private void OnDestroy()
     {
-        S.LocalizeChanged -= LocalizeChanged;
+        V.LocalizeChanged -= LocalizeChanged;
     }
+
     // 번역
     private string Localize(string key, int langIndex)
     {
-        int keyIndex = S.Langs[0].value.FindIndex(x => x.ToLower() == key.ToLower());
-        return S.Langs[langIndex].value[keyIndex];
+        int keyIndex = V.Langs[0].Value.FindIndex(x => x.ToLower() == key.ToLower());
+        return V.Langs[langIndex].Value[keyIndex];
     }
+
     // 텍스트 변환
     public void LocalizeChanged(int langIndex)
     {

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using TMPro;
 using Mirror;
-using Mirror.Discovery;
 
 public class SearchController : MonoBehaviour
 {
