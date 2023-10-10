@@ -5,14 +5,13 @@ using UnityEngine.SceneManagement;
 // 로그인 여부 판단하여, 시작 씬의 UI를 보여주는 클래스
 public class StartGame : MonoBehaviour
 {
-    [SerializeField] float _TouchTimeout = 1f;  // 대기 시간
-    [SerializeField] GameObject Canvas;
+    [SerializeField] private float _TouchTimeout = 1f;  // 대기 시간
+    [SerializeField] private GameObject Canvas;
 
     private float _timer;   // 시간 지났는 지 여부
     private bool _loggedIn = false; //로그인 여부
     private GameObject _signUpButton;   //로그인 버튼
     private GameObject _guestButton;    //게스트 모드 버튼
-    private GameObject _developButton;  //개발자 모드 버튼으로 ToDo: 삭제 예정
 
     private void Start()
     {
@@ -25,12 +24,10 @@ public class StartGame : MonoBehaviour
         }
         */
 
-        _developButton = Canvas.transform.Find("Develop").gameObject;
         _signUpButton = Canvas.transform.Find("Sign In").gameObject;
         _guestButton = Canvas.transform.Find("Guest").gameObject;
 
         ButtonsVisibility();    // 버튼 보이는 지 여부 판단
-        _developButton.GetComponent<Button>().onClick.AddListener(MoveHomeScene);   // 개발자용으로 ToDo: 삭제 예정
     }
 
     private void Update()

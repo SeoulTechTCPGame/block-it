@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
+using static Enums;
 
 public enum EPlankImgState
 {
@@ -21,7 +21,7 @@ public class PlayerButtons : MonoBehaviour
     public GameObject PlankImage;
     #endregion
 
-    private Enums.EPlayer _owner; // playerButton의 주인
+    private EPlayer _owner; // playerButton의 주인
     private bool _isPlankValid = true; // plank를 놓을 수 있는가? (남은 plank가 없으면 false)
     private EPlankImgState _plankImgState = EPlankImgState.Normal; // plank image의 state
 
@@ -91,7 +91,7 @@ public class PlayerButtons : MonoBehaviour
         MatchManager.ToNextTurn.Invoke();
     }
 
-    public void SetOwner(Enums.EPlayer own)
+    public void SetOwner(EPlayer own)
     {
         _owner = own;
     }
@@ -193,5 +193,4 @@ public class PlayerButtons : MonoBehaviour
         _plankImgState = EPlankImgState.Normal;
         RotatePlank();
     }
-
 }
