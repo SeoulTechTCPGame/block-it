@@ -1173,7 +1173,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1834698486}
   - component: {fileID: 1834698485}
-  - component: {fileID: 1834698489}
+  - component: {fileID: 1834698487}
   m_Layer: 0
   m_Name: Singleton
   m_TagString: Untagged
@@ -1214,7 +1214,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1834698489
+--- !u!114 &1834698487
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1228,9 +1228,73 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurLangIndex: 0
   Langs:
-  - Lang: 
-    LangLocalize: 
-    Value: []
-  - Lang: 
-    LangLocalize: 
-    Value: []
+  - Lang: English
+    LangLocalize: English
+    Value:
+    - Back
+    - Sign In
+    - Sign Up
+    - Log out
+    - ID
+    - PW
+    - Confirm
+    - Change
+    - Put
+    - Rank
+    - Profile
+    - Play with AI
+    - Play with Others
+    - Play with Players
+    - BGM
+    - Sound Effect
+    - Vibration
+    - Language
+    - Tutorial
+    - Option
+    - Close
+    - Next
+    - Guest
+    - Accept
+    - Refuse
+    - Search
+    - Searching
+    - Selcet AI Level
+    - Beginner
+    - Intermediate
+    - Advanced
+    - Master
+  - Lang: "Korean\r"
+    LangLocalize: "\uD55C\uAD6D\uC778\r"
+    Value:
+    - "\uB4A4\uB85C\r"
+    - "\uB85C\uADF8\uC778\r"
+    - "\uAC00\uC785\uD558\uAE30\r"
+    - "\uB85C\uADF8 \uC544\uC6C3\r"
+    - "ID\r"
+    - "PW\r"
+    - "\uD655\uC778\r"
+    - "\uBCC0\uACBD\r"
+    - "\uB193\uB2E4\r"
+    - "\uB7AD\uD06C\r"
+    - "\uD504\uB85C\uD544\r"
+    - "AI \uB300\uC804\r"
+    - "\uB85C\uCEEC \uD50C\uB808\uC774\r"
+    - "\uC628\uB77C\uC778 \uB300\uC804\r"
+    - "BGM\r"
+    - "\uC74C\uD5A5 \uD6A8\uACFC\r"
+    - "\uC9C4\uB3D9\r"
+    - "\uC5B8\uC5B4\r"
+    - "\uD29C\uD1A0\uB9AC\uC5BC\r"
+    - "\uC635\uC158\r"
+    - "\uB2EB\uAE30\r"
+    - "\uB2E4\uC74C\r"
+    - "\uAC8C\uC2A4\uD2B8\r"
+    - "\uC218\uB77D\r"
+    - "\uAC70\uBD80\r"
+    - "\uAC80\uC0C9\r"
+    - "\uAC80\uC0C9\uC911\r"
+    - "AI \uB09C\uC774\uB3C4 \uC120\uD0DD\uD558\uC2DC\uC624\r"
+    - "\uCD08\uBCF4\uC790\r"
+    - "\uC911\uAE09\uC790\r"
+    - "\uACE0\uAE09\uC790\r"
+    - "\uB9C8\uC2A4\uD130"
