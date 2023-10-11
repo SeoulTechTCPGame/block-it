@@ -16,7 +16,7 @@ public static class Enums   // Enum 관리
     {
         Local,
         AI,
-        MultiWifi
+        MultiWifi,
     }
 
     public enum ELevel
