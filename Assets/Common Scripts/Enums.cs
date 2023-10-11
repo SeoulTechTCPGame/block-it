@@ -3,7 +3,8 @@ public static class Enums   // Enum 관리
     public enum EPlayer
     {
         Player1,
-        Player2
+        Player2,
+        NoOne
     }
 
     public enum ELanguage

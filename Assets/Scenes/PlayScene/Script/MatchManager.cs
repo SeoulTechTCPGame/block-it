@@ -25,15 +25,16 @@ public class MatchManager : MonoBehaviour
     public GameObject ReplayButton; // 복기시, 필요한 버튼
     public GameObject ReStartButton; // 다시 시작
     public GameObject ToHomeButton; // 홈으로 버튼 (게임 끝난 후 나타나는 버튼)
+    public GameObject ExpelButton; // 홈으로 버튼 (게임 끝난 후 나타나는 버튼)
     #endregion
 
-    private float _currentTime = 60f;
-    public float maxTime = 60f;
-    private bool _isTimerRunning = true;
-    private bool _isGameEnd = false;
 
+    private float _currentTime = Constants.TURN_TIME;
+    public float maxTime = Constants.TURN_TIME;
+    private bool _isTimerRunning = false;
     private EMode _gameMode;
     private EPlayer _turn;// 현재 턴인 플레이어
+
     public Vector2Int RequestedPawnCoord;  //이번 턴의 수로 놓을 pawn의 이동 좌표
     public Plank RequestedPlank = new Plank(); //이번 턴의 수로 설치할 plank
     private bool _isUpdatePawnCoord = false;// 이번 턴의 수로 pawn을 이동시켰는가
@@ -64,6 +65,7 @@ public class MatchManager : MonoBehaviour
         ReplayButton.gameObject.SetActive(false);
         ReStartButton.gameObject.SetActive(false);
         ToHomeButton.gameObject.SetActive(false);
+        ExpelButton.gameObject.SetActive(false);
     }
 
    private void Update()
@@ -76,8 +78,10 @@ public class MatchManager : MonoBehaviour
             {
                 // Timer has reached its maximum time
                 _isTimerRunning = false;
-
-                NextTurn();
+                if(_turn != _user)
+                {
+                    ExpelButton.SetActive(true);
+                }
             }
         }
         else
@@ -89,17 +93,17 @@ public class MatchManager : MonoBehaviour
 
     // 게임 모드에 따라 Init
     #region InitGameModes 
-    private void InitGameMode(Enums.EMode gameMode)
+    private void InitGameMode(EMode gameMode)
     {
         switch(gameMode)
         {
-            case Enums.EMode.Local:
+            case EMode.Local:
                 InitFriendMode();
                 break;
-            case Enums.EMode.AI:
+            case EMode.AI:
                 InitAiMode();
                 break;
-            case Enums.EMode.MultiWifi:
+            case EMode.MultiWifi:
                 InitWifiMode();
                 break;
         }
@@ -108,11 +112,16 @@ public class MatchManager : MonoBehaviour
 
     private void InitFriendMode()
     {
-        _user = Enums.EPlayer.Player1;
+        _user = EPlayer.Player1;
         SetButtonsOwner();
-        SetTurn(Enums.EPlayer.Player1);
+        SetTurn(EPlayer.Player1);
 
         OrientBoard();
+
+        _isTimerRunning = false;
+
+        UpperTimer.SetActive(false);
+        LowerTimer.SetActive(false);
 
         Destroy(MyProfile);
         Destroy(TheirProfile);
@@ -124,8 +133,10 @@ public class MatchManager : MonoBehaviour
     {
         // Set _user
         //_user = getUserTurn();
-        _user = Enums.EPlayer.Player1;
-        SetTurn(Enums.EPlayer.Player1);
+        _user = EPlayer.Player1;
+        SetTurn(EPlayer.Player1);
+
+        _isTimerRunning = true;
 
         OrientBoard();
 
@@ -139,8 +150,13 @@ public class MatchManager : MonoBehaviour
     {
         // Set _user
         //_user = getUserTurn();
-        _user = Enums.EPlayer.Player1;
-        SetTurn(Enums.EPlayer.Player1);
+        _user = EPlayer.Player1;
+        SetTurn(EPlayer.Player1);
+
+        _isTimerRunning = false;
+
+        UpperTimer.SetActive(false);
+        LowerTimer.SetActive(false);
 
         OrientBoard();
 
@@ -231,6 +247,8 @@ public class MatchManager : MonoBehaviour
 
     private void SetTurn(EPlayer ePlayer) // 턴 세팅. 턴이 바뀜에 따라 turn, _placeableVerticalPlanks, _placeableHorizontalPlanks 값 업데이트, PlayerButton, WinState 활성화/비활성화 제어
     {
+        ExpelButton.SetActive(false);
+
         _gameLogic.Turn = ePlayer;
         // set target and other player.
         EPlayer otherPlayer = (ePlayer == EPlayer.Player1) ? EPlayer.Player2 : EPlayer.Player1;
@@ -262,9 +280,12 @@ public class MatchManager : MonoBehaviour
         _isUpdatePlank = false;
 
         // Set Timer
-        SwitchTimer();
-        _currentTime = maxTime;
-        _isTimerRunning = true;
+        if(_gameMode == EMode.MultiWifi)
+        {
+            SwitchTimer();
+            _currentTime = Constants.TURN_TIME;
+            _isTimerRunning = true;
+        }
 
 
         // Set Moveable Coord for pawn on the board
@@ -332,11 +353,10 @@ public class MatchManager : MonoBehaviour
             LowerButtons.GetComponent<PlayerButtons>().DisableButtons();
             UpperButtons.GetComponent<PlayerButtons>().DisableButtons();
 
-            _isGameEnd = true;
             _isTimerRunning = false;
 
             // Determine the winning player
-            Enums.EPlayer winningPlayer = _gameLogic.Wins(Enums.EPlayer.Player1) ? Enums.EPlayer.Player1 : Enums.EPlayer.Player2;
+            EPlayer winningPlayer = _gameLogic.Wins(EPlayer.Player1) ? EPlayer.Player1 : EPlayer.Player2;
             bool userWins = _gameLogic.Wins(_user);
 
             switch (_gameMode)
@@ -401,12 +421,57 @@ public class MatchManager : MonoBehaviour
     public void Restart()
     {
         _gameLogic.Reset();
+<<<<<<< HEAD
         _gameMode = (Enums.EMode)PlayerPrefs.GetInt("GameMode", (int)Enums.EMode.Local); 
+=======
+
+        _isTimerRunning = true;
+
+        _gameMode = (EMode)PlayerPrefs.GetInt("GameMode", (int)EMode.Friend); ;
+>>>>>>> 6165d8c3c2d942b87771d94f1f90afc5bb2b7e6c
         _gameLogic.AddMoveRecord();
         InitGameMode(_gameMode);
         ReplayButton.gameObject.SetActive(false);
         ReStartButton.gameObject.SetActive(false);
         ToHomeButton.gameObject.SetActive(false);
+        ExpelButton.gameObject.SetActive(false);
+    }
+    public void ExpelOtherPlayer()
+    {
+        _gameLogic.IsExpeled = true;
+        _gameLogic.IsGameOver = true;
+        _gameLogic.Winner = (_user == EPlayer.Player1) ? EPlayer.Player1 : EPlayer.Player2;
 
+        _isTimerRunning = false;
+
+        UpperTimer.gameObject.SetActive(false);
+        LowerTimer.gameObject.SetActive(false);
+
+        LowerButtons.GetComponent<PlayerButtons>().DisableButtons();
+        UpperButtons.GetComponent<PlayerButtons>().DisableButtons();
+
+        // Display Win/Lose message based on the winning player
+        WinState.GetComponent<WinState>().DisplayWinLose(true);
+
+        ToHomeButton.gameObject.SetActive(true);
+    }
+    public void GetExpeled()
+    {
+        _gameLogic.IsExpeled = true;
+        _gameLogic.IsGameOver = true;
+        _gameLogic.Winner = (_user == EPlayer.Player1)? EPlayer.Player2:EPlayer.Player1;
+        
+        _isTimerRunning = false;
+
+        UpperTimer.gameObject.SetActive(false);
+        LowerTimer.gameObject.SetActive(false);
+
+        LowerButtons.GetComponent<PlayerButtons>().DisableButtons();
+        UpperButtons.GetComponent<PlayerButtons>().DisableButtons();
+
+        // Display Win/Lose message based on the winning player
+        WinState.GetComponent<WinState>().DisplayWinLose(false);
+
+        ToHomeButton.gameObject.SetActive(true);
     }
 }

@@ -4,7 +4,12 @@ using static Enums;
 
 public class GameLogic : MonoBehaviour
 {
+    public EPlayer Winner = EPlayer.NoOne;// 어떤 플레이어가 이겼는지
+    public bool IsGameOver = false; // 게임이 끝났는지
+    public bool IsExpeled = false; // 추방되었는지
+
     public EPlayer Turn;
+    
     public List<Plank> Planks = new List<Plank>();  // 생성된 Plank 인스턴스를 담은 리스트  
     public List<MoveRecord> Moves = new List<MoveRecord>(); // 경기 기록
     public static GameLogic s_instance;
@@ -318,11 +323,52 @@ public class GameLogic : MonoBehaviour
         }
 
     }
+<<<<<<< HEAD
+=======
+    
+    public void Reset() // 모든 정보를 리셋시킨다.
+    {
+        _p1 = new Pawn();
+        _p2 = new Pawn();
+        Moves.Clear();
+        Planks.Clear();
+        Winner = EPlayer.NoOne;
+        IsGameOver = false;
+        IsExpeled = false;
+        SetGame();
+    }
+
+>>>>>>> 6165d8c3c2d942b87771d94f1f90afc5bb2b7e6c
     #endregion
 
     #region 게임 승패 및 턴 관리
     public bool Wins(EPlayer ePlayer)  // 해당 Player 가 이겼는지를 판단한다
     {
+        // 이미 게임이 끝났을 시 (승자가 있을시)
+        if(IsGameOver)
+        {
+            if (ePlayer == Winner) return true; 
+            else return false;
+        }
+
+        // 승자가 정해지지 않았을 시
+        if(_p1.GetCoordinate().y == 0)
+        {
+            Winner = Enums.EPlayer.Player1;
+            IsGameOver = true;
+            IsExpeled = false;
+            return ePlayer == Winner;
+        }
+        if(_p2.GetCoordinate().y == 8) 
+        {
+            Winner = Enums.EPlayer.Player2;
+            IsGameOver = true;
+            IsExpeled = false;
+            return ePlayer == Winner;
+        }
+
+        return false;
+/*
         Pawn targetPawn = GetTargetPawn(ePlayer);
         int targetY;
 
@@ -340,6 +386,7 @@ public class GameLogic : MonoBehaviour
             return true;
         }
         return false;
+ */
     }
 
     public void Reset() // 모든 정보를 리셋시킨다.
