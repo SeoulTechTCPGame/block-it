@@ -318,7 +318,6 @@ public class GameLogic : MonoBehaviour
         }
 
     }
-<<<<<<< HEAD
     #endregion
 
     #region 게임 승패 및 턴 관리

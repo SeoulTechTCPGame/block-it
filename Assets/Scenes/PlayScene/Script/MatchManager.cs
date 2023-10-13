@@ -341,7 +341,7 @@ public class MatchManager : MonoBehaviour
 
             switch (_gameMode)
             {
-                case EMode.Friend:
+                case EMode.Local:
                     //Print Win Lose Message
                     WinState.GetComponent<WinState>().DisplayWin(winningPlayer);
                     // Pops Up ReStart Button
@@ -401,7 +401,7 @@ public class MatchManager : MonoBehaviour
     public void Restart()
     {
         _gameLogic.Reset();
-        _gameMode = (Enums.EMode)PlayerPrefs.GetInt("GameMode", (int)Enums.EMode.Friend); ;
+        _gameMode = (Enums.EMode)PlayerPrefs.GetInt("GameMode", (int)Enums.EMode.Local); ;
         _gameLogic.AddMoveRecord();
         InitGameMode(_gameMode);
         ReplayButton.gameObject.SetActive(false);

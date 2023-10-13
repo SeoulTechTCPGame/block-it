@@ -14,12 +14,11 @@ public class ProfileScene : MonoBehaviour
 
     private void Start()
     {
-        BlockItUser user = CurrentLoginSession.Instance.User;
+        BlockItUser user = CurrentLoginSession.Singleton.User;
         Texture2D texture = new Texture2D(2, 2);
 
-        user.getUserData(); // 유저 정보 가져오기
         userName.text = user.Nickname; // 닉네임 표시
-        texture.LoadImage(user.ProfileImage);
+        texture.LoadImage(user.ProfileImg);
 
         // 플레이어 정보 로딩
         if (user.PlayCount == 0)
