@@ -1881,7 +1881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a01c88d61895c824d90b39b64f281fc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Clip: {fileID: 8300000, guid: 6c62333a9cf1ce742bb3725fa65e7137, type: 3}
+  _clip: {fileID: 8300000, guid: 6c62333a9cf1ce742bb3725fa65e7137, type: 3}
 --- !u!114 &1308903714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1895,9 +1895,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Turn: 0
-  Winner: 2
-  IsGameOver: 0
-  IsExpeled: 0
 --- !u!114 &1308903715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1935,7 +1932,6 @@ MonoBehaviour:
   ReplayButton: {fileID: 249710004}
   ReStartButton: {fileID: 1676435791}
   ToHomeButton: {fileID: 1541049475}
-  ExpelButton: {fileID: 2111712690}
   maxTime: 60
   RequestedPawnCoord: {x: 0, y: 0}
 --- !u!224 &1376844211 stripped
