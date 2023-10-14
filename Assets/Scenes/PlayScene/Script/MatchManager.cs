@@ -425,7 +425,7 @@ public class MatchManager : MonoBehaviour
 
         _isTimerRunning = true;
 
-        _gameMode = (EMode)PlayerPrefs.GetInt("GameMode", (int)EMode.Friend); ;
+        _gameMode = (EMode)PlayerPrefs.GetInt("GameMode", (int)EMode.Local); ;
         _gameLogic.AddMoveRecord();
         InitGameMode(_gameMode);
         ReplayButton.gameObject.SetActive(false);
