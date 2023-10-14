@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using TMPro;
 using Mirror;
+using Mirror.Discovery;
 
 public class SearchController : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class SearchController : MonoBehaviour
     [SerializeField] private GameObject _loading; // 로딩 이미지
     [SerializeField] private TMP_Text _warningText; // 경고 문구
     [SerializeField] private MoveScene _ms;
+    [SerializeField] private UserDiscovery networkDiscovery; // 네트워크 탐색
 
     private bool _isSearching;  // 상대방 검색 중인지 여부
     private Coroutine searchCoroutine; // 검색 코루틴 참조를 저장하기 위한 변수
@@ -29,8 +31,18 @@ public class SearchController : MonoBehaviour
     private NetworkConnection _opponent;    // 대전 상대
     private LocalizeScript _searchLocalize;
 
+    public List<BlockItUser> userList = new List<BlockItUser>(); // 유저 리스트
+
+    private void Awake()
+    {
+        // NetworkManager.singleton.StartHost();
+    }
+
     private void Start()
     {
+        networkDiscovery.AdvertiseServer();
+        // networkDiscovery.StartDiscovery();
+
         _searchPanel.SetActive(true);
         _matchPanel.SetActive(false);
         _currentPanel = _searchPanel;
@@ -43,6 +55,15 @@ public class SearchController : MonoBehaviour
         _accept.onClick.AddListener(OnAcceptButtonClicked);
         _refuse.onClick.AddListener(OnRefuseButtonClicked);
         _back.onClick.AddListener(OnBackButtonClicked);
+    }
+
+    public void OnServerFound(DiscoveryResponse response)
+    {
+        // Check if we already know about this server
+        if (!userList.Contains(response.userInfo))
+        {
+            userList.Add(response.userInfo);
+        }
     }
 
     #region 서치 패널
@@ -61,6 +82,7 @@ public class SearchController : MonoBehaviour
     // 상대방 찾기
     private IEnumerator FindConnectedClients()
     {
+        networkDiscovery.StartDiscovery();
         _loading.SetActive(true);
         while (searchCoroutine != null)
         {
@@ -69,7 +91,7 @@ public class SearchController : MonoBehaviour
                 // 검색하는 동안 로딩바 보여줌
                 _loading.transform.Rotate(Vector3.back, Time.deltaTime * 100);
 
-                // 상대방이 확인된다면 로그 출력
+                // 상대방이 확인된다면 
                 if (client.isReady)
                 {
                     // Debug.Log("Connected client: " + client.address);
@@ -83,16 +105,17 @@ public class SearchController : MonoBehaviour
     // 가상의 상대방 데이터로 그리드를 채우는 메서드
     private void OpponentGridData()
     {
-        string[] opponentNames = { "Opponent1", "Opponent2", "Opponent3" }; // ToDo: 찾은 상대방 데이터 가져오기
+        //  string[] opponentNames = { "Opponent1", "Opponent2", "Opponent3" }; // ToDo: 찾은 상대방 데이터 가져오기
+        
 
-        foreach (string opponentName in opponentNames)
+        foreach (BlockItUser user in userList)
         {
             GameObject opponentButton = Instantiate(_playerButtonPrefab, _grid);
             TMP_Text buttonText = opponentButton.GetComponentInChildren<TMP_Text>();
-            buttonText.text = opponentName;
+            buttonText.text = user.Nickname;
 
             Button button = opponentButton.GetComponent<Button>();
-            button.onClick.AddListener(() => OnOpponentButtonClicked(opponentName));
+            button.onClick.AddListener(() => OnOpponentButtonClicked(user.Nickname));
         }
     }
 
