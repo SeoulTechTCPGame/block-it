@@ -323,8 +323,6 @@ public class GameLogic : MonoBehaviour
         }
 
     }
-<<<<<<< HEAD
-=======
     
     public void Reset() // 모든 정보를 리셋시킨다.
     {
@@ -337,8 +335,6 @@ public class GameLogic : MonoBehaviour
         IsExpeled = false;
         SetGame();
     }
-
->>>>>>> 6165d8c3c2d942b87771d94f1f90afc5bb2b7e6c
     #endregion
 
     #region 게임 승패 및 턴 관리
