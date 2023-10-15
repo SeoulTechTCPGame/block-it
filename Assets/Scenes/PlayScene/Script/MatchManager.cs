@@ -421,10 +421,7 @@ public class MatchManager : MonoBehaviour
     public void Restart()
     {
         _gameLogic.Reset();
-        _gameMode = (EMode)PlayerPrefs.GetInt("GameMode", (int)Enums.EMode.Local); 
-
         _isTimerRunning = true;
-
         _gameMode = (EMode)PlayerPrefs.GetInt("GameMode", (int)EMode.Local); ;
         _gameLogic.AddMoveRecord();
         InitGameMode(_gameMode);

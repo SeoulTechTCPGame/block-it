@@ -6,6 +6,7 @@ using TMPro;
 using System;
 using System.Security.Cryptography;
 using UnityEngine.SceneManagement;
+using System.Runtime.CompilerServices;
 
 public class AuthManager : MonoBehaviour
 {
@@ -116,7 +117,7 @@ public class AuthManager : MonoBehaviour
             Debug.LogFormat("user signed in successfully: {0} ({1}) ({2})", User.DisplayName, User.Email, User.UserId);
             warningLoginText.text = "";
             confirmLoginText.text = "Logged In";
-            CurrentLoginSession.Instance.Login(new BlockItUser(User.UserId));
+            CurrentLoginSession.Singleton.Login(new BlockItUser(User.UserId));
             SceneManager.LoadScene("Home");
 
             yield return User.UserId;
@@ -194,8 +195,8 @@ public class AuthManager : MonoBehaviour
                     else // 검증 성공
                     {
                         // 서버에 유저 정보 등록
+                        BlockItUserDataManager.Singleton.Register(new BlockItUser(User.UserId, _username));
                         Debug.Log("Firebase로 " + User.UserId + "(UserName: " + _username + ") 회원가입 성공");
-                        new BlockItUser(User.UserId, _username).SignUpUserToServer();
                         UIManager.instance.LoginScreen();
                         warningRegisterText.text = "";
                     }

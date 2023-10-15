@@ -385,15 +385,6 @@ public class GameLogic : MonoBehaviour
  */
     }
 
-    //public void Reset() // 모든 정보를 리셋시킨다.
-    //{
-    //    _p1 = new Pawn();
-    //    _p2 = new Pawn();
-    //    Moves.Clear();
-    //    Planks.Clear();
-    //    SetGame();
-    //}
-
     public bool IsOutOfBoundary(int row, int col)  // 해당 좌표가 보드판의 경계를 넘는지를 판단한다  
     {
         if (row <= 0 || row > 9 || col <= 0 || col > 9)

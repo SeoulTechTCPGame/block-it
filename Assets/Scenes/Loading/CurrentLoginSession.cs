@@ -5,22 +5,22 @@ using UnityEngine;
 // 현재 로그인한 유저의 정보를 담는 싱글톤 클래스
 public class CurrentLoginSession : MonoBehaviour
 {
-    // 싱글톤 클래스 구현
-    private static CurrentLoginSession _instance;
-    public static CurrentLoginSession Instance
+    private static CurrentLoginSession _singleton;   // 싱글톤 클래스 구현
+
+    public static CurrentLoginSession Singleton
     {
         get
         {
-            if (_instance == null)
+            if (_singleton == null)
             {
-                _instance = FindObjectOfType<CurrentLoginSession>();
-                if (_instance != null)
+                _singleton = FindObjectOfType<CurrentLoginSession>();
+                if (_singleton != null)
                 {
                     GameObject singleton = new GameObject("CurrentLoginSession");
-                    _instance = singleton.AddComponent<CurrentLoginSession>();
+                    _singleton = singleton.AddComponent<CurrentLoginSession>();
                 }
             }
-            return _instance;
+            return _singleton;
         }
     }
 
@@ -42,7 +42,8 @@ public class CurrentLoginSession : MonoBehaviour
     {
         _user = user;
         _hasLogined = true;
-        user.getUserData();
+        BlockItUserDataManager.Singleton.GetUserData(_user);
+        BlockItUserDataManager.Singleton.GetProfileImage(_user);
     }
 
     // 로그아웃 시 유저 정보 삭제
@@ -65,12 +66,12 @@ public class CurrentLoginSession : MonoBehaviour
     // 경우에 따라 GameObject 제거
     private void Awake()
     {
-        if (_instance == null)
+        if (_singleton == null)
         {
-            _instance = this;
+            _singleton = this;
             DontDestroyOnLoad(gameObject);
         }
-        else if (_instance == this)
+        else if (_singleton == this)
         {
             Destroy(gameObject);
         }

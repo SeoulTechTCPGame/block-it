@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ProfileController : MonoBehaviour
@@ -22,7 +23,12 @@ public class ProfileController : MonoBehaviour
     [SerializeField] private Button _confirmBtn;
     [SerializeField] private TMP_Text warningText;
 
+    [Header("씬 이동")]
     [SerializeField] private MoveScene _ms;
+
+    [Header("제한할 닉네임 글자수")]
+    [SerializeField] int minNicknameLen = 3;
+    [SerializeField] int maxNicknameLen = 15;
 
     private Texture2D _selectedImage; // 선택된 이미지
     private GameObject _curPanel;
@@ -45,13 +51,33 @@ public class ProfileController : MonoBehaviour
         {
             if (path != null)
             {
-                _selectedImage = ResizeTexture(NativeGallery.LoadImageAtPath(path, default, false), 500, 540);
+                _selectedImage = NativeGallery.LoadImageAtPath(path, default, false);
                 byte[] image = _selectedImage.EncodeToJPG();
-                for (int quality = 100; quality > 0 && image.Length > 16373; quality -= 5)
+                for (int quality = 100; quality > 0 && image.Length > 524288; quality -= 5)
                 {
                     image = _selectedImage.EncodeToJPG(quality);
                 }
-                CurrentLoginSession.Instance.User.UploadProfileImageToServer(image);
+
+                // 크기 제한
+                if (image.Length > 524288)
+                {
+                    warningText.text = "프로필 사진의 최대 크기는 512KB 입니다.";
+                }
+                else
+                {
+                    BlockItUserDataManager.Singleton.UploadProfileImage(CurrentLoginSession.Singleton.User, image, () =>
+                    {
+                        if (CurrentLoginSession.Singleton.User.IsSuccess)
+                        {
+                            warningText.text = "프로필 사진 변경 성공";
+                            BlockItUserDataManager.Singleton.GetProfileImage(CurrentLoginSession.Singleton.User);
+                        }
+                        else
+                        {
+                            warningText.text = "프로필 사진 변경 실패, 다시 시도하세요.";
+                        }
+                    });
+                }
             }
         });
     }
@@ -61,21 +87,32 @@ public class ProfileController : MonoBehaviour
     {
         // TODO: 비밀번호 일치 시 해당 동작을 수행하고, 아닐 경우 오류 메세지 출력
         // 현재는 비밀번호 입력하지 않아도 닉네임 변경 동작을 수행하도록 되어있습니다...
-        CurrentLoginSession.Instance.User.ChangeUserNameToServer(_newNicknameField.text);
-        if (CurrentLoginSession.Instance.User.IsDupcliateName)
+
+        // 글자 수 제한 체크
+        if (_newNicknameField.text.Length >= minNicknameLen && _newNicknameField.text.Length <= maxNicknameLen)
         {
-            warningText.text = "해당 닉네임은 이미 사용 중인 닉네임입니다.";
+            BlockItUserDataManager.Singleton.UpdateUserName(CurrentLoginSession.Singleton.User, _newNicknameField.text, () =>
+            {
+                if (CurrentLoginSession.Singleton.User.IsSuccess)
+                {
+                    warningText.text = "닉네임 변경 완료.";
+                }
+                else
+                {
+                    warningText.text = "해당 닉네임은 이미 사용 중인 닉네임입니다.";
+                }
+            });
         }
         else
         {
-            warningText.text = "닉네임 변경 완료.";
+            warningText.text = "닉네임의 글자수는 " + minNicknameLen + "글자와 " + maxNicknameLen + "글자 사이여야 합니다.";
         }
     }
 
     // 로그아웃 시 이벤트
     private void OnClickLogoutButton()
     {
-        CurrentLoginSession.Instance.Logout();
+        CurrentLoginSession.Singleton.Logout();
         _ms.ToLoading();
     }
 
@@ -90,6 +127,7 @@ public class ProfileController : MonoBehaviour
         if (_curPanel == _changeIDPanel)
         {
             ActivatePanel(_myProfilePanel);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
         if (_curPanel == _changeImagePanel)
         {
