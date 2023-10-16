@@ -1,65 +1,20 @@
 using Mirror;
 using System;
 
-#region 유저 정보를 요청 시 송신할 메세지 약속
+#region 클라이언트에서 유저 정보 전송 시 메세지
 [Serializable]
-public struct RequestUserDataMessage : NetworkMessage
+public struct OpponentUserDataMessage : NetworkMessage
 {
     public string userId;
-}
-
-[Serializable]
-public struct ResponseUserDataMessage : NetworkMessage
-{
-    public string nickname;
-    public int totalUserCount;
-    public int userRank;
-    public int playCount;
-    public int winCount;
-    public byte[] profileImage;
-    public bool success;
+    public string userName;
+    public bool isGuest;
 }
 #endregion
 
-#region 회원 가입 시 송신할 메세지 약속
+#region 해당 도전 수락 메세지
 [Serializable]
-public struct RequestUserSignUpMessage : NetworkMessage
+public struct ConnectionAcceptanceMessage : NetworkMessage
 {
-    public string userId;
-    public string nickname;
-}
-
-[Serializable]
-public struct ResponseUserSignUpMessage : NetworkMessage
-{
-    public bool success;
-}
-#endregion
-
-#region 이미지 업로드 시 송수신할 메세지 정의
-[Serializable]
-public struct RequestProfileImageUploadMessage : NetworkMessage
-{
-    public string userId;
-    public byte[] image;
-}
-
-public struct ResponseProfileImageUploadMessage : NetworkMessage
-{
-    public bool success;
-}
-#endregion
-
-#region 닉네임 변경 시 송수신할 메세지 정의
-public struct RequestChangeUserNameMessage: NetworkMessage
-{
-    public string userId;
-    public string nickname;
-}
-
-public struct ResponseChangeUserNameMessage : NetworkMessage
-{
-    public bool success;
-    public bool isDupcliate;
+    public bool doAccept;
 }
 #endregion

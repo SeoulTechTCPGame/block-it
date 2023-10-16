@@ -211,7 +211,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d721443069ca82b42acceb9408ff90d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverUrl: 
+  serverUrl: https://api.tcp.or.kr/blockit
+  _usePropertyField: 1
 --- !u!1 &187667802
 GameObject:
   m_ObjectHideFlags: 0

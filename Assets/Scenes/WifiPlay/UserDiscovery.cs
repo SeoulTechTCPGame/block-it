@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using Mirror;
 using Mirror.Discovery;
@@ -19,8 +20,15 @@ public struct DiscoveryResponse : NetworkMessage
     // Add public fields (not properties) for whatever information you want the server
     // to return to clients for them to display or use for establishing a connection.
 
-    // »ó´ë¹æÀÌ ºê·ÎµåÄ³½ºÆ® ¸Ş¼¼Áö¸¦ ¹ŞÀ¸¸é À¯Àú Á¤º¸·Î ÀÀ´ä
-    public BlockItUser userInfo;
+    // ìƒëŒ€ë°©ì´ ë¸Œë¡œë“œìºìŠ¤íŠ¸ ë©”ì„¸ì§€ë¥¼ ë°›ìœ¼ë©´ ìœ ì € ì •ë³´ë¡œ ì‘ë‹µ
+    public string userId;
+    public string userName;
+    public bool isGuest;
+
+    // ì„œë²„ ì—°ê²°ì— í•„ìš”í•œ ì •ë³´
+    public IPEndPoint EndPoint { get; set; }
+    public Uri serverUri;    
+    public long serverId;
 }
 
 public class UserDiscovery : NetworkDiscoveryBase<DiscoveryRequest, DiscoveryResponse>
@@ -54,7 +62,7 @@ public class UserDiscovery : NetworkDiscoveryBase<DiscoveryRequest, DiscoveryRes
     /// <param name="endpoint">Address of the client that sent the request</param>
     protected override void ProcessClientRequest(DiscoveryRequest request, IPEndPoint endpoint)
     {
-        Debug.Log("Server: »ó´ë¹æ¿¡°Ô ¿äÃ»");
+        Debug.Log("Server: ìƒëŒ€ë°©ì—ê²Œ ìš”ì²­");
         base.ProcessClientRequest(request, endpoint);
     }
 
@@ -70,8 +78,14 @@ public class UserDiscovery : NetworkDiscoveryBase<DiscoveryRequest, DiscoveryRes
     /// <returns>A message containing information about this server</returns>
     protected override DiscoveryResponse ProcessRequest(DiscoveryRequest request, IPEndPoint endpoint) 
     {
-        Debug.Log("Server: »ó´ë¹æÀÇ ¿äÃ»¿¡ ÀÀ´ä");
-        return new DiscoveryResponse { userInfo = CurrentLoginSession.Singleton.User };
+        Debug.Log("Server: ìƒëŒ€ë°©ì˜ ìš”ì²­ì— ì‘ë‹µ");
+        return new DiscoveryResponse {
+            userId = CurrentLoginSession.Singleton.User.Id,
+            userName = CurrentLoginSession.Singleton.User.Nickname,
+            isGuest = CurrentLoginSession.Singleton.User.IsGuest,
+            serverUri = transport.ServerUri(),
+            serverId = ServerId
+        };
     }
 
     #endregion
@@ -87,7 +101,7 @@ public class UserDiscovery : NetworkDiscoveryBase<DiscoveryRequest, DiscoveryRes
     /// <returns>An instance of ServerRequest with data to be broadcasted</returns>
     protected override DiscoveryRequest GetRequest()
     {
-        Debug.Log("Client: »ó´ë¹æ¿¡°Ô ¿äÃ»");
+        Debug.Log("Client: ìƒëŒ€ë°©ì—ê²Œ ìš”ì²­");
         return new DiscoveryRequest();
     }
 
@@ -101,7 +115,15 @@ public class UserDiscovery : NetworkDiscoveryBase<DiscoveryRequest, DiscoveryRes
     /// <param name="response">Response that came from the server</param>
     /// <param name="endpoint">Address of the server that replied</param>
     protected override void ProcessResponse(DiscoveryResponse response, IPEndPoint endpoint) {
-        Debug.Log(response.userInfo.Nickname + " À¯Àú Ã£±â ¼º°ø.");
+        response.EndPoint = endpoint;
+        UriBuilder realUri = new UriBuilder(response.serverUri)
+        {
+            Host = response.EndPoint.Address.ToString()
+        };
+        response.serverUri = realUri.Uri;
+
+        Debug.Log(response.userId + "(ë‹‰ë„¤ì„: " + response.userName + ") ìœ ì € ì°¾ê¸° ì„±ê³µ.");
+        OnServerFound.Invoke(response);
     }
     #endregion
 }
