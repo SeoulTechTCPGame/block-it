@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections;
-using System.Diagnostics.Eventing.Reader;
+using System.Transactions;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -119,12 +119,12 @@ public class BlockItUserDataManager : MonoBehaviour
     #endregion
 
     #region 유저 정보 요청 POST
-    public void GetUserData(BlockItUser targetUser)
+    public void GetUserData(BlockItUser targetUser, System.Action onComplete = default)
     {
-        StartCoroutine(GetUserDataCoroutine(targetUser));
+        StartCoroutine(GetUserDataCoroutine(targetUser, onComplete));
     }
 
-    private IEnumerator GetUserDataCoroutine(BlockItUser targetUser)
+    private IEnumerator GetUserDataCoroutine(BlockItUser targetUser, System.Action onComplete)
     {
         using (UnityWebRequest www = new UnityWebRequest(userDataRequestUrl, "POST"))
         {
@@ -151,6 +151,8 @@ public class BlockItUserDataManager : MonoBehaviour
                 Debug.LogError("Server Error: " + www.error);
             }
         }
+
+        onComplete?.Invoke();
     }
     #endregion
 
@@ -233,12 +235,12 @@ public class BlockItUserDataManager : MonoBehaviour
     #endregion
 
     #region 프로필 사진 요청 POST
-    public void GetProfileImage(BlockItUser targetUser)
+    public void GetProfileImage(BlockItUser targetUser, System.Action onComplete = default)
     {
-        StartCoroutine(GetProfileImageCoroutine(targetUser));
+        StartCoroutine(GetProfileImageCoroutine(targetUser, onComplete));
     }
 
-    private IEnumerator GetProfileImageCoroutine(BlockItUser targetUser)
+    private IEnumerator GetProfileImageCoroutine(BlockItUser targetUser, System.Action onComplete)
     {
         UnityWebRequest www = UnityWebRequest.Get(userProfileImageRequestUrl + "/" + targetUser.Id);
         yield return www.SendWebRequest();
@@ -252,6 +254,7 @@ public class BlockItUserDataManager : MonoBehaviour
         {
             Debug.LogError("Firebase GID '" + CurrentLoginSession.Singleton.User.Id + "'(닉네임: " + CurrentLoginSession.Singleton.User.Nickname + ") 프로필 사진 다운로드 실패");
         }
+        onComplete?.Invoke();
     }
     #endregion
 }

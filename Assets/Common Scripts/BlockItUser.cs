@@ -68,8 +68,9 @@ public class BlockItUser
             byte[] randomNumber = new byte[4];
             rng.GetBytes(randomNumber);
 
-            string randomHash = BitConverter.ToString(randomNumber).Replace("-", "").Substring(0, 8);
-            _nickname = "Guest#" + randomHash;
+            string randomHash = BitConverter.ToString(randomNumber).Replace("-", "");
+            _id = "Guest#" + randomHash;
+            _nickname = "Guest#" + randomHash.Substring(0, 8);
         }
     }
 

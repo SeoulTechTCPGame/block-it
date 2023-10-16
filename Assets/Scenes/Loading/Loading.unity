@@ -212,6 +212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverUrl: 
+  _usePropertyField: 0
 --- !u!1 &187667802
 GameObject:
   m_ObjectHideFlags: 0
