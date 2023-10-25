@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using static Enums;
 
 /*
@@ -53,6 +54,12 @@ public class MatchManager : MonoBehaviour
 
    private void Awake() // 이벤트 할당, PlayerButton의 사용자 할당, _gameLogic 받기
     {
+        if(IsGameObjectsNull() == false)
+        {
+            Debug.LogError("MatchManager - Awake: One of the public GameObjects is null.");
+            SceneManager.LoadScene("Home");
+            return;
+        }
         SetEvents();
         _gameLogic = FindObjectOfType<GameLogic>();
     }
@@ -171,6 +178,16 @@ public class MatchManager : MonoBehaviour
     }
     #endregion
 
+    private bool IsGameObjectsNull()
+    {
+        // Check if public GameObjects are null
+        if (Board == null || LowerButtons == null || UpperButtons == null || WinState == null || LowerTimer == null || UpperTimer == null || MyProfile == null || TheirProfile == null || MyEmotes == null || TheirEmotePanel == null || ReplayButton == null || ReStartButton == null || ToHomeButton == null || ExpelButton == null)
+        {
+            Debug.LogError("MatchManager - IsGameObjectsNull: One of the public GameObjects is null.");
+            return false;
+        }
+        return true;
+    }
     private void OrientBoard() // 유저가 Player2인경우 보드판을 뒤집는다.
     {
         if(_user == EPlayer.Player2)
