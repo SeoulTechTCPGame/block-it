@@ -1894,6 +1894,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ec56fa80ca464d4fa1c41bf59b34f5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Winner: 2
+  IsGameOver: 0
+  IsExpeled: 0
   Turn: 0
 --- !u!114 &1308903715
 MonoBehaviour:
@@ -1932,6 +1935,7 @@ MonoBehaviour:
   ReplayButton: {fileID: 249710004}
   ReStartButton: {fileID: 1676435791}
   ToHomeButton: {fileID: 1541049475}
+  ExpelButton: {fileID: 2111712690}
   maxTime: 60
   RequestedPawnCoord: {x: 0, y: 0}
 --- !u!224 &1376844211 stripped
