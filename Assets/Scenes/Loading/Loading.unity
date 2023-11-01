@@ -1288,9 +1288,9 @@ MonoBehaviour:
     - Put
     - Rank
     - Profile
-    - Play with AI
-    - Play with Others
-    - Play with Players
+    - AI Play
+    - Local Play
+    - Online Play
     - BGM
     - Sound Effect
     - Vibration
@@ -1309,6 +1309,17 @@ MonoBehaviour:
     - Intermediate
     - Advanced
     - Master
+    - Quit
+    - Cancel
+    - To Home
+    - Restart
+    - Replay
+    - Name
+    - Images
+    - Search from album
+    - Put
+    - Expel
+    - Register
   - Lang: "Korean\r"
     LangLocalize: "\uD55C\uAD6D\uC778\r"
     Value:
@@ -1343,4 +1354,15 @@ MonoBehaviour:
     - "\uCD08\uBCF4\uC790\r"
     - "\uC911\uAE09\uC790\r"
     - "\uACE0\uAE09\uC790\r"
-    - "\uB9C8\uC2A4\uD130"
+    - "\uB9C8\uC2A4\uD130\r"
+    - "\uB098\uAC00\uAE30\r"
+    - "\uCDE8\uC18C\r"
+    - "\uD648\r"
+    - "\uC7AC\uC2DC\uC791\r"
+    - "\uBCF5\uAE30\r"
+    - "\uB2C9\uB124\uC784\r"
+    - "\uC774\uBBF8\uC9C0\r"
+    - "\uC568\uBC94\uC5D0\uC11C \uAC00\uC838\uC624\uAE30\r"
+    - "\uB193\uAE30\r"
+    - "\uD1F4\uC7A5\r"
+    - "\uD68C\uC6D0\uAC00\uC785"
