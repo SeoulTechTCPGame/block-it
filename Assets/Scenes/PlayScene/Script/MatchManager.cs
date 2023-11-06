@@ -54,8 +54,10 @@ public class MatchManager : MonoBehaviour
 
    private void Awake() // 이벤트 할당, PlayerButton의 사용자 할당, _gameLogic 받기
     {
+        Debug.Log("MatchManager Awake");
+
         // check if public GameObjects are null
-        if(IsGameObjectsNull() == false)
+        if (IsGameObjectsNull() == false)
         {
             Debug.LogError("MatchManager - Awake: One of the public GameObjects is null.");
             SceneManager.LoadScene("Home");
@@ -74,7 +76,8 @@ public class MatchManager : MonoBehaviour
 
    private void Start() // 시작시, Player 1의 턴으로 세팅한다.
     {
-        
+        Debug.Log("MatchManager Start");
+
         _gameMode = (EMode)PlayerPrefs.GetInt("GameMode", (int)EMode.Local); ;
         _gameLogic.AddMoveRecord();
 
@@ -143,8 +146,7 @@ public class MatchManager : MonoBehaviour
         LowerTimer.SetActive(false);
 
         // Hide Objects
-//        MyProfile.SetActive(false);
-        MyProfile.SetActive(true);
+        MyProfile.SetActive(false);
         TheirProfile.SetActive(false);
         MyEmotes.SetActive(false);
         TheirEmotePanel.SetActive(false);

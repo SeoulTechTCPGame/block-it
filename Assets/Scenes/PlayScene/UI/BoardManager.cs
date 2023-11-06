@@ -72,14 +72,17 @@ public class BoardManager : MonoBehaviour
 
     private void Awake() // 이벤트 세팅, GameLogic 받기
     {
+        Debug.Log("Board Awake");
         InitEvents();
         _gameLogic = FindObjectOfType<GameLogic>();
+        StartCoroutine(InitializeBoard());
+        _unclickablePanel.SetActive(false);
     }
 
     private void Start() // 보드 만들기
     {
-        _unclickablePanel.SetActive(false);
-        StartCoroutine(InitializeBoard());
+        Debug.Log("Board Start");
+
     }
 
     private void InitEvents()  // 이벤트 세팅
