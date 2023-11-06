@@ -6,7 +6,7 @@ public class WinState : MonoBehaviour
 {
     private Text _textComponent;
 
-    private void Start()
+    private void Awake()
     {
         // Get the Text component attached to this GameObject
         _textComponent = GetComponent<Text>();
@@ -55,5 +55,10 @@ public class WinState : MonoBehaviour
         // Change text color
         _textComponent.color = new Color(0f, 0f, 0f);
 
+    }
+
+    public void HideWinState()
+    {
+        _textComponent.enabled = false;
     }
 }

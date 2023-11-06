@@ -54,25 +54,39 @@ public class MatchManager : MonoBehaviour
 
    private void Awake() // 이벤트 할당, PlayerButton의 사용자 할당, _gameLogic 받기
     {
-        if(IsGameObjectsNull() == false)
+        Debug.Log("MatchManager Awake");
+
+        // check if public GameObjects are null
+        if (IsGameObjectsNull() == false)
         {
             Debug.LogError("MatchManager - Awake: One of the public GameObjects is null.");
             SceneManager.LoadScene("Home");
             return;
         }
         SetEvents();
+        
+        // Get GameLogic
         _gameLogic = FindObjectOfType<GameLogic>();
+        if(_gameLogic== null)
+        {
+            _gameLogic = new GameLogic();
+            Debug.LogError("MatchManager - Awake: GameLogic is null. - created new one");
+        }
     }
 
    private void Start() // 시작시, Player 1의 턴으로 세팅한다.
     {
+        Debug.Log("MatchManager Start");
+
         _gameMode = (EMode)PlayerPrefs.GetInt("GameMode", (int)EMode.Local); ;
         _gameLogic.AddMoveRecord();
+
         InitGameMode(_gameMode);
-        ReplayButton.gameObject.SetActive(false);
-        ReStartButton.gameObject.SetActive(false);
-        ToHomeButton.gameObject.SetActive(false);
-        ExpelButton.gameObject.SetActive(false);
+        
+        ReplayButton.SetActive(false);
+        ReStartButton.SetActive(false);
+        ToHomeButton.SetActive(false);
+        ExpelButton.SetActive(false);
     }
 
    private void Update()
@@ -102,7 +116,11 @@ public class MatchManager : MonoBehaviour
     #region InitGameModes 
     private void InitGameMode(EMode gameMode)
     {
-        switch(gameMode)
+
+        LowerButtons.GetComponent<PlayerButtons>().ActivateButtons();
+        UpperButtons.GetComponent<PlayerButtons>().ActivateButtons();
+
+        switch (gameMode)
         {
             case EMode.Local:
                 InitFriendMode();
@@ -127,13 +145,15 @@ public class MatchManager : MonoBehaviour
 
         _isTimerRunning = false;
 
+        // Hide Objects
         UpperTimer.SetActive(false);
         LowerTimer.SetActive(false);
 
-        Destroy(MyProfile);
-        Destroy(TheirProfile);
-        Destroy(MyEmotes);
-        Destroy(TheirEmotePanel);
+        // Hide Objects
+        MyProfile.SetActive(false);
+        TheirProfile.SetActive(false);
+        MyEmotes.SetActive(false);
+        TheirEmotePanel.SetActive(false);
     }
 
     private void InitWifiMode() // 유저가 Player1인지 Player2인지 설정 필요
@@ -167,10 +187,12 @@ public class MatchManager : MonoBehaviour
 
         OrientBoard();
 
-        Destroy(MyProfile);
-        Destroy(MyEmotes);
-        Destroy(TheirEmotePanel);
-        Destroy(UpperButtons);
+        // Hide Objects
+        MyProfile.SetActive(false);
+        TheirProfile.SetActive(false);
+        MyEmotes.SetActive(false);
+        TheirEmotePanel.SetActive(false);
+
         TheirProfile.GetComponent<ProfilePlayscene>().SetAiProfile();
 
         UpperTimer.GetComponent<Timer>().RotateTimer();
@@ -442,6 +464,8 @@ public class MatchManager : MonoBehaviour
         _gameMode = (EMode)PlayerPrefs.GetInt("GameMode", (int)EMode.Local); ;
         _gameLogic.AddMoveRecord();
         InitGameMode(_gameMode);
+
+        WinState.GetComponent<WinState>().HideWinState();
         ReplayButton.gameObject.SetActive(false);
         ReStartButton.gameObject.SetActive(false);
         ToHomeButton.gameObject.SetActive(false);

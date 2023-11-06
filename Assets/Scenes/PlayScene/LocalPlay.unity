@@ -443,6 +443,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MyProfile
       objectReference: {fileID: 0}
+    - target: {fileID: 2616920102634122374, guid: 95eb155b55d997649a16aa4b379c8cc8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4575078266081200970, guid: 95eb155b55d997649a16aa4b379c8cc8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -2269,7 +2273,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1541049476
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2496,7 +2500,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1676435792
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3676,7 +3680,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2111712691
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3802,19 +3806,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 690079191106095892, guid: 1b45997853cb3de49a0701b28bbc55a2, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 690079191106095892, guid: 1b45997853cb3de49a0701b28bbc55a2, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 690079191106095892, guid: 1b45997853cb3de49a0701b28bbc55a2, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 690079191106095892, guid: 1b45997853cb3de49a0701b28bbc55a2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -80
       objectReference: {fileID: 0}
     - target: {fileID: 4100989190401577235, guid: 1b45997853cb3de49a0701b28bbc55a2, type: 3}
       propertyPath: m_Pivot.x
@@ -3904,37 +3908,41 @@ PrefabInstance:
       propertyPath: m_Name
       value: Emote Button
       objectReference: {fileID: 0}
+    - target: {fileID: 4195214736098179192, guid: 1b45997853cb3de49a0701b28bbc55a2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7275533354819117511, guid: 1b45997853cb3de49a0701b28bbc55a2, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7275533354819117511, guid: 1b45997853cb3de49a0701b28bbc55a2, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7275533354819117511, guid: 1b45997853cb3de49a0701b28bbc55a2, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 7275533354819117511, guid: 1b45997853cb3de49a0701b28bbc55a2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -80
       objectReference: {fileID: 0}
     - target: {fileID: 8536710832888654760, guid: 1b45997853cb3de49a0701b28bbc55a2, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8536710832888654760, guid: 1b45997853cb3de49a0701b28bbc55a2, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8536710832888654760, guid: 1b45997853cb3de49a0701b28bbc55a2, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 290
       objectReference: {fileID: 0}
     - target: {fileID: 8536710832888654760, guid: 1b45997853cb3de49a0701b28bbc55a2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -80
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3957,6 +3965,10 @@ PrefabInstance:
     - target: {fileID: 2616920102634122374, guid: 95eb155b55d997649a16aa4b379c8cc8, type: 3}
       propertyPath: m_Name
       value: TheirProfile
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616920102634122374, guid: 95eb155b55d997649a16aa4b379c8cc8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4575078266081200970, guid: 95eb155b55d997649a16aa4b379c8cc8, type: 3}
       propertyPath: m_Sprite
@@ -4348,6 +4360,10 @@ PrefabInstance:
     - target: {fileID: 6949969526497524797, guid: b1ff12b4161db4340bb9fd2d954fc69e, type: 3}
       propertyPath: m_Name
       value: ReplayButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 6949969526497524797, guid: b1ff12b4161db4340bb9fd2d954fc69e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
