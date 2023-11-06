@@ -116,7 +116,11 @@ public class MatchManager : MonoBehaviour
     #region InitGameModes 
     private void InitGameMode(EMode gameMode)
     {
-        switch(gameMode)
+
+        LowerButtons.GetComponent<PlayerButtons>().ActivateButtons();
+        UpperButtons.GetComponent<PlayerButtons>().ActivateButtons();
+
+        switch (gameMode)
         {
             case EMode.Local:
                 InitFriendMode();
@@ -460,6 +464,8 @@ public class MatchManager : MonoBehaviour
         _gameMode = (EMode)PlayerPrefs.GetInt("GameMode", (int)EMode.Local); ;
         _gameLogic.AddMoveRecord();
         InitGameMode(_gameMode);
+
+        WinState.GetComponent<WinState>().HideWinState();
         ReplayButton.gameObject.SetActive(false);
         ReStartButton.gameObject.SetActive(false);
         ToHomeButton.gameObject.SetActive(false);

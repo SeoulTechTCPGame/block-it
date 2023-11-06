@@ -56,4 +56,9 @@ public class WinState : MonoBehaviour
         _textComponent.color = new Color(0f, 0f, 0f);
 
     }
+
+    public void HideWinState()
+    {
+        _textComponent.enabled = false;
+    }
 }

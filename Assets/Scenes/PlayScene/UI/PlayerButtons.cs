@@ -108,6 +108,13 @@ public class PlayerButtons : MonoBehaviour
         PutButton.gameObject.SetActive(false);
     }
 
+    public void ActivateButtons() // 전체 버튼 활성화
+    {
+        PawnButton.gameObject.SetActive(true);
+        PlankButton.gameObject.SetActive(true);
+        PutButton.gameObject.SetActive(true);
+    }
+
     private void OnPawnButtonClicked() // pawn이동 버튼 클릭시, 보드에 이동가능한 위치 표시 등 보드 요청
     {
         MatchManager.ResetMove.Invoke();
