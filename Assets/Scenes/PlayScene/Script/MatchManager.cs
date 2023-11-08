@@ -131,6 +131,10 @@ public class MatchManager : MonoBehaviour
             case EMode.MultiWifi:
                 InitWifiMode();
                 break;
+            default:
+                Debug.LogError("MatchManager - InitGameMode: Invalid GameMode -- start friendMode");
+                InitFriendMode();
+                break;
         }
 
     }
