@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
+using System.CodeDom;
 
 
 /* Cell: 
@@ -38,6 +39,7 @@ public class Cell : MonoBehaviour
     private Image _bottomPlankImage;
     private Image _pawnImage;
     private Image _plankDotImage;
+    [SerializeField] Image _plankDotImg;
     private Button _pawnButton;
     private Button _plankDotButton;
     private Dictionary<string, Image> _bottomRightDictionary;
@@ -102,9 +104,11 @@ public class Cell : MonoBehaviour
     {
         _plankDotButton.enabled = visible;
         _plankDotImage.enabled = visible;
-        if(visible == true)
+        _plankDotImg.enabled = visible;
+        if (visible == true)
         {
-            _plankDotImage.color = color;
+            _plankDotImg.color = color;
+
         }
     }
     public void SetBottomRightPlank(string key, bool visible, Color color) 
@@ -215,5 +219,8 @@ public class Cell : MonoBehaviour
     {
         MatchManager.SetRequestedPlank.Invoke(_coordinate);
     }
-
+    public GameObject GetPlankDot()
+    {
+        return _plankDot;
+    }
 }
