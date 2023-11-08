@@ -75,6 +75,11 @@ public class BoardManager : MonoBehaviour
         Debug.Log("Board Awake");
         InitEvents();
         _gameLogic = FindObjectOfType<GameLogic>();
+        if(_gameLogic == null)
+        {
+            Debug.LogError("BoardManager - Awake: GameLogic is not found! Creating New one");
+            _gameLogic = new GameLogic();
+        }
         StartCoroutine(InitializeBoard());
         _unclickablePanel.SetActive(false);
     }
