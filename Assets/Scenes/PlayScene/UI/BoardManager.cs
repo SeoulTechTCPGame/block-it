@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.Events;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using static Enums;
 
 /*
@@ -26,6 +27,7 @@ public class BoardManager : MonoBehaviour
     [SerializeField] GameObject _p1RemainPlank;
     [SerializeField] GameObject _p2RemainPlank;
     [SerializeField] GameObject _unclickablePanel; // panel to make board unclickable during Replay
+    [SerializeField] GameObject _plankDotBoard; // PlankDot을 담는 Board
     #endregion
 
     private GameLogic _gameLogic;
@@ -318,7 +320,38 @@ public class BoardManager : MonoBehaviour
 
             }
         }
+
+        SeparatePlankDots();
+        
     }
+
+    // Create GameObject 'PlankDots' and make _plankDot of cells children of 'PlankDots'
+    private void SeparatePlankDots()
+    {
+        // Store the absolute positions of _plankDot GameObjects
+//        Dictionary<GameObject, Vector3> plankDotPositions = new Dictionary<GameObject, Vector3>();
+
+        //make _plankDot of cells children of 'PlankDots' while keeping its absolute position
+        for (int row = 0; row < ROW; row++)
+        {
+            for (int col = 0; col < COL; col++)
+            {
+                GameObject plankDot = _cells[col, row].GetPlankDot();
+                plankDot.name = "PlankDot_( " + col + ", " + row + " )"; //set name
+                //plankDotPositions[plankDot] = transform.position; //store absolute position of plankDot
+                //make it child of 'PlankDots' while keeping absolute position of plankDot
+                plankDot.transform.SetParent(_plankDotBoard.transform);
+
+            }
+        }
+        //Restore the absolute positions of _plankDot GameObjects
+        //foreach (var kvp in plankDotPositions)
+        //{
+        //    kvp.Key.transform.position = kvp.Value;
+        //}
+    }
+
+
     private void SetEdge()
     {
         for (int row = 0; row < ROW; row++)
