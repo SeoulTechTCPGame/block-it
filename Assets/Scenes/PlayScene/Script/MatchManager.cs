@@ -43,6 +43,13 @@ public class MatchManager : MonoBehaviour
     private GameLogic _gameLogic;
 
     private EPlayer _user;
+    private AIController aiController;
+
+    public ProbableNextWalls _probableNextWalls = new ProbableNextWalls(8, 8, false);
+    public ValidNextWalls _validNextWalls = new ValidNextWalls(8, 8, true);
+    public OpenWays _openWays = new OpenWays(8, 9, true);
+    public Pawn_[] pawns = new Pawn_[2];
+    public Walls walls = new Walls(8, 8, false);
 
     #region Events
     public static UnityEvent ToNextTurn; // 다음턴으로 넘긴다
@@ -51,6 +58,9 @@ public class MatchManager : MonoBehaviour
     public static UnityEvent<Vector2Int> SetRequestedPlank = new UnityEvent<Vector2Int>(); // 이번 턴의 수로 놓을 plank 위치 업데이트
     public static UnityEvent<int> ShowRecord = new UnityEvent<int>(); // 이번 턴의 수로 놓을 plank 위치 업데이트
     #endregion
+
+    private bool isAITurn = false;
+    private int currentTurn = 0;
 
    private void Awake() // 이벤트 할당, PlayerButton의 사용자 할당, _gameLogic 받기
     {
@@ -187,11 +197,19 @@ public class MatchManager : MonoBehaviour
 
         OrientBoard();
 
+        //ai logic setup
+        pawns[0] = new Pawn_(0, true, true);
+        pawns[1] = new Pawn_(1, false, false);
+
         // Hide Objects
         MyProfile.SetActive(false);
         TheirProfile.SetActive(false);
         MyEmotes.SetActive(false);
         TheirEmotePanel.SetActive(false);
+
+        // Initialize AIController
+        aiController = gameObject.AddComponent<AIController>();
+        aiController.Initialize(this);
 
         TheirProfile.GetComponent<ProfilePlayscene>().SetAiProfile();
 
@@ -304,6 +322,8 @@ public class MatchManager : MonoBehaviour
         if (_isUpdatePawnCoord == true)
         {
             _gameLogic.SetPawnPlace(otherPlayer, RequestedPawnCoord);
+            pawns[(int)_gameLogic.Turn].position.row = RequestedPawnCoord.y;
+            pawns[(int)_gameLogic.Turn].position.col = RequestedPawnCoord.x;
         }
         if(_isUpdatePlank == true)
         {
@@ -311,6 +331,41 @@ public class MatchManager : MonoBehaviour
             newPlank.SetPlank(RequestedPlank.GetCoordinate(), RequestedPlank.GetDirection());
             _gameLogic.SetPlank(newPlank);
             _gameLogic.GetTargetPawn(otherPlayer).UsePlank();
+            pawns[(int)_gameLogic.Turn].numberOfLeftWalls--;    
+            if (RequestedPlank.GetDirection() == EDirection.Horizontal)
+            {
+                _openWays.upDown[RequestedPlank.GetCoordinate().y][RequestedPlank.GetCoordinate().x] = false;
+                _openWays.upDown[RequestedPlank.GetCoordinate().y][RequestedPlank.GetCoordinate().x + 1] = false;
+                _validNextWalls.vertical[RequestedPlank.GetCoordinate().y][RequestedPlank.GetCoordinate().x] = false;
+                _validNextWalls.horizontal[RequestedPlank.GetCoordinate().y][RequestedPlank.GetCoordinate().x] = false;
+                if (RequestedPlank.GetCoordinate().x > 0)
+                {
+                    _validNextWalls.horizontal[RequestedPlank.GetCoordinate().y][RequestedPlank.GetCoordinate().x - 1] = false;
+                }
+                if (RequestedPlank.GetCoordinate().x < 7)
+                {
+                    _validNextWalls.horizontal[RequestedPlank.GetCoordinate().y][RequestedPlank.GetCoordinate().x + 1] = false;
+                }
+                walls.horizontal[RequestedPlank.GetCoordinate().y][RequestedPlank.GetCoordinate().x] = true;
+                adjustProbableValidNextWallForAfterPlaceHorizontalWall(RequestedPlank.GetCoordinate());
+
+            } else
+            {
+                _openWays.leftRight[RequestedPlank.GetCoordinate().y][RequestedPlank.GetCoordinate().x] = false;
+                _openWays.leftRight[RequestedPlank.GetCoordinate().y+1][RequestedPlank.GetCoordinate().x] = false;
+                _validNextWalls.horizontal[RequestedPlank.GetCoordinate().y][RequestedPlank.GetCoordinate().x] = false;
+                _validNextWalls.vertical[RequestedPlank.GetCoordinate().y][RequestedPlank.GetCoordinate().x] = false;
+                if (RequestedPlank.GetCoordinate().y > 0)
+                {
+                    _validNextWalls.vertical[RequestedPlank.GetCoordinate().y - 1][RequestedPlank.GetCoordinate().x] = false;
+                }
+                if (RequestedPlank.GetCoordinate().y < 7)
+                {
+                    _validNextWalls.vertical[RequestedPlank.GetCoordinate().y + 1][RequestedPlank.GetCoordinate().x] = false;
+                }
+                walls.vertical[RequestedPlank.GetCoordinate().y][RequestedPlank.GetCoordinate().x] = true;
+                adjustProbableValidNextWallForAfterPlaceVerticalWall(RequestedPlank.GetCoordinate());
+            }
         }
 
         // change Turn and reset the value
@@ -324,6 +379,12 @@ public class MatchManager : MonoBehaviour
             SwitchTimer();
             _currentTime = Constants.TURN_TIME;
             _isTimerRunning = true;
+        }
+
+        if(_gameMode == EMode.AI)
+        {
+            currentTurn += 1;
+            StartAITurn();
         }
 
 
@@ -508,5 +569,152 @@ public class MatchManager : MonoBehaviour
         WinState.GetComponent<WinState>().DisplayWinLose(false);
 
         ToHomeButton.gameObject.SetActive(true);
+    }
+
+    public void HandleAIResponse(string aiResponse)
+    {
+        // Parse the AI response and apply the AI's move to the game state
+        // For example, you might update the game state based on the AI's move
+        // You'll need to implement this part based on your specific game logic
+        // ...
+        UpdateRequestedPawnCoord(new Vector2Int(4, 4));
+
+        // After handling the AI response, move to the next turn
+        ToNextTurn.Invoke();
+    }
+
+    private void adjustProbableValidNextWallForAfterPlaceHorizontalWall(Vector2Int coord)
+    {
+        int row = coord.y;
+        int col = coord.x;
+        if (row >= 1)
+        {
+            this._probableNextWalls.vertical[row - 1][col] = true;
+        }
+        if (row <= 6)
+        {
+            this._probableNextWalls.vertical[row + 1][col] = true;
+        }
+        if (col >= 1)
+        {
+            this._probableNextWalls.vertical[row][col - 1] = true;
+            if (row >= 1)
+            {
+                this._probableNextWalls.vertical[row - 1][col - 1] = true;
+            }
+            if (row <= 6)
+            {
+                this._probableNextWalls.vertical[row + 1][col - 1] = true;
+            }
+            if (col >= 2)
+            {
+                this._probableNextWalls.horizontal[row][col - 2] = true;
+                this._probableNextWalls.vertical[row][col - 2] = true;
+                if (col >= 3)
+                {
+                    this._probableNextWalls.horizontal[row][col - 3] = true;
+                }
+            }
+        }
+        if (col <= 6)
+        {
+            this._probableNextWalls.vertical[row][col + 1] = true;
+            if (row >= 1)
+            {
+                this._probableNextWalls.vertical[row - 1][col + 1] = true;
+            }
+            if (row <= 6)
+            {
+                this._probableNextWalls.vertical[row + 1][col + 1] = true;
+            }
+            if (col <= 5)
+            {
+                this._probableNextWalls.horizontal[row][col + 2] = true;
+                this._probableNextWalls.vertical[row][col + 2] = true;
+                if (col <= 4)
+                {
+                    this._probableNextWalls.horizontal[row][col + 3] = true;
+                }
+            }
+        }
+    }
+
+    private void adjustProbableValidNextWallForAfterPlaceVerticalWall(Vector2Int coord)
+    {
+        int col = coord.x;
+        int row = coord.y;  
+        if (col >= 1)
+        {
+            this._probableNextWalls.horizontal[row][col - 1] = true;
+        }
+        if (col <= 6)
+        {
+            this._probableNextWalls.horizontal[row][col + 1] = true;
+        }
+        if (row >= 1)
+        {
+            this._probableNextWalls.horizontal[row - 1][col] = true;
+            if (col >= 1)
+            {
+                this._probableNextWalls.horizontal[row - 1][col - 1] = true;
+            }
+            if (col <= 6)
+            {
+                this._probableNextWalls.horizontal[row - 1][col + 1] = true;
+            }
+            if (row >= 2)
+            {
+                this._probableNextWalls.vertical[row - 2][col] = true;
+                this._probableNextWalls.horizontal[row - 2][col] = true;
+                if (row >= 3)
+                {
+                    this._probableNextWalls.vertical[row - 3][col] = true;
+                }
+            }
+        }
+        if (row <= 6)
+        {
+            this._probableNextWalls.horizontal[row + 1][col] = true;
+            if (col >= 1)
+            {
+                this._probableNextWalls.horizontal[row + 1][col - 1] = true;
+            }
+            if (col <= 6)
+            {
+                this._probableNextWalls.horizontal[row + 1][col + 1] = true;
+            }
+            if (row <= 5)
+            {
+                this._probableNextWalls.vertical[row + 2][col] = true;
+                this._probableNextWalls.horizontal[row + 2][col] = true;
+                if (row <= 4)
+                {
+                    this._probableNextWalls.vertical[row + 3][col] = true;
+                }
+            }
+        }
+    }
+
+    public bool getIsAITurn()
+    {
+        return isAITurn;
+    }
+
+    public int getCurrentTurn()
+    {
+        return currentTurn;
+    }
+
+    public void EndAITurn()
+    {
+        isAITurn = false;
+    }
+
+    public void StartAITurn()
+    {
+        if (currentTurn % 2 == 0)
+        {
+            isAITurn = true;
+        }
     }
 }
