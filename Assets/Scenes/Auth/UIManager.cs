@@ -36,6 +36,6 @@ public class UIManager : MonoBehaviour
 
     public void GuestScene()
     {
-        SceneManager.LoadScene("Home");
+        SceneManager.LoadScene("Loading");
     }
 }
