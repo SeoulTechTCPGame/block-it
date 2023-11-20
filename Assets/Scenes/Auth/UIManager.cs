@@ -34,7 +34,7 @@ public class UIManager : MonoBehaviour
         registerUI.SetActive(true);
     }
 
-    public void GuestScene()
+    public void MoveLoadingScene()
     {
         SceneManager.LoadScene("Loading");
     }

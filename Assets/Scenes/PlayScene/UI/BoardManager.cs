@@ -137,7 +137,7 @@ public class BoardManager : MonoBehaviour
         foreach (Vector2Int coord in _possiblePawnList)
         {
             Cell targetCell = GetCell(coord.x, coord.y);
-            targetCell.SetClickablePawn(false, DISAPBLED_COLOR);
+                targetCell.SetClickablePawn(false, DISAPBLED_COLOR);
         }
     }
 

@@ -1876,9 +1876,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1896686538}
+      - m_Target: {fileID: 1896686537}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: GuestScene
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2262,7 +2262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TextKey: Guest
+  TextKey: Back
 --- !u!1 &661408226
 GameObject:
   m_ObjectHideFlags: 0
@@ -5037,7 +5037,7 @@ GameObject:
   - component: {fileID: 1775395865}
   - component: {fileID: 1775395864}
   m_Layer: 5
-  m_Name: Guest
+  m_Name: Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5377,6 +5377,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loginUI: {fileID: 1316151792}
   registerUI: {fileID: 1110234405}
+  backButton: {fileID: 0}
 --- !u!4 &1896686539
 Transform:
   m_ObjectHideFlags: 0
@@ -5540,7 +5541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e2839e05ed22c49a69a982de1f31e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TextKey: Guest
+  TextKey: Back
 --- !u!1 &1941643625
 GameObject:
   m_ObjectHideFlags: 0
