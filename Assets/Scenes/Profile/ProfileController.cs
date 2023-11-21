@@ -15,6 +15,11 @@ public class ProfileController : MonoBehaviour
     [SerializeField] private Button _changeProfile;
     [SerializeField] private Button _logoutBtn;
 
+    [Header("프로필 화면 정보")]
+    [SerializeField] TMP_Text userName;
+    [SerializeField] TMP_Text userRecord;
+    [SerializeField] Image targetProfileImage; // UI Image의 경우
+
     [Header("사용자 정보 변경 화면")]
     [SerializeField] private TMP_InputField _newNicknameField;
     [SerializeField] private TMP_InputField _newPasswordField;
@@ -35,6 +40,32 @@ public class ProfileController : MonoBehaviour
 
     private void Start()
     {
+        BlockItUser user = CurrentLoginSession.Singleton.User;
+        Texture2D texture = new Texture2D(2, 2);
+
+        userName.text = user.Nickname; // 닉네임 표시
+        
+        if (!user.IsGuest) // 게스트가 아닌 경우
+        {
+            texture.LoadImage(user.ProfileImg);
+            targetProfileImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+            if (user.PlayCount == 0)
+            {
+                userRecord.text = "플레이 기록이 없습니다.";
+            }
+            else
+            {
+                userRecord.text = user.PlayCount + " 게임, 승률: " + user.WinCount * 100 / user.PlayCount + "%";
+            }
+            _changeProfile.interactable = true;
+        } 
+        else // 게스트인 경우
+        {
+            userRecord.text = "게스트 모드입니다.";
+            _changeProfile.interactable = false;
+        }
+        
+
         ActivatePanel(_myProfilePanel);
 
         _backBtn.onClick.AddListener(BackEvent);

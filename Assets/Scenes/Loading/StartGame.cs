@@ -15,43 +15,19 @@ public class StartGame : MonoBehaviour
 
     private void Start()
     {
-        // UserData.instance.LoadUserInfo();
-
-        /*
-        if (PlayerPrefs.GetString("User_Display_Name") != null)
-        {
-            _loggedIn = true;
-        }
-        */
-
         _signUpButton = Canvas.transform.Find("Sign In").gameObject;
         _guestButton = Canvas.transform.Find("Guest").gameObject;
 
         ButtonsVisibility();    // 버튼 보이는 지 여부 판단
     }
 
-    private void Update()
-    {
-        /*
-        _timer += Time.deltaTime;
-        if (_loggedIn && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) || _timer >= _TouchTimeout))
-            // 로그인이 되어 있으면서 화면을 터치했거나 시간이 지나면 자동으로 화면 전환
-        {
-            MoveHomeScene();
-        }
-        */
-    }
-
     private void ButtonsVisibility()
     {
-        // if (_loggedIn == true)
-        // {
-            _signUpButton.SetActive(!_loggedIn);
-            _guestButton.SetActive(!_loggedIn);
+        _signUpButton.SetActive(!_loggedIn);
+        _guestButton.SetActive(!_loggedIn);
 
-            _signUpButton.GetComponent<Button>().onClick.AddListener(MoveSignUpScene);
-            _guestButton.GetComponent<Button>().onClick.AddListener(MoveHomeScene);
-        // }
+        _signUpButton.GetComponent<Button>().onClick.AddListener(MoveSignUpScene);
+        _guestButton.GetComponent<Button>().onClick.AddListener(MoveHomeScene);
     }
 
     private void MoveSignUpScene()
@@ -61,6 +37,7 @@ public class StartGame : MonoBehaviour
 
     private void MoveHomeScene()
     {
+        CurrentLoginSession.Singleton.StartGuestMode();
         SceneManager.LoadScene("Home");
     }
 }
