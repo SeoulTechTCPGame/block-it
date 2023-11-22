@@ -1,0 +1,69 @@
+{
+    "Steps": [
+        {
+            "ImagePath": "Tutorial1", 
+            "UpperExplanation": "상대방 진영, 즉 반대편 라인에 먼저 도착하는 사람이 이기게 됩니다.\n",
+            "LowerExplanation": ""
+        },
+        {
+            "ImagePath": "Tutorial2",
+            "UpperExplanation": "우리는 두 가지 행동 중 하나를 선택할 수 있어요! \n 플레이어 움직이기 \n 나무 판자 놓기 \n",
+            "LowerExplanation": "이곳에 당신이 플레이어를 이동시킬 수 있습니다."
+        },
+        {
+            "ImagePath": "Tutorial3",
+            "UpperExplanation": "우리는 두 가지 행동 중 하나를 선택할 수 있어요! \n 플레이어 움직이기 \n 나무 판자 놓기 \n",
+            "LowerExplanation": "나무 판자를 놓고 싶은 위치를 정하고, [놓기] 버튼을 누르세요."
+        },
+        {
+            "ImagePath": "Tutorial4",
+            "UpperExplanation": "플랭크(나무 판자)는 보드판에서 두 칸 차지합니다. 한 칸도, 세칸도 아니고 정확히 딱 두칸입니다.",
+            "LowerExplanation": ""
+        },
+        {
+            "ImagePath": "Tutorial5",
+            "UpperExplanation": "만약 플레이어끼리 만났다면, 서로 점프하여 상대방 뒤로 건너뛸 수 있습니다.",
+            "LowerExplanation": ""
+        },
+        {
+            "ImagePath": "Tutorial6",
+            "UpperExplanation": "각 블랭크는 보드판의 경계선을 침범할 수 없습니다.",
+            "LowerExplanation": ""
+        },
+        {
+            "ImagePath": "Tutorial7",
+            "UpperExplanation": "플랭크로 각 플레이어를 가둘 수 없습니다. 즉, 플레이어가 상대방의 진영에 도착할 수 있는 길이 최소 한 개 이상이어야 합니다.",
+            "LowerExplanation": ""
+        },
+        {
+            "ImagePath": "Tutorial8",
+            "UpperExplanation": "플레이어끼리 만나는 경우 #1.",
+            "LowerExplanation": "플레이어 1\n플레이어2\n플레이어1은 다음 장소로 이동할 수 있습니다."
+        },
+        {
+            "ImagePath": "Tutorial9",
+            "UpperExplanation": "플레이어끼리 만나는 경우 #2.",
+            "LowerExplanation": "플레이어 1\n플레이어2\n플레이어1은 다음 장소로 이동할 수 있습니다."
+        },
+        {
+            "ImagePath": "Tutorial10",
+            "UpperExplanation": "플레이어끼리 만나는 경우 #3.",
+            "LowerExplanation": "플레이어 1\n플레이어2\n플레이어1은 다음 장소로 이동할 수 있습니다."
+        },
+        {
+            "ImagePath": "Tutorial11",
+            "UpperExplanation": "플레이어끼리 만나는 경우 #4.",
+            "LowerExplanation": "플레이어 1\n플레이어2\n플레이어1은 다음 장소로 이동할 수 있습니다."
+        },
+        {
+            "ImagePath": "Tutorial12",
+            "UpperExplanation": "플레이어끼리 만나는 경우 #5.",
+            "LowerExplanation": "플레이어 1\n플레이어2\n플레이어1은 다음 장소로 이동할 수 있습니다."
+        },
+        {
+            "ImagePath": "Tutorial13",
+            "UpperExplanation": "플레이어끼리 만나는 경우 #6.",
+            "LowerExplanation": "플레이어 1\n플레이어2\n플레이어1은 다음 장소로 이동할 수 있습니다."
+        }
+    ]
+}

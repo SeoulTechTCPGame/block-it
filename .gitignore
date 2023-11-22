@@ -58,3 +58,42 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# 추가 제외 파일 리스트
+*.vsconfig
+/[Uu]serSettings/
+/Test/
+/ProjectSettings/ProjectSettings.asset
+ProjectSettings/GvhProjectSettings.xml
+
+# DS_store
+**/.Ds_store
+
+# Server Connection Config File
+ConnectionInfo.json
+ConnectionInfo.json.meta
+
+# GoogleServices
+Assets/GoogleService-Info.plist
+Assets/GoogleService-Info.plist.meta
+Assets/google-services.json
+Assets/google-services.json.meta
+Assets/StreamingAssets.meta
+Assets/StreamingAssets/google-services-desktop.json
+Assets/StreamingAssets/google-services-desktop.json.meta
+
+# Firebase
+Assets/Editor Default Resources/
+Assets/ExternalDependencyManager/
+Assets/Firebase/
+Assets/Firebase.meta
+Assets/Plugins/
+
+Assets/StreamingAssets/google-services-desktop.json.meta
+Assets/Editor Default Resources.meta
+Assets/ExternalDependencyManager.meta
+Assets/Firebase.meta
+Assets/Plugins.meta
+Assets/GoogleService-Info.plist.meta
+Assets/google-services.json.meta
+ProjectSettings/GvhProjectSettings.xml
+ProjectSettings/GvhProjectSettings.xml.meta
