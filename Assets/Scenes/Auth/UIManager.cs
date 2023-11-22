@@ -33,9 +33,4 @@ public class UIManager : MonoBehaviour
         loginUI.SetActive(false);
         registerUI.SetActive(true);
     }
-
-    public void GuestScene()
-    {
-        SceneManager.LoadScene("Home");
-    }
 }
