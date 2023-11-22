@@ -1,3 +1,5 @@
+<img width="242" alt="Block It Icon" src=https://github.com/SeoulTechTCPGame/block-it/assets/50050003/ba410e57-d430-4915-9608-6f57e53e47a3>
+
 # Block It
 “Block It”은 모바일 플랫폼 기반 [쿼리도 보드 게임](https://namu.wiki/w/%EC%BF%BC%EB%A6%AC%EB%8F%84)입니다. 
 
